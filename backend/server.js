@@ -28,11 +28,15 @@ todoRoutes.route('/').get(async function(req, res) {
     }
 });
 
-todoRoutes.route('/:id').get(function(req, res) {
+todoRoutes.route('/:id').get(async function(req, res) {
     let id = req.params.id;
-    Todo.findById(id, function(err, todo) {
-        res.json(todo);
-    });
+    try {
+        const todo = await Todo.findById(id).exec();
+        res.json({ success: true, message: 'Todo found successfully', todo: todo });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, message: "Error retrieving todo " + id, error: err.message });
+    }
 });
 
 todoRoutes.route('/add').post(async function(req, res) {
