@@ -1,38 +1,53 @@
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom"
-import "bootstrap/dist/css/bootstrap.min.css"
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap'; // Import Navbar components
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import './App.css';
+import React from 'react';
+import LoginPage from "./LoginPage"; // Import your login page component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import CreateTodo from "./components/create-todo.component";
-import EditTodo from './components/edit-todo.component';
-import TodosList from './components/todos-list.component';
-
-import logo from "./logo.png"
 
 function App() {
   return (
     <Router>
-      <div className="container">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="https://github.com/mariadoan247/brew-masters-cauldron/tree/main" target="_blank">
-            <img src={logo} width="30" height="30" alt="github.com/brew-masters-cauldron" />
-          </Navbar.Brand>
-          <Navbar.Brand as={Link} to="/">Brew Master's Cauldron</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link as={Link} to="/">Todos</Nav.Link>
-              <Nav.Link as={Link} to="/create">Create Todo</Nav.Link>
+      <>
+        <div className="topNav">
+          <div className="topNav-right"></div>
+          <div className="link">
+            {/* Use the Link component to navigate to the login page */}
+            <Link to="/login" className="text-wrapper">Log In</Link>
+          </div>
+        </div>
+
+        {/* Left Navbar */}
+        <div className="div-side-nav-links">
+        <div className="box">
+          <div className="rectangle" />
+          
+            <Nav>
+              <Nav.Link className="nav-link">
+              <FontAwesomeIcon icon="fa-regular fa-face-smile" size="2xl" style={{color: "#ffffff",}} />
+                <span>Classes</span>
+              </Nav.Link>
+              <Nav.Link className="nav-link">
+              <FontAwesomeIcon icon="fa-regular fa-face-smile" size="2xl" style={{color: "#ffffff",}} />
+                <span>Races</span>
+              </Nav.Link>
+              {/* Add similar Nav.Link elements for other items */}
             </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+          </div>
+        </div>
+
+
+
+        {/* Define a route to render the Login page */}
         <Routes>
-          <Route path="/" element={<TodosList />} />
-          <Route path="/edit/:id" element={<EditTodo />} />
-          <Route path="/create" element={<CreateTodo />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
-      </div>
+      </>
     </Router>
   );
 }
 
 export default App;
+

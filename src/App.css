@@ -1,38 +1,111 @@
-.App {
-  text-align: center;
+.topNav {
+  align-items: center;
+  background-color: #070720;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: #070720;
+  display: flex;
+  height: 65px;
+  padding: 12px 24px 13px;
+  position: relative;
+  width: relative;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.topNav .topNav-right {
+  height: 40px;
+  margin-left: 1080px;
+  position: relative;
+  width: 238px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+.link {
+  align-items: center;
+  background-color: #3273fa;
+  border: 1px solid;
+  border-color: #3273fa;
+  border-radius: 3px;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  padding: 11.91px 32.67px 11.09px 33.33px;
+  position: relative;
+  width: 100px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.link .text-wrapper {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 16.2px;
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+
+.div-side-nav-links {
+  align-items: flex-start;
+  height: 17px;
+  width: 15px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  padding: 0px 12px 485px;
+  position: relative;
+}
+
+.div-side-nav-links .link {
+  height: 40px;
+  object-fit: cover;
+  position: relative;
+  width: 40px;
+}
+
+
+.div-side-nav-links {
+  width: 60px; /* Adjust the width according to your design */
+  overflow: show;
+  transition: width 0.3s; /* Add a transition for smooth animation */
+}
+
+/* Hover state: Show names */
+.div-side-nav-links:hover {
+  width: 200px; /* Adjust the expanded width as needed */
+}
+
+/* Style for individual Nav.Link elements */
+.div-side-nav-links .nav-link {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 10px;
+  text-decoration: none;
+  color: #000; 
 }
 
-.App-link {
-  color: #61dafb;
+/* Style for individual Nav.Link icons */
+.div-side-nav-links .nav-link .svg-inline--fa {
+  margin-right: 10px; /* Add some spacing between the icon and text */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.box {
+  height: 1838px;
+  width: 91px;
+}
+
+.rectangle {
+  background-color: #070720;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: #070720;
+  height: 1838px;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 65px;
+  transition: width 0.3s;
 }
