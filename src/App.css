@@ -8,7 +8,7 @@
   height: 65px;
   padding: 12px 24px 13px;
   position: relative;
-  width: relative;
+  width: 100%;
 }
 
 
@@ -59,6 +59,50 @@
   position: relative;
 }
 
+/* ... Your other styles ... */
+
+.leftNav {
+  background-color: #070720;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: #070720;
+  height: 100%; /* Fill the height of the parent container */
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 65px;
+  transition: width 0.3s;
+  display: flex; /* Add this to make children align vertically */
+  flex-direction: column; /* Add this to make children stack vertically */
+}
+
+/* Only show icons when the leftNav is not responsive */
+@media (max-width: 65px) {
+  .div-side-nav-links .nav-link span {
+    display: none;
+  }
+}
+
+/* Hover state: Show names */
+.leftNav:hover {
+  width: 200px; /* Adjust the width for responsiveness */
+}
+
+/* Style for individual Nav.Link elements */
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.div-side-nav-links .nav-link .svg-inline--fa {
+  margin-right: 10px; /* Add some spacing between the icon and text */
+  margin-bottom: 10px;
+}
+
+
 .div-side-nav-links .link {
   height: 40px;
   object-fit: cover;
@@ -66,46 +110,12 @@
   width: 40px;
 }
 
-
-.div-side-nav-links {
-  width: 60px; /* Adjust the width according to your design */
-  overflow: show;
-  transition: width 0.3s; /* Add a transition for smooth animation */
-}
-
 /* Hover state: Show names */
 .div-side-nav-links:hover {
-  width: 200px; /* Adjust the expanded width as needed */
+  width: 200px;
 }
 
-/* Style for individual Nav.Link elements */
-.div-side-nav-links .nav-link {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  text-decoration: none;
-  color: #000; 
-}
 
-/* Style for individual Nav.Link icons */
-.div-side-nav-links .nav-link .svg-inline--fa {
-  margin-right: 10px; /* Add some spacing between the icon and text */
-}
 
-.box {
-  height: 1838px;
-  width: 91px;
-}
 
-.rectangle {
-  background-color: #070720;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-color: #070720;
-  height: 1838px;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 65px;
-  transition: width 0.3s;
-}
+
