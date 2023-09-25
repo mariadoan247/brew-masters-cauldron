@@ -1,37 +1,44 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css"
-import { Navbar, Nav } from 'react-bootstrap'; // Import Navbar components
 import CreateTodo from "./components/create-todo.component";
-import EditTodo from './components/edit-todo.component';
+import SignIn from './components/signIn.component';
 import TodosList from './components/homePage.component';
-
-import logo from "./logo.png"
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 function App() {
+  const [mode, setMode] = React.useState('dark');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
+      },
+    }),
+    [],
+  );
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
+
   return (
-    <Router>
-      <div className="container">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="https://github.com/mariadoan247/brew-masters-cauldron/tree/main" target="_blank">
-            <img src={logo} width="30" height="30" alt="github.com/brew-masters-cauldron" />
-          </Navbar.Brand>
-          <Navbar.Brand as={Link} to="/">Brew Master's Cauldron</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link as={Link} to="/">Todos</Nav.Link>
-              <Nav.Link as={Link} to="/create">Create Todo</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        <Routes>
-          <Route path="/" element={<TodosList />} />
-          <Route path="/edit/:id" element={<EditTodo />} />
-          <Route path="/create" element={<CreateTodo />} />
-        </Routes>
-      </div>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<TodosList mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/signin" element={<SignIn mode={mode} theme={theme} />} />
+            <Route path="/create" element={<CreateTodo />} />
+
+          </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
