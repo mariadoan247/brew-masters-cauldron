@@ -1,10 +1,10 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Navbar, Nav } from 'react-bootstrap'; // Import Navbar components
-import React from "react";
 import CreateTodo from "./components/create-todo.component";
 import EditTodo from './components/edit-todo.component';
-import TodosList from './components/todos-list.component';
+import TodosList from './components/homePage.component';
 
 import logo from "./logo.png"
 
@@ -26,7 +26,7 @@ function App() {
           </Navbar.Collapse>
         </Navbar>
         <Routes>
-          <Route path="/homePage" element={<TodosList />} />
+          <Route path="/" element={<TodosList />} />
           <Route path="/edit/:id" element={<EditTodo />} />
           <Route path="/create" element={<CreateTodo />} />
         </Routes>
