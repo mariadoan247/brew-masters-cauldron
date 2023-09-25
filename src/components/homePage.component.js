@@ -22,6 +22,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useNavigate } from 'react-router-dom';
+
 
 const drawerWidth = 240;
 
@@ -136,6 +138,8 @@ export default function App() {
     [mode],
   );
 
+  const Navigate = useNavigate();
+
   return (
     <Box
       sx={{ display: "flex" }}
@@ -160,8 +164,9 @@ export default function App() {
             <Button
               color="inherit" // Set the button color to blue
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
+              onClick={() => Navigate('/signin')}            
             >
-              Sign Up
+              Sign In
             </Button>
           </Toolbar>
         </AppBar>
