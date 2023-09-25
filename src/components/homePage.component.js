@@ -1,6 +1,6 @@
 import { TextField, Button } from "@mui/material";
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -20,12 +20,8 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 const drawerWidth = 240;
 
@@ -95,13 +91,10 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function App() {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+
+export default function App() {
+  const [open, setOpen] = React.useState(false);
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -123,13 +116,33 @@ export default function App() {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
 
+  const [mode, setMode] = React.useState('dark');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
+      },
+    }),
+    [],
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode],
+  );
+
   return (
     <Box
       sx={{ display: "flex" }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
@@ -145,7 +158,7 @@ export default function App() {
               <MenuIcon />
             </IconButton>
             <Button
-              color="primary" // Set the button color to blue
+              color="inherit" // Set the button color to blue
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
             >
               Sign Up
@@ -187,7 +200,6 @@ export default function App() {
               </ListItem>
             ))}
           </List>
-          <Divider />
           <List>
             {["All mail", "Trash", "Spam"].map((text, index) => (
               <ListItem key={text} disablePadding>
@@ -212,11 +224,15 @@ export default function App() {
               </ListItem>
             ))}
           </List>
+          <IconButton onClick={() => colorMode.toggleColorMode()}  color="inherit">
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+      
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>
-            <Typography variant="h3" sx={{ marginBottom: 2 }}>
+            <Typography variant="h3" sx={{ marginBottom: 2, fontFamily: "Baskervville"}}>
               BREWMASTER'S CAULDRON
             </Typography>
             <TextField
@@ -232,3 +248,5 @@ export default function App() {
     </Box>
   );
 }
+
+
