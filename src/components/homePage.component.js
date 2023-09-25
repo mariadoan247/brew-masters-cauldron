@@ -19,7 +19,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useNavigate } from 'react-router-dom';
@@ -95,7 +95,7 @@ const Drawer = styled(MuiDrawer, {
 
 
 
-export default function App() {
+export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerClose = () => {
@@ -118,25 +118,6 @@ export default function App() {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
 
-  const [mode, setMode] = React.useState('dark');
-  const colorMode = React.useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
-      },
-    }),
-    [],
-  );
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode],
-  );
 
   const Navigate = useNavigate();
 
@@ -164,7 +145,7 @@ export default function App() {
             <Button
               color="inherit" // Set the button color to blue
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
-              onClick={() => Navigate('/signin')}            
+              onClick={() => Navigate('/signin', { mode, theme })}
             >
               Sign In
             </Button>
@@ -229,15 +210,15 @@ export default function App() {
               </ListItem>
             ))}
           </List>
-          <IconButton onClick={() => colorMode.toggleColorMode()}  color="inherit">
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          <IconButton onClick={() => colorMode.toggleColorMode()} color="inherit">
+            {theme.palette.mode === theme ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
-      
+
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>
-            <Typography variant="h3" sx={{ marginBottom: 2, fontFamily: "Baskervville"}}>
+            <Typography variant="h3" sx={{ marginTop: 5, marginBottom: 2, fontFamily: "Baskervville" }}>
               BREWMASTER'S CAULDRON
             </Typography>
             <TextField
@@ -248,6 +229,8 @@ export default function App() {
               onMouseEnter={handleTextFieldMouseEnter}
             />
           </div>
+
+
         </Box>
       </ThemeProvider>
     </Box>

@@ -8,36 +8,36 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 function App() {
   const [mode, setMode] = React.useState('dark');
-const colorMode = React.useMemo(
-  () => ({
-    toggleColorMode: () => {
-      setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
-    },
-  }),
-  [],
-);
-const theme = React.useMemo(
-  () =>
-    createTheme({
-      palette: {
-        mode,
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
       },
     }),
-  [mode]
-);
+    [],
+  );
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
 
   return (
     <ThemeProvider theme={theme}>
-    <Router>
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<TodosList />} />
-          <Route path="/signin" element={<SignIn colorMode={colorMode} mode={mode} />} />
-          <Route path="/create" element={<CreateTodo />} />
-  
-        </Routes>
-      </div>
-    </Router>
+      <Router>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<TodosList mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/signin" element={<SignIn mode={mode} theme={theme} />} />
+            <Route path="/create" element={<CreateTodo />} />
+
+          </Routes>
+        </div>
+      </Router>
     </ThemeProvider>
   );
 }
