@@ -1,121 +1,38 @@
-.topNav {
-  align-items: center;
-  background-color: #070720;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-color: #070720;
-  display: flex;
-  height: 65px;
-  padding: 12px 24px 13px;
-  position: relative;
-  width: 100%;
+.App {
+  text-align: center;
 }
 
-
-.topNav .topNav-right {
-  height: 40px;
-  margin-left: 1080px;
-  position: relative;
-  width: 238px;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-
-.link {
-  align-items: center;
-  background-color: #3273fa;
-  border: 1px solid;
-  border-color: #3273fa;
-  border-radius: 3px;
-  display: inline-flex;
-  height: 40px;
-  justify-content: center;
-  padding: 11.91px 32.67px 11.09px 33.33px;
-  position: relative;
-  width: 100px;
-}
-
-.link .text-wrapper {
-  color: #ffffff;
-  font-family: "Roboto-Bold", Helvetica;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 16.2px;
-  margin-top: -1px;
-  position: relative;
-  white-space: nowrap;
-  width: fit-content;
-}
-
-
-.div-side-nav-links {
-  align-items: flex-start;
-  height: 17px;
-  width: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 0px 12px 485px;
-  position: relative;
-}
-
-/* ... Your other styles ... */
-
-.leftNav {
-  background-color: #070720;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-color: #070720;
-  height: 100%; /* Fill the height of the parent container */
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 65px;
-  transition: width 0.3s;
-  display: flex; /* Add this to make children align vertically */
-  flex-direction: column; /* Add this to make children stack vertically */
-}
-
-/* Only show icons when the leftNav is not responsive */
-@media (max-width: 65px) {
-  .div-side-nav-links .nav-link span {
-    display: none;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
   }
 }
 
-/* Hover state: Show names */
-.leftNav:hover {
-  width: 200px; /* Adjust the width for responsiveness */
-}
-
-/* Style for individual Nav.Link elements */
-.nav-link {
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 5px;
-  text-decoration: none;
-  color: #ffffff;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-.div-side-nav-links .nav-link .svg-inline--fa {
-  margin-right: 10px; /* Add some spacing between the icon and text */
-  margin-bottom: 10px;
+.App-link {
+  color: #61dafb;
 }
 
-
-.div-side-nav-links .link {
-  height: 40px;
-  object-fit: cover;
-  position: relative;
-  width: 40px;
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
-
-/* Hover state: Show names */
-.div-side-nav-links:hover {
-  width: 200px;
-}
-
-
-
-
-

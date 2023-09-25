@@ -1,57 +1,38 @@
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import './App.css';
-import React from 'react';
-import LoginPage from "./LoginPage";
-import ContactPage from "./ContactPage";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSmile, faUserCircle, faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom"
+import "bootstrap/dist/css/bootstrap.min.css"
+import { Navbar, Nav } from 'react-bootstrap'; // Import Navbar components
+import React from "react";
+import CreateTodo from "./components/create-todo.component";
+import EditTodo from './components/edit-todo.component';
+import TodosList from './components/todos-list.component';
 
+import logo from "./logo.png"
 
 function App() {
   return (
     <Router>
-      <>
-        <div className="topNav">
-        <div className="topNav-left">
-          <Link to="/contact" className="contact-link">
-              <FontAwesomeIcon icon={faEnvelope} size="2xl" style={{ color: "#ffffff" }} />
-            </Link>
-          </div>
-          <div className="topNav-right"></div>
-          <div className="link">
-            <Link to="/login" className="text-wrapper">Log In</Link>
-          </div>
-        </div>
-
-        {/* Left Navbar */}
-        
-          <div className="leftNav" />
-          <div className="div-side-nav-links">
-            <Nav>
-              <Nav.Link className="nav-link">
-              <FontAwesomeIcon icon={faSmile} size="2x" style={{ color: "#ffffff" }} />
-                <span>Classes</span>
-              </Nav.Link>
-              <Nav.Link className="nav-link">
-              <FontAwesomeIcon icon={faUserCircle} size="2xl" style={{color: "#ffffff"}} />
-                <span>Races</span>
-              </Nav.Link>
+      <div className="container">
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand href="https://github.com/mariadoan247/brew-masters-cauldron/tree/main" target="_blank">
+            <img src={logo} width="30" height="30" alt="github.com/brew-masters-cauldron" />
+          </Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">Brew Master's Cauldron</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link as={Link} to="/">Todos</Nav.Link>
+              <Nav.Link as={Link} to="/create">Create Todo</Nav.Link>
             </Nav>
-          </div>
-       
-
-
-
+          </Navbar.Collapse>
+        </Navbar>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/homePage" element={<TodosList />} />
+          <Route path="/edit/:id" element={<EditTodo />} />
+          <Route path="/create" element={<CreateTodo />} />
         </Routes>
-      </>
+      </div>
     </Router>
   );
 }
 
 export default App;
-
