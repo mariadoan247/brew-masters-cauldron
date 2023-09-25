@@ -33,14 +33,13 @@ function Copyright(props) {
 }
 
 
-export default function SignIn({ mode, theme }) {
+export default function ForgotPassword({ mode, theme }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
-      password: data.get('password'),
     });
   };
 
@@ -75,7 +74,10 @@ export default function SignIn({ mode, theme }) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Forgot Password?
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 1, mb: 2 }}>
+            No worries, we will send you reset instructions
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -88,43 +90,17 @@ export default function SignIn({ mode, theme }) {
               autoComplete="email"
               autoFocus
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 5, mb: 2 }}
             >
-              Sign In
+              Continue
             </Button>
-            <Grid container>
-              <Grid item xs>
-              <Link component={RouterLink} to="/forgotpassword" variant="body2">
-                  {"Forgot password?"}
-                </Link>
-              </Grid>
-              <Grid item>
-              <Link component={RouterLink} to="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 5, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import CreateTodo from "./components/create-todo.component";
 import SignIn from './components/signIn.component';
 import SignUp from './components/signUp.component';
+import ForgotPassword from './components/forgotPassword.component';
 import TodosList from './components/homePage.component';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/" element={<TodosList mode={mode} theme={theme} colorMode={colorMode} />} />
             <Route path="/signin" element={<SignIn mode={mode} theme={theme} />} />
             <Route path="/signup" element={<SignUp mode={mode} theme={theme} />} />
+            <Route path="/forgotpassword" element={<ForgotPassword mode={mode} theme={theme} />} />
             <Route path="/create" element={<CreateTodo />} />
 
           </Routes>
