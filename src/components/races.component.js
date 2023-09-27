@@ -100,7 +100,7 @@ const Drawer = styled(MuiDrawer, {
 
 
 
-export default function MyApp({ mode, theme, colorMode }) {
+export default function Races({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerClose = () => {
@@ -147,9 +147,9 @@ export default function MyApp({ mode, theme, colorMode }) {
             <Button
               color="inherit" // Set the button color to blue
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
-              onClick={() => navigate('/signin', { mode, theme })}
+              onClick={() => navigate('/signin', { mode, theme })} //NAVIGATE THIS TO USER ACCOUNT PAGE
             >
-              Sign In
+              User Account
             </Button>
           </Toolbar>
         </AppBar>
@@ -243,9 +243,7 @@ export default function MyApp({ mode, theme, colorMode }) {
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>
-            <Typography variant="h3" sx={{ marginTop: 5, marginBottom: 2, fontFamily: "Baskervville" }}>
-              BREWMASTER'S CAULDRON
-            </Typography>
+  
             <TextField
               fullWidth
               label="Search Yourself a Champion"
@@ -261,5 +259,4 @@ export default function MyApp({ mode, theme, colorMode }) {
     </Box>
   );
 }
-
 
