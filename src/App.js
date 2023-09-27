@@ -1,12 +1,20 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import "bootstrap/dist/css/bootstrap.min.css"
-import CreateTodo from "./components/create-todo.component";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Classes from "./components/classes.component";
 import SignIn from './components/signIn.component';
 import SignUp from './components/signUp.component';
 import ForgotPassword from './components/forgotPassword.component';
-import TodosList from './components/homePage.component';
+import MyApp from './components/homePage.component';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Races from "./components/races.component";
+import Backgrounds from "./components/backgrounds.component";
+import Spells from "./components/spells.component";
+import Inventory from "./components/inventory.component";
+import Monsters from "./components/monsters.component";
+import Feats from "./components/feats.component";
+import Account from "./components/userAccount.component";
+
 
 function App() {
   const [mode, setMode] = React.useState('dark');
@@ -33,12 +41,18 @@ function App() {
       <Router>
         <div className="container">
           <Routes>
-            <Route path="/" element={<TodosList mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/" element={<MyApp mode={mode} theme={theme} colorMode={colorMode} />} />
             <Route path="/signin" element={<SignIn mode={mode} theme={theme} />} />
             <Route path="/signup" element={<SignUp mode={mode} theme={theme} />} />
             <Route path="/forgotpassword" element={<ForgotPassword mode={mode} theme={theme} />} />
-            <Route path="/create" element={<CreateTodo />} />
-
+            <Route path="/userAccount" element={<Account mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/classes" element={<Classes mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/races" element={<Races mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/backgrounds" element={<Backgrounds mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/spells" element={<Spells mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/inventory" element={<Inventory mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/monsters" element={<Monsters mode={mode} theme={theme} colorMode={colorMode} />} />
+            <Route path="/feats" element={<Feats mode={mode} theme={theme} colorMode={colorMode} />} />
           </Routes>
         </div>
       </Router>
