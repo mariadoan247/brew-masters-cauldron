@@ -7,11 +7,14 @@ const todoRoutes = express.Router();
 const PORT = 4000;
 
 let Todo = require('./todo.model');
+const db = 'mongodb+srv://mariadoan247:0AMWE58AVDUN5F1R@brewmasters-cauldron.knpgadz.mongodb.net/?retryWrites=true&w=majority'
 
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/cauldron', {  useNewUrlParser: true });
+mongoose.connect(db, {  useNewUrlParser: true })
+        .then(() => console.log("MongoDB successfully connected"))
+        .catch(err => console.log(err));
 const connection = mongoose.connection;
 
 connection.once('open', function() {
