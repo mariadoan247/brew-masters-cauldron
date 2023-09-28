@@ -1,23 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Todo = new Schema({
-    todo_description: {
+let User = new Schema({
+    name: {
         type: String,
         required: true
     },
-    todo_responsible: {
+    email: {
         type: String,
         required: true
     },
-    todo_priority: {
+    password: {
         type: String,
-        required: true
-    },
-    todo_completed: {
-        type: Boolean,
         required: true
     }
 });
 
-module.exports = mongoose.model('Todo', Todo);
+module.exports = mongoose.model('User', User);
