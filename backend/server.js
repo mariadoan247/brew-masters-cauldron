@@ -33,7 +33,7 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 
-app.use("/api/users", users);
+app.use("/5e-compendium/users", users);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);

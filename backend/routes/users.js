@@ -2,22 +2,23 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
+const keys = require("../config/keys");
 const passport = require("passport");
 
 // Load input validation
-const validateRegisterInput = require("../../validation/signUp");
-const validateLoginInput = require("../../validation/signIn");
+const validateRegisterInput = require("../validation/signUp");
+const validateLoginInput = require("../validation/signIn");
 
 // Load User model
-const User = require("../../models/user");
+const User = require("../models/user");
 
-// @route POST actions/insertOne
+// @route POST 5e-compendium/users/signup
 // @desc Register user
 // @access Public
-router.post("/insertOne", (req, res) => {
+router.post("/signup", (req, res) => {
   // Form validation
-
+  console.log("Received signup request");
+  
   const { errors, isValid } = validateRegisterInput(req.body);
 
   // Check validation
@@ -43,17 +44,20 @@ router.post("/insertOne", (req, res) => {
           newUser
             .save()
             .then(user => res.json(user))
-            .catch(err => console.log(err));
+            .catch(err => {
+              console.log(err);
+              return res.status(500).json({ error: "Internal server error" });
+            });
         });
       });
     }
   });
 });
 
-// @route POST actions/findOne
+// @route POST 5e-compendium/users/signin
 // @desc Login user and return JWT token
 // @access Public
-router.post("/findOne", (req, res) => {
+router.post("/signin", (req, res) => {
   // Form validation
 
   const { errors, isValid } = validateLoginInput(req.body);
