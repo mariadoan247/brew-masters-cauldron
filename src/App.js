@@ -15,7 +15,6 @@ import Monsters from "./components/monsters.component";
 import Feats from "./components/feats.component";
 import Account from "./components/userAccount.component";
 
-
 function App() {
   const [mode, setMode] = React.useState('dark');
   const colorMode = React.useMemo(
@@ -37,26 +36,28 @@ function App() {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<MyApp mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/signin" element={<SignIn mode={mode} theme={theme} />} />
-            <Route path="/signup" element={<SignUp mode={mode} theme={theme} />} />
-            <Route path="/forgotpassword" element={<ForgotPassword mode={mode} theme={theme} />} />
-            <Route path="/userAccount" element={<Account mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/classes" element={<Classes mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/races" element={<Races mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/backgrounds" element={<Backgrounds mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/spells" element={<Spells mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/inventory" element={<Inventory mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/monsters" element={<Monsters mode={mode} theme={theme} colorMode={colorMode} />} />
-            <Route path="/feats" element={<Feats mode={mode} theme={theme} colorMode={colorMode} />} />
-          </Routes>
-        </div>
-      </Router>
-    </ThemeProvider>
+
+        <ThemeProvider theme={theme}>
+          <Router>
+            <div className="container">
+              <Routes>
+                <Route path="/" element={<MyApp mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/signin" element={<SignIn mode={mode} theme={theme} />} />
+                <Route path="/signup" element={<SignUp mode={mode} theme={theme} />} />
+                <Route path="/forgotpassword" element={<ForgotPassword mode={mode} theme={theme} />} />
+                <Route path="/userAccount" element={<Account mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/classes" element={<Classes mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/races" element={<Races mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/backgrounds" element={<Backgrounds mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/spells" element={<Spells mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/inventory" element={<Inventory mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/monsters" element={<Monsters mode={mode} theme={theme} colorMode={colorMode} />} />
+                <Route path="/feats" element={<Feats mode={mode} theme={theme} colorMode={colorMode} />} />
+              </Routes>
+            </div>
+          </Router>
+        </ThemeProvider>
+
   );
 }
 

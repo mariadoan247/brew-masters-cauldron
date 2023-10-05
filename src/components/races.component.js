@@ -31,6 +31,25 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FormControl from '@mui/material/FormControl';
 import { alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+
+// @mui
+import { Grid, Container, Stack, Typography } from '@mui/material';
+// components
+import Iconify from '../components/iconify';
+import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
+// mock
+import POSTS from '../_mock/blog';
+
+// ----------------------------------------------------------------------
+
+const SORT_OPTIONS = [
+  { value: 'latest', label: 'Latest' },
+  { value: 'popular', label: 'Popular' },
+  { value: 'oldest', label: 'Oldest' },
+];
+
+// ----------------------------------------------------------------------
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -108,28 +127,28 @@ const SearchBoxContainer = styled("div")({
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
-      marginTop: theme.spacing(3),
+        marginTop: theme.spacing(3),
     },
     '& .MuiInputBase-input': {
-      borderRadius: 4,
-      position: 'relative',
-      backgroundColor: theme.palette.mode === 'light' ? '#F3F6F9' : '#1A2027',
-      border: '1px solid',
-      borderColor: theme.palette.mode === 'light' ? '#E0E3E7' : '#2D3843',
-      fontSize: 16,
-      width: '500px',
-      padding: '10px 12px',
-      transition: theme.transitions.create([
-        'border-color',
-        'background-color',
-        'box-shadow',
-      ]),
-      '&:focus': {
-        boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
-        borderColor: theme.palette.primary.main,
-      },
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.mode === 'light' ? '#F3F6F9' : '#1A2027',
+        border: '1px solid',
+        borderColor: theme.palette.mode === 'light' ? '#E0E3E7' : '#2D3843',
+        fontSize: 16,
+        width: '500px',
+        padding: '10px 12px',
+        transition: theme.transitions.create([
+            'border-color',
+            'background-color',
+            'box-shadow',
+        ]),
+        '&:focus': {
+            boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+            borderColor: theme.palette.primary.main,
+        },
     },
-  }));
+}));
 
 export default function Races({ mode, theme, colorMode }) {
     const [open, setOpen] = React.useState(false);
@@ -158,129 +177,157 @@ export default function Races({ mode, theme, colorMode }) {
     const navigate = useNavigate();
 
     return (
-        <Box>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <AppBar position="fixed" open={open}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            sx={{
-                                marginRight: 5,
-                                ...(open && { display: "none" }),
-                            }}
-                            onClick={() => setOpen(!open)} // Toggle the 'open' state
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <SearchBoxContainer>
-                            <form noValidate autoComplete="off">
-                                <FormControl variant="standard">
-                                    <BootstrapInput placeholder="Search Yourself a Champion" id="bootstrap-input" onMouseEnter={handleTextFieldMouseEnter} />
-                                </FormControl>
-                            </form>
-                        </SearchBoxContainer>
-                        <Button
-                            color="inherit" // Set the button color to blue
-                            sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
-                            onClick={() => navigate('/signin', { mode, theme })} //NAVIGATE THIS TO USER ACCOUNT PAGE
-                        >
-                            User Account
-                        </Button>
-                    </Toolbar>
-                </AppBar>
-                <div sx={{ display: "flex" }}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                >
-                    <Drawer variant="permanent" open={open}>
-                        <DrawerHeader>
-                            <IconButton onClick={handleDrawerClose}>
-                                {theme.direction === "rtl" ? (
-                                    <ChevronRightIcon />
-                                ) : (
-                                    <ChevronLeftIcon />
-                                )}
+        <>
+            <Box>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AppBar position="fixed" open={open}>
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                edge="start"
+                                sx={{
+                                    marginRight: 5,
+                                    ...(open && { display: "none" }),
+                                }}
+                                onClick={() => setOpen(!open)} // Toggle the 'open' state
+                            >
+                                <MenuIcon />
                             </IconButton>
-                        </DrawerHeader>
-                        <Divider />
-                        <List>
-                            {["Classes", "Races", "Backgrounds", "Spells", "Inventory", "Monsters", "Feats"].map((text, index) => (
-                                <ListItem key={text} disablePadding>
-                                    <ListItemButton
-                                        sx={{
-                                            minHeight: 48,
-                                            justifyContent: open ? "initial" : "center",
-                                            px: 2.5,
-                                        }}
-                                        onClick={() => {
-                                            // Use a switch statement or if-else to determine the route based on the icon
-                                            switch (index) {
-                                                case 0:
-                                                    navigate('/classes');
-                                                    break;
-                                                case 1:
-                                                    navigate('/races');
-                                                    break;
-                                                case 2:
-                                                    navigate('/backgrounds');
-                                                    break;
-                                                case 3:
-                                                    navigate('/spells');
-                                                    break;
-                                                case 4:
-                                                    navigate('/inventory');
-                                                    break;
-                                                case 5:
-                                                    navigate('/monsters');
-                                                    break;
-                                                case 6:
-                                                    navigate('/feats');
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }}
-                                    >
-                                        <ListItemIcon
+                            <SearchBoxContainer>
+                                <form noValidate autoComplete="off">
+                                    <FormControl variant="standard">
+                                        <BootstrapInput placeholder="Search Yourself a Champion" id="bootstrap-input" onMouseEnter={handleTextFieldMouseEnter} />
+                                    </FormControl>
+                                </form>
+                            </SearchBoxContainer>
+                            <Button
+                                color="inherit" // Set the button color to blue
+                                sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
+                                onClick={() => navigate('/signin', { mode, theme })} //NAVIGATE THIS TO USER ACCOUNT PAGE
+                            >
+                                User Account
+                            </Button>
+                        </Toolbar>
+                    </AppBar>
+                    <div sx={{ display: "flex" }}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <Drawer variant="permanent" open={open}>
+                            <DrawerHeader>
+                                <IconButton onClick={handleDrawerClose}>
+                                    {theme.direction === "rtl" ? (
+                                        <ChevronRightIcon />
+                                    ) : (
+                                        <ChevronLeftIcon />
+                                    )}
+                                </IconButton>
+                            </DrawerHeader>
+                            <Divider />
+                            <List>
+                                {["Classes", "Races", "Backgrounds", "Spells", "Inventory", "Monsters", "Feats"].map((text, index) => (
+                                    <ListItem key={text} disablePadding>
+                                        <ListItemButton
                                             sx={{
-                                                minWidth: 0,
-                                                mr: open ? 3 : "auto",
-                                                justifyContent: "center",
+                                                minHeight: 48,
+                                                justifyContent: open ? "initial" : "center",
+                                                px: 2.5,
                                             }}
-
-
+                                            onClick={() => {
+                                                // Use a switch statement or if-else to determine the route based on the icon
+                                                switch (index) {
+                                                    case 0:
+                                                        navigate('/classes');
+                                                        break;
+                                                    case 1:
+                                                        navigate('/races');
+                                                        break;
+                                                    case 2:
+                                                        navigate('/backgrounds');
+                                                        break;
+                                                    case 3:
+                                                        navigate('/spells');
+                                                        break;
+                                                    case 4:
+                                                        navigate('/inventory');
+                                                        break;
+                                                    case 5:
+                                                        navigate('/monsters');
+                                                        break;
+                                                    case 6:
+                                                        navigate('/feats');
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }}
                                         >
-                                            {index % 6 === 0 && <SchoolIcon />}
-                                            {index % 6 === 1 && <PeopleIcon />}
-                                            {index % 6 === 2 && <FingerprintIcon />}
-                                            {index % 6 === 3 && <AutoFixHighIcon />}
-                                            {index % 6 === 4 && <InventoryIcon />}
-                                            {index % 6 === 5 && <FaceRetouchingOffIcon />}
-                                            {index % 6 === 6 && <WorkspacePremiumIcon />}
-                                        </ListItemIcon>
-                                        <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                                    </ListItemButton>
-                                </ListItem>
+                                            <ListItemIcon
+                                                sx={{
+                                                    minWidth: 0,
+                                                    mr: open ? 3 : "auto",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                {index % 6 === 0 && <SchoolIcon />}
+                                                {index % 6 === 1 && <PeopleIcon />}
+                                                {index % 6 === 2 && <FingerprintIcon />}
+                                                {index % 6 === 3 && <AutoFixHighIcon />}
+                                                {index % 6 === 4 && <InventoryIcon />}
+                                                {index % 6 === 5 && <FaceRetouchingOffIcon />}
+                                                {index % 6 === 6 && <WorkspacePremiumIcon />}
+                                            </ListItemIcon>
+                                            <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
+                            </List>
+
+                            <div style={{ flexGrow: 1 }} /> {/* Add a flexible div to push the theme toggle icon to the bottom */}
+
+                            <Divider />
+                            <IconButton onClick={() => navigate('/userAccount', { mode, theme })}>
+                                {<AccountCircleIcon />}
+                            </IconButton>
+                            <IconButton onClick={() => colorMode.toggleColorMode()} color="inherit">
+                                {theme.palette.mode === theme ? <Brightness7Icon /> : <Brightness4Icon />}
+                            </IconButton>
+                        </Drawer>
+                    </div>
+
+
+
+
+
+                    <Container>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                            <Typography variant="h4" gutterBottom>
+                                Blog
+                            </Typography>
+                            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+                                New Post
+                            </Button>
+                        </Stack>
+
+                        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
+                            <BlogPostsSearch posts={POSTS} />
+                            <BlogPostsSort options={SORT_OPTIONS} />
+
+                        </Stack>
+
+                        <Grid container spacing={3}>
+                            {POSTS.map((post, index) => (
+                                <BlogPostCard key={post.id} post={post} index={index} />
                             ))}
-                        </List>
+                        </Grid>
+                    </Container>
 
-                        <div style={{ flexGrow: 1 }} /> {/* Add a flexible div to push the theme toggle icon to the bottom */}
 
-                        <Divider />
-                        <IconButton onClick={() => navigate('/userAccount', { mode, theme })}>
-                            {<AccountCircleIcon />}
-                        </IconButton>
-                        <IconButton onClick={() => colorMode.toggleColorMode()} color="inherit">
-                            {theme.palette.mode === theme ? <Brightness7Icon /> : <Brightness4Icon />}
-                        </IconButton>
-                    </Drawer>
-                </div>
-
-            </ThemeProvider>
-        </Box>
+                </ThemeProvider>
+            </Box>
+        </>
     );
 }
 
