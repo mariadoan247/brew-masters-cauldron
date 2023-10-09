@@ -40,7 +40,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Container, Stack, Typography } from '@mui/material';
+import { Grid, Container, Stack, Typography } from '@mui/material';
 import { Link } from "react-router-dom";
 
 
@@ -241,12 +241,6 @@ export default function Backgrounds({ mode, theme, colorMode }) {
 
     const navigate = useNavigate();
 
-    // Function to handle navigation when clicking on a Name link
-    const handleNameClick = (name) => {
-        // Replace '/destination' with the actual destination URL
-        navigate(`/destination/${name}`);
-    };
-
     return (
         <Box>
             <ThemeProvider theme={theme}>
@@ -376,6 +370,12 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                         <Typography variant="h4" gutterBottom>
                             Backgrounds
                         </Typography>
+                        <Divider />
+                        <Grid container spacing={20} sx={{ mt: 10 }}>
+                        <Typography variant="h7" gutterBottom>
+                            nayanannyayaya
+                        </Typography>
+                        </Grid>
                     </Stack>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                         <TableContainer sx={{ maxHeight: 440 }}>
@@ -408,19 +408,9 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                                                                         : value} */}
                                                                 {/* Render Name as a link */}
                                                                 {column.id === 'name' ? (
-                                                                    <Link
-                                                                        to={`/destination/${value}`} // Specify the target URL based on the name
-                                                                        onClick={() => handleNameClick(value)}
-                                                                    >
-                                                                        {value}
-                                                                    </Link>
+                                                                    <Link to={`/backgrounds/${row.name}`}>{value}</Link>
                                                                 ) : (
-                                                                    // Render other columns as plain text
-                                                                    column.format && typeof value === "number" ? (
-                                                                        column.format(value)
-                                                                    ) : (
-                                                                        value
-                                                                    )
+                                                                    column.format && typeof value === 'number' ? column.format(value) : value
                                                                 )}
                                                             </TableCell>
                                                         );
