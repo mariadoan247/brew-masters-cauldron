@@ -2,6 +2,7 @@
   "name": "brew-masters-cauldron",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://us-east-2.aws.data.mongodb-api.com",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
