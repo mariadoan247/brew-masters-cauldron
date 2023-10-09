@@ -7,7 +7,12 @@ const PORT = 4000;
 const users = require('./routes/users');
 const cors = require('cors');
 
-app.use(cors());
+var corsOptions = {
+  origin: 'http://localhost:3000',
+};
+
+app.use(cors(corsOptions));
+
 app.use(
     bodyParser.urlencoded({
       extended: false
@@ -33,7 +38,7 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 
-app.use("/5e-compendium/users", users);
+app.use("/action", users);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
