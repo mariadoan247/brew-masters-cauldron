@@ -32,6 +32,16 @@ import FormControl from '@mui/material/FormControl';
 import { alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 
+
+import { useState } from 'react';
+// @mui
+import { Container, Stack, Typography } from '@mui/material';
+// components
+import { ProductSort, ProductList, ProductFilterSidebar } from '../sections/@dashboard/products';
+// mock
+import PRODUCTS from '../_mock/products';
+
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -109,28 +119,28 @@ const SearchBoxContainer = styled("div")({
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
-      marginTop: theme.spacing(3),
+        marginTop: theme.spacing(3),
     },
     '& .MuiInputBase-input': {
-      borderRadius: 4,
-      position: 'relative',
-      backgroundColor: theme.palette.mode === 'light' ? '#F3F6F9' : '#1A2027',
-      border: '1px solid',
-      borderColor: theme.palette.mode === 'light' ? '#E0E3E7' : '#2D3843',
-      fontSize: 16,
-      width: '500px',
-      padding: '10px 12px',
-      transition: theme.transitions.create([
-        'border-color',
-        'background-color',
-        'box-shadow',
-      ]),
-      '&:focus': {
-        boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
-        borderColor: theme.palette.primary.main,
-      },
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.mode === 'light' ? '#F3F6F9' : '#1A2027',
+        border: '1px solid',
+        borderColor: theme.palette.mode === 'light' ? '#E0E3E7' : '#2D3843',
+        fontSize: 16,
+        width: '500px',
+        padding: '10px 12px',
+        transition: theme.transitions.create([
+            'border-color',
+            'background-color',
+            'box-shadow',
+        ]),
+        '&:focus': {
+            boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+            borderColor: theme.palette.primary.main,
+        },
     },
-  }));
+}));
 
 export default function Classes({ mode, theme, colorMode }) {
     const [open, setOpen] = React.useState(false);
@@ -157,6 +167,16 @@ export default function Classes({ mode, theme, colorMode }) {
 
 
     const navigate = useNavigate();
+
+    const [openFilter, setOpenFilter] = useState(false);
+
+    const handleOpenFilter = () => {
+        setOpenFilter(true);
+    };
+
+    const handleCloseFilter = () => {
+        setOpenFilter(false);
+    };
 
     return (
         <Box>
@@ -279,6 +299,28 @@ export default function Classes({ mode, theme, colorMode }) {
                         </IconButton>
                     </Drawer>
                 </div>
+
+
+
+                <Container>
+                    <Typography variant="h4" sx={{ mb: 5 }}>
+                        Products
+                    </Typography>
+
+                    <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
+                        <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+                            <ProductFilterSidebar
+                                openFilter={openFilter}
+                                onOpenFilter={handleOpenFilter}
+                                onCloseFilter={handleCloseFilter}
+                            />
+                            <ProductSort />
+                        </Stack>
+                    </Stack>
+
+                    <ProductList products={PRODUCTS} />
+                    
+                </Container>
 
             </ThemeProvider>
         </Box>
