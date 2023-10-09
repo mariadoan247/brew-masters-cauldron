@@ -12,51 +12,59 @@ const validateLoginInput = require("../validation/signIn");
 // Load User model
 const User = require("../models/user");
 
-// @route POST 5e-compendium/users/signup
-// @desc Register user
-// @access Public
-router.post("/signup", (req, res) => {
+const axios = require("axios");
+
+router.post("/insertOne", (req, res) => {
   // Form validation
   console.log("Received signup request");
   
-  const { errors, isValid } = validateRegisterInput(req.body);
+  const { errors, isValid } = validateRegisterInput(req.body.document);
 
   // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
-
-  User.findOne({ email: req.body.email }).then(user => {
+  
+  User.findOne({ email: req.body.document.email }).then(user => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
       const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
+        name: req.body.document.name,
+        email: req.body.document.email,
+        password: req.body.document.password
       });
-
+      
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
           newUser.password = hash;
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => {
-              console.log(err);
-              return res.status(500).json({ error: "Internal server error" });
-            });
+          // Now, send the user to MongoDB's API:
+          axios.post('https://us-east-2.aws.data.mongodb-api.com/app/data-iudir/endpoint/data/v1/action/insertOne', {
+            collection: "users",
+            database: "5e-compendium",
+            dataSource: "brewmasters-cauldron",
+            document: newUser
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'api-key': 'p0OQjP17ejlY65NAGaytJpVEoIFeWhWa1ecUk6OfW4sEj9x6qDXhJ4IUodYjpS8B'
+            }
+          })
+          .then(response => {
+            res.json(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+            res.status(500).json({ error: "Error saving user to MongoDB Atlas." });
+          });
         });
       });
     }
   });
 });
 
-// @route POST 5e-compendium/users/signin
-// @desc Login user and return JWT token
-// @access Public
 router.post("/signin", (req, res) => {
   // Form validation
 
