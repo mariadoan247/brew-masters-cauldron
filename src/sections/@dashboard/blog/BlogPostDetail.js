@@ -33,16 +33,19 @@ import { alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 
 // @mui
-import { Grid, Container, Stack, Typography } from '@mui/material';
-// components
-import { BlogPostCard } from '../sections/@dashboard/blog';
-// mock
-import POSTS from '../_mock/blog';
-import BlogPostSort from "../sections/@dashboard/blog/BlogPostsSort";
-import { useState, useEffect } from "react";
+import { Grid, Container } from '@mui/material';
+import { useState } from "react";
 
 
+import MainFeaturedPost from './MainFeaturedPost';
+import Main from './Main';
+import Sidebar from './Sidebar';
+import post1 from './blog-post.1.md';
+import post2 from './blog-post.2.md';
+import post3 from './blog-post.3.md';
+import { useParams } from 'react-router-dom';
 // ----------------------------------------------------------------------
+
 
 const drawerWidth = 240;
 
@@ -144,17 +147,12 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function Races({ mode, theme, colorMode }) {
+export default function BlogPostDetail({ mode, theme, colorMode }) {
     const [open, setOpen] = React.useState(false);
-    const [selectedFilter, setSelectedFilter] = React.useState('All'); // Default filter
-    const [filteredPosts, setFilteredPosts] = useState([]);
     const [searchInput, setSearchInput] = useState('');
+    const { postId } = useParams();
+    
 
-
-
-    const handleClose = () => {
-        setOpen(null);
-    };
     const handleDrawerClose = () => {
         setOpen(false);
     };
@@ -178,49 +176,41 @@ export default function Races({ mode, theme, colorMode }) {
 
     const navigate = useNavigate();
 
-    // Function to update the filtered posts when the filter changes
-    const handleFilterChange = (filter) => {
-        console.log('Filter changed:', filter); // Add this line
-        setSelectedFilter(filter);
-        handleClose();
+
+    const mainFeaturedPost = {
+        title: 'Title of a longer featured blog post',
+        description:
+            "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+        image: 'https://source.unsplash.com/random?wallpapers',
+        imageText: 'main image description',
+        linkText: 'Continue reading…',
     };
 
-    // Use useEffect to update filteredPosts when selectedFilter changes
-    useEffect(() => {
-        // Filter the posts based on the selected filter
-        console.log('Selected Filter:', selectedFilter);
 
-        const newFilteredPosts = POSTS.filter((post) => {
-            const postTitle = post.title.trim().toLowerCase();
-            const firstLetter = postTitle.charAt(0).toLowerCase();
+    const posts = [post1, post2, post3];
 
-            switch (selectedFilter) {
-                case 'A-D':
-                    return firstLetter >= 'a' && firstLetter <= 'd';
-                case 'E-H':
-                    return firstLetter >= 'e' && firstLetter <= 'h';
-                case 'I-L':
-                    return firstLetter >= 'i' && firstLetter <= 'l';
-                case 'M-P':
-                    return firstLetter >= 'm' && firstLetter <= 'p';
-                case 'Q-T':
-                    return firstLetter >= 'q' && firstLetter <= 't';
-                case 'U-Z':
-                    return firstLetter >= 'u' && firstLetter <= 'z';
-                default:
-                    // Include the search input in the filtering logic
-                    return (
-                        (selectedFilter === 'All' ||
-                            (firstLetter >= 'a' && firstLetter <= 'z' && firstLetter <= selectedFilter[selectedFilter.length - 1] && firstLetter >= selectedFilter[0])) &&
-                        (postTitle.includes(searchInput.toLowerCase()) ||
-                            searchInput === '')
-                    );
-            }
-        });
-        console.log('Filtered Posts:', newFilteredPosts);
-        // Update the filtered posts state
-        setFilteredPosts(newFilteredPosts);
-    }, [selectedFilter, searchInput]);
+    
+    const sidebar = {
+        title: 'About',
+        description:
+            'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
+        archives: [
+            { title: 'March 2020', url: '#' },
+            { title: 'February 2020', url: '#' },
+            { title: 'January 2020', url: '#' },
+            { title: 'November 1999', url: '#' },
+            { title: 'October 1999', url: '#' },
+            { title: 'September 1999', url: '#' },
+            { title: 'August 1999', url: '#' },
+            { title: 'July 1999', url: '#' },
+            { title: 'June 1999', url: '#' },
+            { title: 'May 1999', url: '#' },
+            { title: 'April 1999', url: '#' },
+        ],
+
+    };
+
+
 
     return (
         <>
@@ -350,27 +340,20 @@ export default function Races({ mode, theme, colorMode }) {
                             </IconButton>
                         </Drawer>
                     </div>
-                    <Container>
-                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={10}>
-                            <Typography variant="h4" gutterBottom>
-                                Races
-                            </Typography>
-                        </Stack>
-
-                        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-                            <BlogPostSort onFilterChange={handleFilterChange} />
-                        </Stack>
 
 
-                        <Grid container spacing={3}>
-                            {filteredPosts.map((post) => (
-                                <BlogPostCard key={post.id} post={post} />
-                            ))}
-
-
-                        </Grid>
-
-
+                    <Container maxWidth="lg" sx={{ marginTop: '100px' }} >
+                        <main>
+                            <MainFeaturedPost post={mainFeaturedPost}  />
+                            <Grid container spacing={5} sx={{ mt: 3 }}>
+                                <Main title="From the firehose" posts={posts} />
+                                <Sidebar
+                                    title={sidebar.title}
+                                    description={sidebar.description}
+                                    archives={sidebar.archives}  
+                                />
+                            </Grid>
+                        </main>
                     </Container>
                 </ThemeProvider>
             </Box>
@@ -378,4 +361,3 @@ export default function Races({ mode, theme, colorMode }) {
     );
 
 }
-
