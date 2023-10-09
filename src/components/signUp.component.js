@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -35,21 +35,35 @@ function Copyright(props) {
 }
 
 
-function SignUp(mode, theme) {
+function SignUp({ auth, errors: propErrors, ...props }, theme) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (propErrors) {
+        setErrors(propErrors);
+    }
+  }, [propErrors]);
+
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const newUser = {
-      name: data.get('name'),
-      email: data.get('email'),
-      password: data.get('password'),
-    };
-    console.log('Before signUpUser function');
-    dispatch(signUpUser(newUser, navigate));
-    console.log('After signUpUser function');
+    dispatch(signUpUser(formData, navigate));
   };
 
   return (
@@ -88,6 +102,10 @@ function SignUp(mode, theme) {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleChange}
+                  value={formData.name}
+                  error={!!errors.name}
+                  helperText={errors.name}
                   autoComplete="given-name"
                   name="name"
                   required
@@ -99,6 +117,10 @@ function SignUp(mode, theme) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleChange}
+                  value={formData.email}
+                  error={!!errors.email}
+                  helperText={errors.email}
                   required
                   fullWidth
                   id="email"
@@ -109,6 +131,10 @@ function SignUp(mode, theme) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleChange}
+                  value={formData.password}
+                  error={!!errors.password}
+                  helperText={errors.password}
                   required
                   fullWidth
                   name="password"
