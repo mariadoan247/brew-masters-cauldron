@@ -5,34 +5,49 @@ import jwt_decode from "jwt-decode";
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
 
 const api = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: '/app/data-iudir/endpoint/data/v1',
+    withCredentials: true,
     headers: {
-        'Content-Type': 'application/json', 
-        'Access-Control-Request-Headers': '*', 
-        'api-key': 'p0OQjP17ejlY65NAGaytJpVEoIFeWhWa1ecUk6OfW4sEj9x6qDXhJ4IUodYjpS8B'
+        'Content-Type': 'application/json',
+        'api-key': '<API-KEY>' // insert API key here
     },
 });
 
 const userData = {
-    'name': '',
-    'email': '',
-    'password': ''
+    "collection": "users",
+    "database": "5e-compendium",
+    "dataSource": "brewmasters-cauldron",
+    "document": {
+        'name': '',
+        'email': '',
+        'password': ''
+    }
 }
 
 // Sign Up User
-export const signUpUser = (userData, navigate) => dispatch => {
-    console.log("userData:", userData); // Log the user data
+export const signUpUser = (newUser, navigate) => dispatch => {
+    userData.document = newUser;
+    console.log("userData:", userData);
     api
-        .post("/5e-compendium/users/signup", userData)
+        .post("/action/insertOne", userData)
         .then(res => {
             console.log(res.data);
             navigate("/signIn");
         })
         .catch(err => {
             console.error('Error:', err);
+            // More robust error handling
+            let errorData = {};
+            if (err.response) {
+                errorData = err.response.data;
+            } else if (err.request) {
+                errorData = { message: "No response received from server." };
+            } else {
+                errorData = { message: err.message };
+            }
             dispatch({
                 type: GET_ERRORS,
-                payload: err.response.data
+                payload: errorData
             })
         });
 };
