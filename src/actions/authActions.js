@@ -4,14 +4,7 @@ import jwt_decode from "jwt-decode";
 
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
 
-const api = axios.create({
-    baseURL: '/app/data-iudir/endpoint/data/v1',
-    withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json',
-        'api-key': '<API-KEY>' // insert API key here
-    },
-});
+const api = axios.create();
 
 const userData = {
     "collection": "users",
