@@ -35,18 +35,12 @@ import InputBase from '@mui/material/InputBase';
 // @mui
 import { Grid, Container, Stack, Typography } from '@mui/material';
 // components
-import Iconify from '../components/iconify';
-import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
+import { BlogPostCard } from '../sections/@dashboard/blog';
 // mock
 import POSTS from '../_mock/blog';
+import BlogPostSort from "../sections/@dashboard/blog/BlogPostsSort";
+import { useState, useEffect } from "react";
 
-// ----------------------------------------------------------------------
-
-const SORT_OPTIONS = [
-  { value: 'latest', label: 'Latest' },
-  { value: 'popular', label: 'Popular' },
-  { value: 'oldest', label: 'Oldest' },
-];
 
 // ----------------------------------------------------------------------
 
@@ -152,7 +146,13 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function Races({ mode, theme, colorMode }) {
     const [open, setOpen] = React.useState(false);
+    const [selectedFilter, setSelectedFilter] = React.useState('All'); // Default filter
+    const [filteredPosts, setFilteredPosts] = useState([]);
 
+    
+    const handleClose = () => {
+        setOpen(null);
+      };
     const handleDrawerClose = () => {
         setOpen(false);
     };
@@ -175,6 +175,44 @@ export default function Races({ mode, theme, colorMode }) {
 
 
     const navigate = useNavigate();
+
+    // Function to update the filtered posts when the filter changes
+    const handleFilterChange = (filter) => {
+        console.log('Filter changed:', filter); // Add this line
+        setSelectedFilter(filter);
+        handleClose();
+    }; 
+
+    // Use useEffect to update filteredPosts when selectedFilter changes
+    useEffect(() => {
+        // Filter the posts based on the selected filter
+        console.log('Selected Filter:', selectedFilter);
+
+        const newFilteredPosts = POSTS.filter((post) => {
+            const postTitle = post.title.trim();
+            const firstLetter = postTitle.charAt(0).toLowerCase();
+
+            switch (selectedFilter) {
+                case 'A-D':
+                    return firstLetter >= 'a' && firstLetter <= 'd';
+                case 'E-H':
+                    return firstLetter >= 'e' && firstLetter <= 'h';
+                case 'I-L':
+                    return firstLetter >= 'i' && firstLetter <= 'l';
+                case 'M-P':
+                    return firstLetter >= 'm' && firstLetter <= 'p';
+                case 'Q-T':
+                    return firstLetter >= 'q' && firstLetter <= 't';
+                case 'U-Z':
+                    return firstLetter >= 'u' && firstLetter <= 'z';
+                default:
+                    return true;
+            }
+        });
+ console.log('Filtered Posts:', newFilteredPosts); 
+        // Update the filtered posts state
+        setFilteredPosts(newFilteredPosts);
+    }, [selectedFilter]);
 
     return (
         <>
@@ -296,38 +334,32 @@ export default function Races({ mode, theme, colorMode }) {
                             </IconButton>
                         </Drawer>
                     </div>
-
-
-
-
-
                     <Container>
-                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={10}>
                             <Typography variant="h4" gutterBottom>
-                                Blog
+                                Races
                             </Typography>
-                            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-                                New Post
-                            </Button>
                         </Stack>
 
                         <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-                            <BlogPostsSearch posts={POSTS} />
-                            <BlogPostsSort options={SORT_OPTIONS} />
-
+                            <BlogPostSort onFilterChange={handleFilterChange} />
                         </Stack>
 
+
                         <Grid container spacing={3}>
-                            {POSTS.map((post, index) => (
-                                <BlogPostCard key={post.id} post={post} index={index} />
+                            {filteredPosts.map((post) => (
+                                <BlogPostCard key={post.id} post={post} />
                             ))}
+
+
                         </Grid>
+
+
                     </Container>
-
-
                 </ThemeProvider>
             </Box>
         </>
     );
+
 }
 

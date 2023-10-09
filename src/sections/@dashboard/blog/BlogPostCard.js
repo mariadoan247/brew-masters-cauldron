@@ -1,43 +1,39 @@
 import PropTypes from 'prop-types';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@mui/material';
-// utils
-import { fDate } from '../../../utils/formatTime';
-import { fShortenNumber } from '../../../utils/formatNumber';
-//
-import SvgColor from '../../../components/svg-color';
-import Iconify from '../../../components/iconify';
-
+import { Box, Link, Card, Grid, Typography, CardContent } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 // ----------------------------------------------------------------------
+
 
 const StyledCardMedia = styled('div')({
   position: 'relative',
-  paddingTop: 'calc(100% * 3 / 4)',
+  paddingTop: 'calc(100% * 3 / 4)', 
+  cursor: 'pointer',
 });
 
+const StyledCardContent = styled(CardContent)(({ theme }) => ({
+  padding: theme.spacing(11.5), // Add padding to lower the text
+  backgroundColor: alpha('#000', 0.1), // Apply a semi-transparent background color to the text
+  borderRadius: theme.shape.borderRadius, // Maintain card's border radius
+}));
+
 const StyledTitle = styled(Link)({
-  height: 44,
+  height: 'auto',
   overflow: 'hidden',
   WebkitLineClamp: 2,
   display: '-webkit-box',
   WebkitBoxOrient: 'vertical',
-});
+  color: 'inherit', // Set the text color to inherit from the parent
 
-const StyledAvatar = styled(Avatar)(({ theme }) => ({
-  zIndex: 9,
-  width: 32,
-  height: 32,
-  position: 'absolute',
-  left: theme.spacing(3),
-  bottom: theme.spacing(-2),
-}));
+});
 
 const StyledInfo = styled('div')(({ theme }) => ({
   display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'flex-end',
-  marginTop: theme.spacing(3),
+  flexDirection: 'column', // Center text vertically
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: theme.spacing(0),
   color: theme.palette.text.disabled,
 }));
 
@@ -57,22 +53,14 @@ BlogPostCard.propTypes = {
 };
 
 export default function BlogPostCard({ post, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = post;
-  const latestPostLarge = index === 0;
-  const latestPost = index === 1 || index === 2;
-
-  const POST_INFO = [
-    { number: comment, icon: 'eva:message-circle-fill' },
-    { number: view, icon: 'eva:eye-fill' },
-    { number: share, icon: 'eva:share-fill' },
-  ];
+  const { cover, title } = post;
 
   return (
-    <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
-      <Card sx={{ position: 'relative' }}>
+    <Grid item xs={12} sx={{ marginBottom: '20px' }} sm={3} md={3}>
+       <RouterLink to={`/blog/${post.id}`} sx={{ color: 'charcoal' }}>
+      <Card sx={{ position: 'relative'}}> 
         <StyledCardMedia
           sx={{
-            ...((latestPostLarge || latestPost) && {
               pt: 'calc(100% * 4 / 3)',
               '&:after': {
                 top: 0,
@@ -80,95 +68,60 @@ export default function BlogPostCard({ post, index }) {
                 width: '100%',
                 height: '100%',
                 position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
+                bgcolor: (theme) => alpha(theme.palette.grey[800]),
+                
               },
-            }),
-            ...(latestPostLarge && {
-              pt: {
-                xs: 'calc(100% * 4 / 3)',
-                sm: 'calc(100% * 3 / 4.66)',
-              },
-            }),
           }}
         >
-          <SvgColor
-            color="paper"
-            src="/assets/icons/shape-avatar.svg"
-            sx={{
-              width: 80,
-              height: 36,
-              zIndex: 9,
-              bottom: -15,
-              position: 'absolute',
-              color: 'background.paper',
-              ...((latestPostLarge || latestPost) && { display: 'none' }),
-            }}
-          />
-          <StyledAvatar
-            alt={author.name}
-            src={author.avatarUrl}
-            sx={{
-              ...((latestPostLarge || latestPost) && {
-                zIndex: 9,
-                top: 24,
-                left: 24,
-                width: 40,
-                height: 40,
-              }),
-            }}
-          />
-
           <StyledCover alt={title} src={cover} />
         </StyledCardMedia>
 
-        <CardContent
+        <StyledCardContent 
           sx={{
-            pt: 4,
-            ...((latestPostLarge || latestPost) && {
+            pt: 1,
+            ...({
               bottom: 0,
               width: '100%',
-              position: 'absolute',
+              position: 'center',
             }),
           }}
         >
           <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
-            {fDate(createdAt)}
+            
           </Typography>
 
           <StyledTitle
             color="inherit"
             variant="subtitle2"
-            underline="hover"
+            component={RouterLink}
+            to={`/blog/${post.id}`} 
             sx={{
-              ...(latestPostLarge && { typography: 'h5', height: 60 }),
-              ...((latestPostLarge || latestPost) && {
-                color: 'common.white',
-              }),
-            }}
+              typography: 'h5',
+              height: '40px',
+              fontSize: '16px',
+          }}     
           >
             {title}
           </StyledTitle>
 
           <StyledInfo>
-            {POST_INFO.map((info, index) => (
               <Box
                 key={index}
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
                   ml: index === 0 ? 0 : 1.5,
-                  ...((latestPostLarge || latestPost) && {
-                    color: 'grey.500',
-                  }),
+                  // ...({
+                  //   color: 'grey.500',
+                  // }),
                 }}
               >
-                <Iconify icon={info.icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
-                <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
+                
               </Box>
-            ))}
           </StyledInfo>
-        </CardContent>
+        </StyledCardContent>
       </Card>
+      </RouterLink>
     </Grid>
   );
 }
