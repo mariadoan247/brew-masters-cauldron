@@ -82,7 +82,7 @@ export default function ForgotPassword({ mode, theme }) {
               required
               fullWidth
               id="email"
-              label="Email Address" å
+              label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
