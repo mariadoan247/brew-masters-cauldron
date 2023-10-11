@@ -7,11 +7,7 @@ const PORT = 4000;
 const users = require('./routes/users');
 const cors = require('cors');
 
-var corsOptions = {
-  origin: 'https://us-east-2.aws.data.mongodb-api.com/app/data-iudir/endpoint/data/v1',
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(
     bodyParser.urlencoded({
