@@ -3,7 +3,6 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
-const passport = require("passport");
 
 // Load input validation
 const validateRegisterInput = require("../validation/signUp");
@@ -14,56 +13,42 @@ const User = require("../models/user");
 
 const axios = require("axios");
 
-router.post("/insertOne", (req, res) => {
-  // Form validation
-  console.log("Received signup request");
-  
-  const { errors, isValid } = validateRegisterInput(req.body.document);
+const apiKey = keys.apiKey;
 
-  // Check validation
-  if (!isValid) {
-    return res.status(400).json(errors);
+router.post("/insertOne", async (req, res) => {
+  try {
+      console.log("Received signup request");
+
+      const { errors, isValid } = await validateRegisterInput(req.body.document);
+      if (!isValid) return res.status(400).json(errors);
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.document.password, salt);
+    const newUser = new User({
+      name: req.body.document.name,
+      email: req.body.document.email,
+      password: hashedPassword
+    });
+
+    const response = await axios.post('https://us-east-2.aws.data.mongodb-api.com/app/data-iudir/endpoint/data/v1/action/insertOne', {
+      collection: "users",
+      database: "5e-compendium",
+      dataSource: "brewmasters-cauldron",
+      document: newUser
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': apiKey
+      }
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error processing the request." });
   }
-  
-  User.findOne({ email: req.body.document.email }).then(user => {
-    if (user) {
-      return res.status(400).json({ email: "Email already exists" });
-    } else {
-      const newUser = new User({
-        name: req.body.document.name,
-        email: req.body.document.email,
-        password: req.body.document.password
-      });
-      
-      // Hash password before saving in database
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          // Now, send the user to MongoDB's API:
-          axios.post('https://us-east-2.aws.data.mongodb-api.com/app/data-iudir/endpoint/data/v1/action/insertOne', {
-            collection: "users",
-            database: "5e-compendium",
-            dataSource: "brewmasters-cauldron",
-            document: newUser
-          }, {
-            headers: {
-              'Content-Type': 'application/json',
-              'api-key': 'p0OQjP17ejlY65NAGaytJpVEoIFeWhWa1ecUk6OfW4sEj9x6qDXhJ4IUodYjpS8B'
-            }
-          })
-          .then(response => {
-            res.json(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-            res.status(500).json({ error: "Error saving user to MongoDB Atlas." });
-          });
-        });
-      });
-    }
-  });
 });
+
 
 router.post("/signin", (req, res) => {
   // Form validation
