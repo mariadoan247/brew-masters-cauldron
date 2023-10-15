@@ -45,6 +45,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const drawerWidth = 240;
 
@@ -209,9 +210,15 @@ export default function Spells({ mode, theme, colorMode }) {
     const [open, setOpen] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [selectedTab, setSelectedTab] = React.useState(0);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+    };
+
+    const handleChangeTab = (event, newValue) => {
+        setSelectedTab(newValue);
+        // You can put the logic for refreshing the table content here based on the selected tab.
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -397,7 +404,7 @@ export default function Spells({ mode, theme, colorMode }) {
                         </Toolbar>
                     </AppBar>
                     <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-                        <Tabs value={0} textColor="inherit">
+                    <Tabs value={selectedTab} textColor="inherit" onChange={handleChangeTab}>
                             <Tab label="By Level" />
                             <Tab label="By School" />
                             <Tab label="By Class" />
