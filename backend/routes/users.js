@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const keys = require("../config/keys");
 
 // Load input validation
@@ -17,10 +17,10 @@ const apiKey = keys.apiKey;
 
 router.post("/insertOne", async (req, res) => {
   try {
-      console.log("Received signup request");
+    console.log("Received sign up request");
 
-      const { errors, isValid } = await validateRegisterInput(req.body.document);
-      if (!isValid) return res.status(400).json(errors);
+    const { errors, isValid } = await validateRegisterInput(req.body.document);
+    if (!isValid) return res.status(400).json(errors);
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.document.password, salt);
@@ -50,57 +50,49 @@ router.post("/insertOne", async (req, res) => {
 });
 
 
-router.post("/signin", (req, res) => {
-  // Form validation
+router.post("/findOne", async (req, res) => {
+  try {
+    console.log("Received sign in request");
 
-  const { errors, isValid } = validateLoginInput(req.body);
+    // Form validation
+    const { errors, isValid, user } = await validateLoginInput(req.body.filter);
+    if (!isValid) return res.status(400).json(errors);
 
-  // Check validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+    // If validation was successful and user exists
+    if (user && user.document) {
+      // Create JWT Payload
+      const payload = {
+          id: user.document.id,
+          name: user.document.name
+      };
 
-  const email = req.body.email;
-  const password = req.body.password;
-
-  // Find user by email
-  User.findOne({ email }).then(user => {
-    // Check if user exists
-    if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
-    }
-
-    // Check password
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        // User matched
-        // Create JWT Payload
-        const payload = {
-          id: user.id,
-          name: user.name
-        };
-
-        // Sign token
-        jwt.sign(
+      // Sign token
+      jwt.sign(
           payload,
           keys.secretOrKey,
           {
-            expiresIn: 31556926 // 1 year in seconds
+              expiresIn: 31556926 // 1 year in seconds
           },
           (err, token) => {
-            res.json({
-              success: true,
-              token: "Bearer " + token
-            });
+              if (err) {
+                  res.status(500).json({ error: "Error signing the token." });
+                  return;
+              }
+
+              res.json({
+                  success: true,
+                  token: "Bearer " + token
+              });
           }
-        );
-      } else {
-        return res
-          .status(400)
-          .json({ passwordincorrect: "Password incorrect" });
-      }
-    });
-  });
+      );
+    } else {
+      res.status(400).json({ error: "User not found or invalid password." });
+    }
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error processing the request." });
+  }
 });
 
 module.exports = router;
