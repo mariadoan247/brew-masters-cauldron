@@ -163,7 +163,7 @@ export default function Backgrounds({ mode, theme, colorMode }) {
             <img
               src="/logo.png"
               onClick={() => {
-                navigate("/home");
+                navigate("/");
               }}
               alt="logo.png"
               width="40"
