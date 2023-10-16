@@ -10,10 +10,6 @@ let RaceSchema = new Schema({
         type: String,
         required: true
     },
-    ability: {
-        type: String,
-        required: true
-    },
     speed: {
         type: Number,
         required: true
