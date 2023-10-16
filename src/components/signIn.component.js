@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,7 +17,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
-
+import { signInUser } from '../actions/authActions';
+import { connect } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 function Copyright(props) {
   return (
@@ -33,15 +35,34 @@ function Copyright(props) {
 }
 
 
-export default function SignIn({ mode, theme }) {
+function SignIn({ auth, errors: propErrors, ...props }, theme) {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (propErrors) {
+        setErrors(propErrors);
+    }
+  }, [propErrors]);
+
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    dispatch(signInUser(formData, navigate));
   };
 
   return (
@@ -79,6 +100,10 @@ export default function SignIn({ mode, theme }) {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              onChange={handleChange}
+              value={formData.email}
+              error={!!errors.email}
+              helperText={errors.email}
               margin="normal"
               required
               fullWidth
@@ -89,6 +114,10 @@ export default function SignIn({ mode, theme }) {
               autoFocus
             />
             <TextField
+              onChange={handleChange}
+              value={formData.password}
+              error={!!errors.password}
+              helperText={errors.password}
               margin="normal"
               required
               fullWidth
@@ -129,3 +158,10 @@ export default function SignIn({ mode, theme }) {
     </ThemeProvider>
   );
 }
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { signInUser })(SignIn);

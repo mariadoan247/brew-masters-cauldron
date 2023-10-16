@@ -10,11 +10,6 @@ const userData = {
     "collection": "users",
     "database": "5e-compendium",
     "dataSource": "brewmasters-cauldron",
-    "document": {
-        'name': '',
-        'email': '',
-        'password': ''
-    }
 }
 
 // Sign Up User
@@ -46,28 +41,43 @@ export const signUpUser = (newUser, navigate) => dispatch => {
 };
 
 // Sign in - get user token
-export const signInUser = userData => dispatch => {
+export const signInUser = (userSignIn, navigate) => dispatch => {
+    userData.filter = userSignIn;
+    console.log("userData:", userData);
     api
-        .post("/5e-compendium/users/signin", userData)
+        .post("/action/findOne", userData)
         .then(res => {
-        // Save to localStorage
+            // Save to localStorage
 
-        // Set token to localStorage
-        const { token } = res.data;
-        localStorage.setItem("jwtToken", token);
-        // Set token to Auth header
-        setAuthToken(token);
-        // Decode token to get user data
-        const decoded = jwt_decode(token);
-        // Set current user
-        dispatch(setCurrentUser(decoded));
+            // Set token to localStorage
+            const { token } = res.data;
+            localStorage.setItem("jwtToken", token);
+            // Set token to Auth header
+            setAuthToken(token);
+            // Decode token to get user data
+            const decoded = jwt_decode(token);
+            // Set current user
+            dispatch(setCurrentUser(decoded));
+            
+            // Redirect to account page
+            navigate("/userAccount");
         })
-        .catch(err =>
-        dispatch({
-            type: GET_ERRORS,
-            payload: err.response.data
-        })
-    );
+        .catch(err => {
+            console.error('Error:', err);
+            // More robust error handling
+            let errorData = {};
+            if (err.response) {
+                errorData = err.response.data;
+            } else if (err.request) {
+                errorData = { message: "No response received from server." };
+            } else {
+                errorData = { message: err.message };
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errorData
+            })
+        });
 };
 
 // Set logged in user
