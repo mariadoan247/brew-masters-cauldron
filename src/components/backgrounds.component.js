@@ -42,6 +42,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Grid, Container, Stack, Typography } from '@mui/material';
 import { Link } from "react-router-dom";
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 
 
 const drawerWidth = 240;
@@ -102,6 +104,7 @@ const Drawer = styled(MuiDrawer, {
     flexShrink: 0,
     whiteSpace: "nowrap",
     boxSizing: "border-box",
+    zIndex: 999,
     ...(open && {
         ...openedMixin(theme),
         "& .MuiDrawer-paper": openedMixin(theme),
@@ -363,79 +366,107 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                     </Drawer>
                 </div>
 
-                <Container maxWidth="lg" sx={{ marginTop: '100px' }} >
+                <Container maxWidth="xl"
+                    sx={{
+                        marginTop: '140px',
+                        marginLeft: '50px',
+                        minHeight: '150vh', // Set a minimum height for the container
+                        display: 'flex', // Make it a flex container
+                        flexDirection: 'column', // Stack children vertically
+                        width: '95%',
+                    }}>
+
+                    <Grid container spacing={10} alignItems="center" >
+                        <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item></Grid>
+                    </Grid>
 
 
-                    <Stack direction="row" alignItems="center" justifyContent="space-between" mb={10}>
-                        <Typography variant="h4" gutterBottom>
-                            Backgrounds
-                        </Typography>
-                        <Divider />
-                        <Grid container spacing={20} sx={{ mt: 10 }}>
-                        <Typography variant="h7" gutterBottom>
-                            nayanannyayaya
-                        </Typography>
-                        </Grid>
-                    </Stack>
-                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                        <TableContainer sx={{ maxHeight: 440 }}>
-                            <Table stickyHeader aria-label="sticky table">
-                                <TableHead>
-                                    <TableRow>
-                                        {columns.map((column) => (
-                                            <TableCell
-                                                key={column.id}
-                                                align={column.align}
-                                                style={{ minWidth: column.minWidth }}
-                                            >
-                                                {column.label}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {rows
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row) => {
-                                            return (
-                                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                                    {columns.map((column) => {
-                                                        const value = row[column.id];
-                                                        return (
-                                                            <TableCell key={column.id} align={column.align}>
-                                                                {/* {column.format && typeof value === 'number'
+                    <AppBar
+                        component="div"
+                        color="primary"
+                        position="static"
+                        elevation={0}
+                        sx={{ zIndex: 0 }}
+                    >
+                        <Toolbar>
+                            <Grid container alignItems="center" spacing={1}>
+                                <Grid item xs>
+                                    <Typography color="inherit" variant="h5" component="h1">
+                                        Backgrounds
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Toolbar>
+                    </AppBar>
+                    <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
+                        <Typography
+                            color="inherit"
+                            variant="body1"
+                            component="p"
+                            marginLeft={5}
+                            sx={{ marginTop: -0.5, marginBottom: 2 }}
+                        > description of backgrounds goes here </Typography>
+                    </AppBar>
+
+                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => {
+                                        return (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                                {columns.map((column) => {
+                                                    const value = row[column.id];
+                                                    return (
+                                                        <TableCell key={column.id} align={column.align}>
+                                                            {/* {column.format && typeof value === 'number'
                                                                         ? column.format(value)
                                                                         : value} */}
-                                                                {/* Render Name as a link */}
-                                                                {column.id === 'name' ? (
-                                                                    <Link to={`/backgrounds/${row.name}`}>{value}</Link>
-                                                                ) : (
-                                                                    column.format && typeof value === 'number' ? column.format(value) : value
-                                                                )}
-                                                            </TableCell>
-                                                        );
-                                                    })}
-                                                </TableRow>
-                                            );
-                                        })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <TablePagination
-                            rowsPerPageOptions={[10, 25, 100]}
-                            component="div"
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </Paper>
+                                                            {/* Render Name as a link */}
+                                                            {column.id === 'name' ? (
+                                                                <Link to={`/backgrounds/${row.name}`}>{value}</Link>
+                                                            ) : (
+                                                                column.format && typeof value === 'number' ? column.format(value) : value
+                                                            )}
+                                                        </TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
 
-                </Container>
+            </Container>
 
-            </ThemeProvider>
-        </Box>
+        </ThemeProvider>
+        </Box >
     );
 }
 
