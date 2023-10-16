@@ -10,9 +10,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -20,15 +17,15 @@ import ListItemText from "@mui/material/ListItemText";
 import { ThemeProvider } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { useNavigate } from 'react-router-dom';
-import SchoolIcon from '@mui/icons-material/School';
-import PeopleIcon from '@mui/icons-material/People';
-import FingerprintIcon from '@mui/icons-material/Fingerprint';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import FaceRetouchingOffIcon from '@mui/icons-material/FaceRetouchingOff';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useNavigate } from "react-router-dom";
+import SchoolIcon from "@mui/icons-material/School";
+import PeopleIcon from "@mui/icons-material/People";
+import FingerprintIcon from "@mui/icons-material/Fingerprint";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import FaceRetouchingOffIcon from "@mui/icons-material/FaceRetouchingOff";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const drawerWidth = 240;
 
@@ -98,8 +95,6 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-
-
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
 
@@ -123,7 +118,6 @@ export default function MyApp({ mode, theme, colorMode }) {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
 
-
   const navigate = useNavigate();
 
   return (
@@ -132,44 +126,41 @@ export default function MyApp({ mode, theme, colorMode }) {
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: "none" }),
+            <img
+              src="/logo.png"
+              onClick={() => {
+                navigate("/home");
               }}
-              onClick={() => setOpen(!open)} // Toggle the 'open' state
-            >
-              <MenuIcon />
-            </IconButton>
+              alt="logo.png"
+              width="40"
+              height="40"
+            ></img>
             <Button
               color="inherit" // Set the button color to blue
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
-              onClick={() => navigate('/signin', { mode, theme })}
+              onClick={() => navigate("/signin", { mode, theme })}
             >
               Sign In
             </Button>
           </Toolbar>
         </AppBar>
-        <div sx={{ display: "flex" }}
+        <div
+          sx={{ display: "flex" }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <Drawer variant="permanent" open={open}>
-            <DrawerHeader>
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === "rtl" ? (
-                  <ChevronRightIcon />
-                ) : (
-                  <ChevronLeftIcon />
-                )}
-              </IconButton>
-            </DrawerHeader>
             <Divider />
             <List>
-              {["Classes", "Races", "Backgrounds", "Spells", "Inventory", "Monsters", "Feats"].map((text, index) => (
+              {[
+                "Classes",
+                "Races",
+                "Backgrounds",
+                "Spells",
+                "Inventory",
+                "Monsters",
+                "Feats",
+              ].map((text, index) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton
                     sx={{
@@ -181,25 +172,25 @@ export default function MyApp({ mode, theme, colorMode }) {
                       // Use a switch statement or if-else to determine the route based on the icon
                       switch (index) {
                         case 0:
-                          navigate('/classes');
+                          navigate("/classes");
                           break;
                         case 1:
-                          navigate('/races');
+                          navigate("/races");
                           break;
                         case 2:
-                          navigate('/backgrounds');
+                          navigate("/backgrounds");
                           break;
                         case 3:
-                          navigate('/spells');
+                          navigate("/spells");
                           break;
                         case 4:
-                          navigate('/inventory');
+                          navigate("/inventory");
                           break;
                         case 5:
-                          navigate('/monsters');
+                          navigate("/monsters");
                           break;
                         case 6:
-                          navigate('/feats');
+                          navigate("/feats");
                           break;
                         default:
                           break;
@@ -212,8 +203,6 @@ export default function MyApp({ mode, theme, colorMode }) {
                         mr: open ? 3 : "auto",
                         justifyContent: "center",
                       }}
-
-
                     >
                       {index % 6 === 0 && <SchoolIcon />}
                       {index % 6 === 1 && <PeopleIcon />}
@@ -223,27 +212,41 @@ export default function MyApp({ mode, theme, colorMode }) {
                       {index % 6 === 5 && <FaceRetouchingOffIcon />}
                       {index % 6 === 6 && <WorkspacePremiumIcon />}
                     </ListItemIcon>
-                    <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                    <ListItemText
+                      primary={text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
                   </ListItemButton>
                 </ListItem>
               ))}
             </List>
-
-            <div style={{ flexGrow: 1 }} /> {/* Add a flexible div to push the theme toggle icon to the bottom */}
-
+            <div style={{ flexGrow: 1 }} />{" "}
+            {/* Add a flexible div to push the theme toggle icon to the bottom */}
             <Divider />
-            <IconButton onClick={() => navigate('/userAccount', { mode, theme })}>
+            <IconButton
+              onClick={() => navigate("/userAccount", { mode, theme })}
+            >
               {<AccountCircleIcon />}
             </IconButton>
-            <IconButton onClick={() => colorMode.toggleColorMode()} color="inherit">
-              {theme.palette.mode === theme ? <Brightness7Icon /> : <Brightness4Icon />}
+            <IconButton
+              onClick={() => colorMode.toggleColorMode()}
+              color="inherit"
+            >
+              {theme.palette.mode === theme ? (
+                <Brightness7Icon />
+              ) : (
+                <Brightness4Icon />
+              )}
             </IconButton>
           </Drawer>
         </div>
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>
-            <Typography variant="h3" sx={{ marginTop: 5, marginBottom: 2, fontFamily: "Baskervville" }}>
+            <Typography
+              variant="h3"
+              sx={{ marginTop: 5, marginBottom: 2, fontFamily: "Baskervville" }}
+            >
               BREWMASTER'S CAULDRON
             </Typography>
             <TextField
@@ -254,12 +257,8 @@ export default function MyApp({ mode, theme, colorMode }) {
               onMouseEnter={handleTextFieldMouseEnter}
             />
           </div>
-
-
         </Box>
       </ThemeProvider>
     </Box>
   );
 }
-
-

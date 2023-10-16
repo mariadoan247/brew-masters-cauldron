@@ -9,9 +9,6 @@ import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -218,18 +215,15 @@ export default function Races({ mode, theme, colorMode }) {
           <CssBaseline />
           <AppBar position="fixed" open={open}>
             <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                sx={{
-                  marginRight: 5,
-                  ...(open && { display: "none" }),
+              <img
+                src="/logo.png"
+                onClick={() => {
+                  navigate("/home");
                 }}
-                onClick={() => setOpen(!open)} // Toggle the 'open' state
-              >
-                <MenuIcon />
-              </IconButton>
+                alt="logo.png"
+                width="40"
+                height="40"
+              ></img>
               <SearchBoxContainer>
                 <form noValidate autoComplete="off">
                   <FormControl variant="standard">
@@ -256,15 +250,6 @@ export default function Races({ mode, theme, colorMode }) {
             onMouseLeave={handleMouseLeave}
           >
             <Drawer variant="permanent" open={open}>
-              <DrawerHeader>
-                <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === "rtl" ? (
-                    <ChevronRightIcon />
-                  ) : (
-                    <ChevronLeftIcon />
-                  )}
-                </IconButton>
-              </DrawerHeader>
               <Divider />
               <List>
                 {[
