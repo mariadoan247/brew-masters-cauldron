@@ -2,10 +2,11 @@ const keys = require("../config/keys");
 const axios = require("axios");
 
 const apiKey = keys.apiKey;
+const url = keys.url;
 
 async function getUserByEmail(email) {
   try {
-    const response = await axios.post('https://us-east-2.aws.data.mongodb-api.com/app/data-iudir/endpoint/data/v1/action/findOne', {
+    const response = await axios.post(url + '/findOne', {
       collection: "users",
       database: "5e-compendium",
       dataSource: "brewmasters-cauldron",

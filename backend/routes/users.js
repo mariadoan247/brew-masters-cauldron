@@ -14,6 +14,7 @@ const User = require("../models/user");
 const axios = require("axios");
 
 const apiKey = keys.apiKey;
+const url = keys.url;
 
 router.post("/insertOne", async (req, res) => {
   try {
@@ -30,7 +31,7 @@ router.post("/insertOne", async (req, res) => {
       password: hashedPassword
     });
 
-    const response = await axios.post('https://us-east-2.aws.data.mongodb-api.com/app/data-iudir/endpoint/data/v1/action/insertOne', {
+    const response = await axios.post(url + '/insertOne', {
       collection: "users",
       database: "5e-compendium",
       dataSource: "brewmasters-cauldron",
