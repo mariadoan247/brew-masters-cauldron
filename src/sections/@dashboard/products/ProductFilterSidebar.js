@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // @mui
 import {
   Box,
@@ -14,37 +14,28 @@ import {
   Typography,
   RadioGroup,
   FormControlLabel,
-} from '@mui/material';
+} from "@mui/material";
 // components
-import Iconify from '../../../components/iconify';
-import Scrollbar from '../../../components/scrollbar';
-import { ColorMultiPicker } from '../../../components/color-utils';
+import Iconify from "../../../components/iconify";
+import Scrollbar from "../../../components/scrollbar";
+import { ColorMultiPicker } from "../../../components/color-utils";
 
 // ----------------------------------------------------------------------
 
 export const SORT_BY_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' },
+  { value: "A-D", label: "A-D" },
+  { value: "E-H", label: "E-H" },
+  { value: "I-L", label: "I-L" },
+  { value: "M-P", label: "M-P" },
+  { value: "Q-T", label: "Q-T" },
+  { value: "U-Z", label: "U-Z" },
 ];
-export const FILTER_GENDER_OPTIONS = ['Men', 'Women', 'Kids'];
-export const FILTER_CATEGORY_OPTIONS = ['All', 'Shose', 'Apparel', 'Accessories'];
-export const FILTER_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
-export const FILTER_PRICE_OPTIONS = [
-  { value: 'below', label: 'Below $25' },
-  { value: 'between', label: 'Between $25 - $75' },
-  { value: 'above', label: 'Above $75' },
-];
-export const FILTER_COLOR_OPTIONS = [
-  '#00AB55',
-  '#000000',
-  '#FFFFFF',
-  '#FFC0CB',
-  '#FF4842',
-  '#1890FF',
-  '#94D82D',
-  '#FFC107',
+export const FILTER_GENDER_OPTIONS = ["Men", "Women"];
+export const FILTER_CATEGORY_OPTIONS = [
+  "All",
+  "Shose",
+  "Apparel",
+  "Accessories",
 ];
 
 // ----------------------------------------------------------------------
@@ -55,10 +46,19 @@ ShopFilterSidebar.propTypes = {
   onCloseFilter: PropTypes.func,
 };
 
-export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFilter }) {
+export default function ShopFilterSidebar({
+  openFilter,
+  onOpenFilter,
+  onCloseFilter,
+}) {
   return (
     <>
-      <Button disableRipple color="inherit" endIcon={<Iconify icon="ic:round-filter-list" />} onClick={onOpenFilter}>
+      <Button
+        disableRipple
+        color="inherit"
+        endIcon={<Iconify icon="ic:round-filter-list" />}
+        onClick={onOpenFilter}
+      >
         Filters&nbsp;
       </Button>
 
@@ -67,10 +67,15 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
         open={openFilter}
         onClose={onCloseFilter}
         PaperProps={{
-          sx: { width: 280, border: 'none', overflow: 'hidden' },
+          sx: { width: 280, border: "none", overflow: "hidden" },
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ px: 1, py: 2 }}
+        >
           <Typography variant="subtitle1" sx={{ ml: 1 }}>
             Filters
           </Typography>
@@ -89,7 +94,11 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
               </Typography>
               <FormGroup>
                 {FILTER_GENDER_OPTIONS.map((item) => (
-                  <FormControlLabel key={item} control={<Checkbox />} label={item} />
+                  <FormControlLabel
+                    key={item}
+                    control={<Checkbox />}
+                    label={item}
+                  />
                 ))}
               </FormGroup>
             </div>
@@ -100,61 +109,11 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
               </Typography>
               <RadioGroup>
                 {FILTER_CATEGORY_OPTIONS.map((item) => (
-                  <FormControlLabel key={item} value={item} control={<Radio />} label={item} />
-                ))}
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Colors
-              </Typography>
-              <ColorMultiPicker
-                name="colors"
-                selected={[]}
-                colors={FILTER_COLOR_OPTIONS}
-                onChangeColor={(color) => [].includes(color)}
-                sx={{ maxWidth: 38 * 4 }}
-              />
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Price
-              </Typography>
-              <RadioGroup>
-                {FILTER_PRICE_OPTIONS.map((item) => (
-                  <FormControlLabel key={item.value} value={item.value} control={<Radio />} label={item.label} />
-                ))}
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Rating
-              </Typography>
-              <RadioGroup>
-                {FILTER_RATING_OPTIONS.map((item, index) => (
                   <FormControlLabel
                     key={item}
                     value={item}
-                    control={
-                      <Radio
-                        disableRipple
-                        color="default"
-                        icon={<Rating readOnly value={4 - index} />}
-                        checkedIcon={<Rating readOnly value={4 - index} />}
-                        sx={{
-                          '&:hover': { bgcolor: 'transparent' },
-                        }}
-                      />
-                    }
-                    label="& Up"
-                    sx={{
-                      my: 0.5,
-                      borderRadius: 1,
-                      '&:hover': { opacity: 0.48 },
-                    }}
+                    control={<Radio />}
+                    label={item}
                   />
                 ))}
               </RadioGroup>
