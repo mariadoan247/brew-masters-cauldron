@@ -151,6 +151,19 @@ export default function Races({ mode, theme, colorMode }) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+    const [open, setOpen] = React.useState(false);
+    const [selectedFilter, setSelectedFilter] = React.useState('All'); // Default filter
+    const [filteredPosts, setFilteredPosts] = useState([]);
+    const [searchInput, setSearchInput] = useState('');
+
+
+
+    const handleClose = () => {
+        setOpen(null);
+    };
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
   const handleMouseEnter = () => {
     if (!open) {

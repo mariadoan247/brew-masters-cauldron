@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,6 +17,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
+import { signUpUser } from '../actions/authActions';
+import { connect } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 function Copyright(props) {
   return (
@@ -32,14 +35,35 @@ function Copyright(props) {
 }
 
 
-export default function SignUp(mode, theme) {
+function SignUp({ auth, errors: propErrors, ...props }, theme) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (propErrors) {
+        setErrors(propErrors);
+    }
+  }, [propErrors]);
+
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    dispatch(signUpUser(formData, navigate));
   };
 
   return (
@@ -76,29 +100,27 @@ export default function SignUp(mode, theme) {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
+                  onChange={handleChange}
+                  value={formData.name}
+                  error={!!errors.name}
+                  helperText={errors.name}
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Full Name"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleChange}
+                  value={formData.email}
+                  error={!!errors.email}
+                  helperText={errors.email}
                   required
                   fullWidth
                   id="email"
@@ -109,6 +131,10 @@ export default function SignUp(mode, theme) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={handleChange}
+                  value={formData.password}
+                  error={!!errors.password}
+                  helperText={errors.password}
                   required
                   fullWidth
                   name="password"
@@ -147,3 +173,10 @@ export default function SignUp(mode, theme) {
     </ThemeProvider>
   );
 }
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { signUpUser })(SignUp);

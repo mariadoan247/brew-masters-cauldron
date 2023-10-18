@@ -14,7 +14,7 @@ import Inventory from "./components/inventory.component";
 import Monsters from "./components/monsters.component";
 import Feats from "./components/feats.component";
 import Account from "./components/userAccount.component";
-import BlogPostDetail from './components/blogPostDetail.component';
+import BlogPostDetail from './sections/@dashboard/blog/BlogPostDetail'
 
 function App() {
   const [mode, setMode] = React.useState('dark');
@@ -49,7 +49,7 @@ function App() {
                 <Route path="/userAccount" element={<Account mode={mode} theme={theme} colorMode={colorMode} />} />
                 <Route path="/classes" element={<Classes mode={mode} theme={theme} colorMode={colorMode} />} />
                 <Route path="/races" element={<Races mode={mode} theme={theme} colorMode={colorMode} />} />
-                <Route path="/blog/:postId" element={<BlogPostDetail />} />
+                <Route path="/blog/:postId" element={<BlogPostDetail mode={mode} theme={theme} colorMode={colorMode} />} />
                 <Route path="/backgrounds" element={<Backgrounds mode={mode} theme={theme} colorMode={colorMode} />} />
                 <Route path="/spells" element={<Spells mode={mode} theme={theme} colorMode={colorMode} />} />
                 <Route path="/inventory" element={<Inventory mode={mode} theme={theme} colorMode={colorMode} />} />
