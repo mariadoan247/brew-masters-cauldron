@@ -226,18 +226,6 @@ export default function Classes({ mode, theme, colorMode }) {
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
-            {/* <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: "none" }),
-              }}
-              onClick={() => setOpen(!open)} // Toggle the 'open' state
-            >
-              <MenuIcon />
-            </IconButton> */}
             <img
               src="/logo.png"
               onClick={() => {
