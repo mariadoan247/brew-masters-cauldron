@@ -36,8 +36,6 @@ import { Container, Stack, Typography } from "@mui/material";
 // components
 import {
   ProductSort,
-  ProductList,
-  ProductFilterSidebar,
 } from "../sections/@dashboard/products";
 // mock
 import PRODUCTS from "../_mock/products";
@@ -67,13 +65,6 @@ const closedMixin = (theme) => ({
   },
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -144,12 +135,10 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function Classes({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
-  const [selectedFilter, setSelectedFilter] = React.useState("All"); // Default filter
+  const [selectedFilter] = React.useState("All"); // Default filter
   const [filteredClasses, setFilteredClasses] = useState([]);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -169,24 +158,6 @@ export default function Classes({ mode, theme, colorMode }) {
 
   const navigate = useNavigate();
 
-  const [openFilter, setOpenFilter] = useState(false);
-
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
-  };
-  const handleClose = () => {
-    setOpen(null);
-  };
-
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
-  };
-
-  const handleFilterChange = (filter) => {
-    console.log("Filter changed:", filter); // Add this line
-    setSelectedFilter(filter);
-    handleClose();
-  };
 
   // Use useEffect to update filteredClasses when selectedFilter changes
   useEffect(() => {

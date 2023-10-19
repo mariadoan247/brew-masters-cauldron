@@ -45,7 +45,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+
 
 const drawerWidth = 240;
 
@@ -204,7 +204,7 @@ const rows = [
   createData("Brazil", "BR", 210147125, 8515767),
 ];
 
-export default function Spells({ mode, theme, colorMode }) {
+export default function Backgrounds({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

@@ -98,9 +98,6 @@ const Drawer = styled(MuiDrawer, {
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   const handleMouseEnter = () => {
     if (!open) {

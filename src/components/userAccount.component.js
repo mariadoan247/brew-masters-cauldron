@@ -11,10 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { Button } from "@mui/material";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -136,10 +133,6 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   const handleMouseEnter = () => {
     if (!open) {

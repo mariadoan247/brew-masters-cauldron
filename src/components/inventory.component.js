@@ -54,13 +54,6 @@ const closedMixin = (theme) => ({
   },
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -131,10 +124,6 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function Inventory({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   const handleMouseEnter = () => {
     if (!open) {
