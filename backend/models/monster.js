@@ -6,14 +6,114 @@ let MonsterSchema = new Schema({
         type: String,
         required: true
     },
-    email: {
+    size: {
         type: String,
         required: true
     },
-    password: {
+    type: {
         type: String,
         required: true
-    }
+    },
+    alignment: {
+        type: String,
+        required: true
+    },
+    ac: {
+        type: Number,
+        required: true
+    },
+    hp: {
+        type: String,
+        required: true
+    },
+    speed: {
+        type: String,
+        required: true
+    },
+    str: {
+        type: Number,
+        required: true
+    },
+    dex: {
+        type: Number,
+        required: true
+    },
+    con: {
+        type: Number,
+        required: true
+    },
+    int: {
+        type: Number,
+        required: true
+    },
+    wis: {
+        type: Number,
+        required: true
+    },
+    cha: {
+        type: Number,
+        required: true
+    },
+    save: {
+        type: String,
+        required: true
+    },
+    skill: {
+        type: String,
+        required: true
+    },
+    resist: {
+        type: String,
+        required: true
+    },
+    vulnerable: {
+        type: String,
+        required: true
+    },
+    immune: {
+        type: String,
+        required: true
+    },
+    conditionImmune: {
+        type: String,
+        required: true
+    },
+    senses: {
+        type: String,
+        required: true
+    },
+    passive: {
+        type: Number,
+        required: true
+    },
+    languages: {
+        type: String,
+        required: true
+    },
+    cr: {
+        type: String,
+        required: true
+    },
+    trait: {
+        type: String,
+        required: true
+    },
+    action: {
+        type: String,
+        required: true
+    },
+    spells: {
+        type: String,
+        required: true
+    },
+    slots: {
+        type: String,
+        required: true
+    },
+    environment: {
+        type: String,
+        required: true
+    },
 });
 
 module.exports = mongoose.model('Monster', MonsterSchema);
