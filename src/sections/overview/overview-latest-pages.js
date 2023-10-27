@@ -17,29 +17,29 @@ import {
   SvgIcon
 } from '@mui/material';
 
-export const OverviewLatestProducts = (props) => {
-  const { products = [], sx } = props;
+export const OverviewLatestPagesVisited = (props) => {
+  const { pages = [], sx } = props;
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Products" />
+      <CardHeader title="Latest Pages Visited" />
       <List>
-        {products.map((product, index) => {
-          const hasDivider = index < products.length - 1;
-          const ago = formatDistanceToNow(product.updatedAt);
+        {pages.map((page, index) => {
+          const hasDivider = index < pages.length - 1;
+          const ago = formatDistanceToNow(page.updatedAt);
 
           return (
             <ListItem
               divider={hasDivider}
-              key={product.id}
+              key={page.id}
             >
               <ListItemAvatar>
                 {
-                  product.image
+                  page.image
                     ? (
                       <Box
                         component="img"
-                        src={product.image}
+                        src={page.image}
                         sx={{
                           borderRadius: 1,
                           height: 48,
@@ -60,9 +60,9 @@ export const OverviewLatestProducts = (props) => {
                 }
               </ListItemAvatar>
               <ListItemText
-                primary={product.name}
+                primary={page.name}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
-                secondary={`Updated ${ago} ago`}
+                secondary={`Visited ${ago} ago`}
                 secondaryTypographyProps={{ variant: 'body2' }}
               />
               <IconButton edge="end">
@@ -93,7 +93,7 @@ export const OverviewLatestProducts = (props) => {
   );
 };
 
-OverviewLatestProducts.propTypes = {
-  products: PropTypes.array,
+OverviewLatestPagesVisited.propTypes = {
+  pages: PropTypes.array,
   sx: PropTypes.object
 };
