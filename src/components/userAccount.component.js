@@ -8,13 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { Button } from "@mui/material";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -33,6 +27,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
+
+import { subDays, subHours } from 'date-fns';
+import { Container, Unstable_Grid2 as Grid } from '@mui/material';
+import { OverviewLatestNotes } from '../sections/overview/overview-latest-notes';
+import { OverviewLatestPagesVisited } from '../sections/overview/overview-latest-pages';
+import { OverviewProfileDescript } from '../sections/overview/overview-profile-descript';
+import { OverviewUserInfo } from '../sections/overview/overview-user-info';
+
 
 const drawerWidth = 240;
 
@@ -59,14 +61,6 @@ const closedMixin = (theme) => ({
   },
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
-
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -92,6 +86,7 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+  zIndex: 999,
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -134,11 +129,20 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
+  const [notes, setNotes] = React.useState([]); // Define the notes state
+  const [pages, setPages] = React.useState([]);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  // Function to update the "pages" data when a new page is visited
+  const updateVisitedPage = (pageName) => {
+    const updatedPages = [...pages, { name: pageName, updatedAt: new Date() }];
+    setPages(updatedPages);
+  };
+
+  const handleSaveNotes = (updatedNotes) => {
+    setNotes(updatedNotes); // Update the notes state when saving notes
   };
 
   const handleMouseEnter = () => {
@@ -290,43 +294,67 @@ export default function MyApp({ mode, theme, colorMode }) {
             </IconButton>
           </Drawer>
         </div>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
-          <DrawerHeader />
-          <div>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              <Grid container spacing={3}>
-                {/* Chart */}
-                <Grid item xs={12} md={8} lg={9}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 240,
-                    }}
-                  ></Paper>
+        <>
+
+
+          <Box
+            component="main"
+            sx={{
+              marginTop: "50px",
+              marginLeft: "50px",
+              flexGrow: 1,
+              py: 8
+            }}
+          >
+            <Container maxWidth="xl">
+              <Grid
+                container
+                spacing={3}
+              >
+
+                <Grid
+                  xs={12}
+                  lg={8}
+                >
+                  <OverviewProfileDescript
+                  //TODO: MAKE PROFILE DEETS HERE
+                  />
                 </Grid>
-                {/* Recent Deposits */}
-                <Grid item xs={12} md={4} lg={3}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 240,
-                    }}
-                  ></Paper>
+                <Grid
+                  xs={12}
+                  md={6}
+                  lg={4}
+                >
+                  <OverviewUserInfo
+                    chartSeries={[63, 15, 22]}
+                    labels={['ID', 'Email']}
+                    sx={{ height: '100%' }}
+                    username="YourUsername"
+                    email="YourEmail@example.com"
+                  />
                 </Grid>
-                {/* Recent Orders */}
-                <Grid item xs={12}>
-                  <Paper
-                    sx={{ p: 2, display: "flex", flexDirection: "column" }}
-                  ></Paper>
+
+
+                <Grid
+                  xs={12}
+                  md={6}
+                  lg={4}
+                >
+
+
+                  <OverviewLatestPagesVisited pages={pages} updatePage={updateVisitedPage} sx={{ height: '100%' }}/>
+                </Grid>
+                <Grid
+                  xs={12}
+                  md={12}
+                  lg={8}
+                >
+                  <OverviewLatestNotes notes={notes} onSaveNotes={handleSaveNotes} sx={{ height: '100%' }} />
                 </Grid>
               </Grid>
             </Container>
-          </div>
-        </Box>
+          </Box>
+        </>
       </ThemeProvider>
     </Box>
   );
