@@ -13,7 +13,7 @@ import {
 
 
 const iconMap = {
-  ID: (
+  Username: (
     <SvgIcon>
       <ComputerDesktopIcon />
     </SvgIcon>
@@ -41,7 +41,7 @@ export const OverviewUserInfo = (props) => {
             const label = labels[index];
             const icon = iconMap[label];
 
-            if (label === 'ID') {
+            if (label === 'Username') {
               return (
                 <Box
                   key={label}
@@ -53,7 +53,7 @@ export const OverviewUserInfo = (props) => {
                   }}
                 >
                   {icon}
-                  <Typography variant="h6" sx={{ ml: 1 }}>{`ID: ${username}`}</Typography>
+                  <Typography variant="h6" sx={{ ml: 1 }}>{`Username: ${username}`}</Typography>
                 </Box>
               );
             } else if (label === 'Email') {
