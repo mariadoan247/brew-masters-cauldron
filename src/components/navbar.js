@@ -1,7 +1,6 @@
-import { Button, Grid } from "@mui/material";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+import { Box, Button } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -28,17 +27,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import { useEffect } from "react";
-import { BlogPostCard } from "../sections/@dashboard/blog";
-import { useState } from "react";
-// @mui
-import { Container, Stack, Typography } from "@mui/material";
-// components
-import {
-  ProductSort,
-} from "../sections/@dashboard/products";
-// mock
-import PRODUCTS from "../_mock/products";
 
 const drawerWidth = 240;
 
@@ -65,6 +53,13 @@ const closedMixin = (theme) => ({
   },
 });
 
+// const DrawerHeader = styled("div")(({ theme }) => ({
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "flex-end",
+//   padding: theme.spacing(0, 1),
+//   ...theme.mixins.toolbar,
+// }));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -91,7 +86,6 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  zIndex: 999,
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -134,12 +128,12 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Classes({ mode, theme, colorMode }) {
+export default function NavBar({ mode, theme, colorMode, children }) {
   const [open, setOpen] = React.useState(false);
-  const [selectedFilter] = React.useState("All"); // Default filter
-  const [filteredClasses, setFilteredClasses] = useState([]);
 
-
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -158,39 +152,6 @@ export default function Classes({ mode, theme, colorMode }) {
   };
 
   const navigate = useNavigate();
-
-
-  // Use useEffect to update filteredClasses when selectedFilter changes
-  useEffect(() => {
-    // Filter the posts based on the selected filter
-    console.log("Selected Filter:", selectedFilter);
-
-    const newfilteredClasses = PRODUCTS.filter((product) => {
-      const classesTitle = product?.title?.trim();
-      if (classesTitle) {
-        const firstLetter = classesTitle.charAt(0).toLowerCase();
-        switch (selectedFilter) {
-          case "A-D":
-            return firstLetter >= "a" && firstLetter <= "d";
-          case "E-H":
-            return firstLetter >= "e" && firstLetter <= "h";
-          case "I-L":
-            return firstLetter >= "i" && firstLetter <= "l";
-          case "M-P":
-            return firstLetter >= "m" && firstLetter <= "p";
-          case "Q-T":
-            return firstLetter >= "q" && firstLetter <= "t";
-          case "U-Z":
-            return firstLetter >= "u" && firstLetter <= "z";
-          default:
-            return true;
-        }
-      }
-    });
-    console.log("Filtered Classes:", newfilteredClasses);
-    // Update the filtered posts state
-    setFilteredClasses(newfilteredClasses);
-  }, [selectedFilter]);
 
   return (
     <Box>
@@ -233,15 +194,6 @@ export default function Classes({ mode, theme, colorMode }) {
           onMouseLeave={handleMouseLeave}
         >
           <Drawer variant="permanent" open={open}>
-            {/* <DrawerHeader>
-                            <IconButton onClick={handleDrawerClose}>
-                                {theme.direction === "rtl" ? (
-                                    <ChevronRightIcon />
-                                ) : (
-                                    <ChevronLeftIcon />
-                                )}
-                            </IconButton>
-                        </DrawerHeader> */}
             <Divider />
             <List>
               {[
@@ -332,34 +284,8 @@ export default function Classes({ mode, theme, colorMode }) {
             </IconButton>
           </Drawer>
         </div>
-
-        <Container>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={10}
-          >
-            <Typography variant="h4" sx={{ mb: 5 }}>
-              Classes
-            </Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            flexWrap="wrap-reverse"
-            alignItems="center"
-            justifyContent="flex-end"
-            sx={{ mb: 5 }}
-          >
-            <ProductSort />
-          </Stack>
-          <Grid container spacing={3}>
-            {filteredClasses.map((classes) => (
-              <BlogPostCard key={classes.id} post={classes} />
-            ))}
-          </Grid>
-          {/* <ProductList products={PRODUCTS} /> */}
-        </Container>
+        {/* //insert here */}
+        {children}
       </ThemeProvider>
     </Box>
   );
