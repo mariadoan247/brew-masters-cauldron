@@ -38,6 +38,7 @@ export default function Classes({ mode, theme, colorMode }) {
             return true;
         }
       }
+      return true;
     });
     console.log("Filtered Classes:", newfilteredClasses);
     // Update the filtered posts state
