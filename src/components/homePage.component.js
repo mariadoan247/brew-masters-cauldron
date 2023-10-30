@@ -26,6 +26,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import FaceRetouchingOffIcon from "@mui/icons-material/FaceRetouchingOff";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { isUserAuthenticated } from "../actions/authActions";
 
 const drawerWidth = 240;
 
@@ -98,9 +99,6 @@ const Drawer = styled(MuiDrawer, {
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -135,13 +133,20 @@ export default function MyApp({ mode, theme, colorMode }) {
               width="40"
               height="40"
             ></img>
-            <Button
-              color="inherit" // Set the button color to blue
+            <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
-              onClick={() => navigate("/signin", { mode, theme })}
+              onClick={() => {
+                const authenticated = isUserAuthenticated();
+                console.log(authenticated);
+                if (authenticated) {
+                  navigate("/userAccount", { mode, theme })
+                } else {
+                  navigate("/signin", { mode, theme })
+                }
+              }}
             >
-              Sign In
-            </Button>
+              {<AccountCircleIcon />}
+            </IconButton>
           </Toolbar>
         </AppBar>
         <div
@@ -223,11 +228,6 @@ export default function MyApp({ mode, theme, colorMode }) {
             <div style={{ flexGrow: 1 }} />{" "}
             {/* Add a flexible div to push the theme toggle icon to the bottom */}
             <Divider />
-            <IconButton
-              onClick={() => navigate("/userAccount", { mode, theme })}
-            >
-              {<AccountCircleIcon />}
-            </IconButton>
             <IconButton
               onClick={() => colorMode.toggleColorMode()}
               color="inherit"

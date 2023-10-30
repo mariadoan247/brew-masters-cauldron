@@ -65,13 +65,6 @@ const closedMixin = (theme) => ({
   },
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -98,6 +91,7 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+  zIndex: 999,
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -148,10 +142,6 @@ export default function Races({ mode, theme, colorMode }) {
   const handleClose = () => {
     setOpen(null);
   };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const [searchInput, setSearchInput] = useState("");
 
   const handleMouseEnter = () => {
     if (!open) {

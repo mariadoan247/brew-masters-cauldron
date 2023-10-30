@@ -43,7 +43,7 @@ import Sidebar from './Sidebar';
 import post1 from './blog-post.1.md';
 import post2 from './blog-post.2.md';
 import post3 from './blog-post.3.md';
-import { useParams } from 'react-router-dom';
+
 // ----------------------------------------------------------------------
 
 
@@ -150,7 +150,6 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 export default function BlogPostDetail({ mode, theme, colorMode }) {
     const [open, setOpen] = React.useState(false);
     const [searchInput, setSearchInput] = useState('');
-    const { postId } = useParams();
     
 
     const handleDrawerClose = () => {
