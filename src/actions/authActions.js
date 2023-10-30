@@ -80,6 +80,27 @@ export const signInUser = (userSignIn, navigate) => dispatch => {
         });
 };
 
+// Check to see if the user is authenticated
+export const isUserAuthenticated = () => {
+    const token = localStorage.getItem("jwtToken");
+  
+    if (!token) return false; // If there's no token, the user is not authenticated
+  
+    try {
+      const decoded = jwt_decode(token);
+  
+      // Check if token is expired
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp && decoded.exp < currentTime) {
+        // Token is expired
+        return false;
+      }
+      return true; // Token exists and is not expired, user is authenticated
+    } catch (err) {
+      return false; // If there's an error decoding, treat as not authenticated
+    }
+  };
+
 // Set logged in user
 export const setCurrentUser = decoded => {
     return {
