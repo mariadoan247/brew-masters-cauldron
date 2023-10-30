@@ -35,6 +35,7 @@ import { OverviewProfileDescript } from '../sections/overview/overview-profile-d
 import { OverviewUserInfo } from '../sections/overview/overview-user-info';
 import { signOutUser } from "../actions/authActions";
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 const drawerWidth = 240;
@@ -135,6 +136,9 @@ export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
   const [notes, setNotes] = React.useState([]); // Define the notes state
   const [pages, setPages] = React.useState([]);
+  const user = useSelector((state) => state.auth.user);
+
+  console.log(user);
 
   // Function to update the "pages" data when a new page is visited
   const updateVisitedPage = (pageName) => {
@@ -313,13 +317,13 @@ export default function MyApp({ mode, theme, colorMode }) {
                 container
                 spacing={3}
               >
-
                 <Grid
                   xs={12}
                   lg={8}
                 >
                   <OverviewProfileDescript
                   //TODO: MAKE PROFILE DEETS HERE
+                  username={user?.name || 'Loading...'}
                   />
                 </Grid>
                 <Grid
@@ -328,23 +332,19 @@ export default function MyApp({ mode, theme, colorMode }) {
                   lg={4}
                 >
                   <OverviewUserInfo
-                    chartSeries={[63, 15, 22]}
-                    labels={['ID', 'Email']}
-                    sx={{ height: '100%' }}
-                    username="YourUsername"
-                    email="YourEmail@example.com"
-                  />
+                  chartSeries={[63, 15, 22]} // Keep or adjust as per your requirements
+                  labels={['ID', 'Email']}
+                  sx={{ height: '100%' }}
+                  username={user?.name || 'Loading...'}
+                  email={user?.email || 'Loading...'}
+                />
                 </Grid>
-
-
                 <Grid
                   xs={12}
                   md={6}
                   lg={4}
                 >
-
-
-                  <OverviewLatestPagesVisited pages={pages} updatePage={updateVisitedPage} sx={{ height: '100%' }}/>
+                  <OverviewLatestPagesVisited pages={pages} updatePage={updateVisitedPage} sx={{ height: '100%' }} />
                 </Grid>
                 <Grid
                   xs={12}
