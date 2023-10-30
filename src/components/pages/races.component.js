@@ -9,7 +9,7 @@ import NavBar from "../navbar";
 // ----------------------------------------------------------------------
 
 export default function Races({ mode, theme, colorMode }) {
-  const [open, setOpen] = React.useState(false);
+  const [setOpen] = React.useState(false);
   const [selectedFilter, setSelectedFilter] = React.useState("All");
   const [filteredPosts, setFilteredPosts] = useState([]);
 
