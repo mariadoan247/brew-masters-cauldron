@@ -1,8 +1,5 @@
 import PropTypes from 'prop-types';
-import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import {
-  Button,
   Card,
   CardActions,
   CardContent,

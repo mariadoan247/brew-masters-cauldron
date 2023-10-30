@@ -8,12 +8,16 @@ import { OverviewLatestPagesVisited } from "../sections/overview/overview-latest
 import { OverviewProfileDescript } from "../sections/overview/overview-profile-descript";
 import { OverviewUserInfo } from "../sections/overview/overview-user-info";
 import { signOutUser } from "../actions/authActions";
+import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
 import NavBar from "./navbar";
 
 export default function MyApp({ mode, theme, colorMode }) {
   const [notes, setNotes] = React.useState([]); // Define the notes state
   const [pages, setPages] = React.useState([]);
+  const user = useSelector((state) => state.auth.user);
+
+  console.log(user);
 
   // Function to update the "pages" data when a new page is visited
   const updateVisitedPage = (pageName) => {
@@ -44,15 +48,16 @@ export default function MyApp({ mode, theme, colorMode }) {
             <Grid xs={12} lg={8}>
               <OverviewProfileDescript
               //TODO: MAKE PROFILE DEETS HERE
+              username={user?.name || 'Loading...'}
               />
             </Grid>
             <Grid xs={12} md={6} lg={4}>
               <OverviewUserInfo
                 chartSeries={[63, 15, 22]}
-                labels={["ID", "Email"]}
+                labels={["Username", "Email"]}
                 sx={{ height: "100%" }}
-                username="YourUsername"
-                email="YourEmail@example.com"
+                username={user?.name || 'Loading...'}
+                email={user?.email || 'Loading...'}
               />
             </Grid>
 

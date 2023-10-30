@@ -64,7 +64,8 @@ router.post("/findOne", async (req, res) => {
       // Create JWT Payload
       const payload = {
           id: user.document.id,
-          name: user.document.name
+          name: user.document.name,
+          email: user.document.email
       };
 
       // Sign token

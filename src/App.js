@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Classes from "./components/pages/classes.component";
@@ -15,8 +15,33 @@ import Monsters from "./components/pages/monsters.component";
 import Feats from "./components/pages/feats.component";
 import Account from "./components/userAccount.component";
 import BlogPostDetail from "./sections/@dashboard/blog/BlogPostDetail";
+import jwt_decode from 'jwt-decode';
+import { setCurrentUser } from './actions/authActions';
+import setAuthToken from './utils/setAuthToken';
+import store from './store';
 
 function App() {
+  useEffect(() => {
+    // Check for token
+    if (localStorage.jwtToken) {
+      // Set token to Auth header
+      setAuthToken(localStorage.jwtToken);
+      
+      // Decode token and get user info
+      const decoded = jwt_decode(localStorage.jwtToken);
+      
+      // Set user and isAuthenticated
+      store.dispatch(setCurrentUser(decoded));
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp < currentTime) {
+        // Handle logout here (e.g., redirect to login, clear user from Redux state)
+        // Remove token from localStorage
+        localStorage.removeItem('jwtToken');
+      }
+    }
+  }, []);
   const [mode, setMode] = React.useState("dark");
   const colorMode = React.useMemo(
     () => ({

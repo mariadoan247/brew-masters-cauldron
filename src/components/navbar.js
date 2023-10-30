@@ -1,6 +1,6 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { Box, Button } from "@mui/material";
+import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -27,6 +27,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
+import { isUserAuthenticated } from "../actions/authActions";
 
 const drawerWidth = 240;
 
@@ -130,10 +131,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar({ mode, theme, colorMode, children }) {
   const [open, setOpen] = React.useState(false);
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const [searchInput, setSearchInput] = useState('');
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -175,17 +173,26 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                     placeholder="Search Yourself a Champion"
                     id="bootstrap-input"
                     onMouseEnter={handleTextFieldMouseEnter}
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                   />
                 </FormControl>
               </form>
             </SearchBoxContainer>
-            <Button
-              color="inherit" // Set the button color to blue
+            <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
-              onClick={() => navigate("/signin", { mode, theme })} //NAVIGATE THIS TO USER ACCOUNT PAGE
+              onClick={() => {
+                const authenticated = isUserAuthenticated();
+                console.log(authenticated);
+                if (authenticated) {
+                  navigate("/userAccount", { mode, theme })
+                } else {
+                  navigate("/signin", { mode, theme })
+                }
+              }}
             >
-              User Account
-            </Button>
+              {<AccountCircleIcon />}
+            </IconButton>
           </Toolbar>
         </AppBar>
         <div
@@ -267,11 +274,6 @@ export default function NavBar({ mode, theme, colorMode, children }) {
             <div style={{ flexGrow: 1 }} />{" "}
             {/* Add a flexible div to push the theme toggle icon to the bottom */}
             <Divider />
-            <IconButton
-              onClick={() => navigate("/userAccount", { mode, theme })}
-            >
-              {<AccountCircleIcon />}
-            </IconButton>
             <IconButton
               onClick={() => colorMode.toggleColorMode()}
               color="inherit"
