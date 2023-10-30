@@ -27,13 +27,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-
 import { subDays, subHours } from 'date-fns';
 import { Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { OverviewLatestNotes } from '../sections/overview/overview-latest-notes';
 import { OverviewLatestPagesVisited } from '../sections/overview/overview-latest-pages';
 import { OverviewProfileDescript } from '../sections/overview/overview-profile-descript';
 import { OverviewUserInfo } from '../sections/overview/overview-user-info';
+import { signOutUser } from "../actions/authActions";
+import { useDispatch } from 'react-redux';
 
 
 const drawerWidth = 240;
@@ -161,6 +162,7 @@ export default function MyApp({ mode, theme, colorMode }) {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   return (
@@ -352,6 +354,17 @@ export default function MyApp({ mode, theme, colorMode }) {
                   <OverviewLatestNotes notes={notes} onSaveNotes={handleSaveNotes} sx={{ height: '100%' }} />
                 </Grid>
               </Grid>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
+                <Button
+                  color="inherit"
+                  onClick={() => {
+                    dispatch(signOutUser());
+                    navigate("/", { mode, theme });
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </Box>
             </Container>
           </Box>
         </>
