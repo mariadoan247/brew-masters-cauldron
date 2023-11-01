@@ -3,14 +3,14 @@ import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Container, Unstable_Grid2 as Grid } from "@mui/material";
-import { OverviewLatestNotes } from "../sections/overview/overview-latest-notes";
-import { OverviewLatestPagesVisited } from "../sections/overview/overview-latest-pages";
-import { OverviewProfileDescript } from "../sections/overview/overview-profile-descript";
-import { OverviewUserInfo } from "../sections/overview/overview-user-info";
-import { signOutUser } from "../actions/authActions";
+import { OverviewLatestNotes } from "../../sections/overview/overview-latest-notes";
+import { OverviewLatestPagesVisited } from "../../sections/overview/overview-latest-pages";
+import { OverviewProfileDescript } from "../../sections/overview/overview-profile-descript";
+import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
+import { signOutUser } from "../../actions/authActions";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
-import NavBar from "./navbar";
+import NavBar from "../navbar";
 
 export default function MyApp({ mode, theme, colorMode }) {
   const [notes, setNotes] = React.useState([]); // Define the notes state

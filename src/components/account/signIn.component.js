@@ -17,7 +17,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
-import { signInUser } from '../actions/authActions';
+import { signInUser } from '../../actions/authActions';
 import { connect } from "react-redux";
 import { useDispatch } from 'react-redux';
 
