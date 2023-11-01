@@ -16,7 +16,7 @@ const axios = require("axios");
 const apiKey = keys.apiKey;
 const url = keys.url;
 
-router.post("/insertOne", async (req, res) => {
+router.post("/signUp", async (req, res) => {
   try {
     console.log("Received sign up request");
 
@@ -51,7 +51,7 @@ router.post("/insertOne", async (req, res) => {
 });
 
 
-router.post("/findOne", async (req, res) => {
+router.post("/signIn", async (req, res) => {
   try {
     console.log("Received sign in request");
 
