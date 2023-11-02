@@ -8,25 +8,20 @@ import { OverviewLatestPagesVisited } from "../../sections/overview/overview-lat
 import { OverviewProfileDescript } from "../../sections/overview/overview-profile-descript";
 import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
 import { signOutUser } from "../../actions/authActions";
+import { createNewNote } from "../../actions/userActions";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
 import NavBar from "../navbar";
 
-export default function MyApp({ mode, theme, colorMode }) {
-  const [notes, setNotes] = React.useState([]); // Define the notes state
+export default function UserAccount({ mode, theme, colorMode }) {
   const [pages, setPages] = React.useState([]);
   const user = useSelector((state) => state.auth.user);
-
-  console.log(user);
+  const notes = useSelector((state) => state.notes.notes);
 
   // Function to update the "pages" data when a new page is visited
   const updateVisitedPage = (pageName) => {
     const updatedPages = [...pages, { name: pageName, updatedAt: new Date() }];
     setPages(updatedPages);
-  };
-
-  const handleSaveNotes = (updatedNotes) => {
-    setNotes(updatedNotes); // Update the notes state when saving notes
   };
 
   const dispatch = useDispatch();
@@ -71,7 +66,8 @@ export default function MyApp({ mode, theme, colorMode }) {
             <Grid xs={12} md={12} lg={8}>
               <OverviewLatestNotes
                 notes={notes}
-                onSaveNotes={handleSaveNotes}
+                user={user}
+                onSaveNotes={(updatedNotes) => dispatch(createNewNote(user.email, updatedNotes))}
                 sx={{ height: "100%" }}
               />
             </Grid>
