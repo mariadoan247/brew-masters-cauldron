@@ -32,9 +32,9 @@ router.post("/signUp", async (req, res) => {
     });
 
     const response = await axios.post(url + '/insertOne', {
-      collection: "users",
-      database: "5e-compendium",
-      dataSource: "brewmasters-cauldron",
+      collection: req.body.collection,
+      database: req.body.database,
+      dataSource: req.body.dataSource,
       document: newUser
     }, {
       headers: {
@@ -63,34 +63,68 @@ router.post("/signIn", async (req, res) => {
     if (user && user.document) {
       // Create JWT Payload
       const payload = {
-          id: user.document.id,
-          name: user.document.name,
-          email: user.document.email
+        id: user.document.id,
+        name: user.document.name,
+        email: user.document.email
       };
 
       // Sign token
       jwt.sign(
-          payload,
-          keys.secretOrKey,
-          {
-              expiresIn: 31556926 // 1 year in seconds
-          },
-          (err, token) => {
-              if (err) {
-                  res.status(500).json({ error: "Error signing the token." });
-                  return;
-              }
-
-              res.json({
-                  success: true,
-                  token: "Bearer " + token
-              });
+        payload,
+        keys.secretOrKey,
+        {
+          expiresIn: 31556926 // 1 year in seconds
+        },
+        (err, token) => {
+          if (err) {
+            res.status(500).json({ error: "Error signing the token." });
+            return;
           }
+
+          res.json({
+            success: true,
+            token: "Bearer " + token
+          });
+        }
       );
     } else {
       res.status(400).json({ error: "User not found or invalid password." });
     }
 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error processing the request." });
+  }
+});
+
+// Future stretch goal (Front end hasn't been implemented yet)
+router.post("/updateUserDescription", async (req, res) => {
+  try {
+    console.log("Received update user description request");
+
+    const updatedDescription = new Note({
+        details: req.body.document.details,
+        dateEdited: req.body.document.dateEdited
+    });
+
+    const response = await axios.post(url + '/updateOne', {
+      collection: req.body.collection,
+      database: req.body.database,
+      dataSource: req.body.dataSource,
+      filter: {
+          email: req.body.filter.email
+      },
+      update: {
+          $set: req.body.set
+      }
+    }, {
+    headers: {
+      'Content-Type': 'application/json',
+      'api-key': apiKey
+    }
+    });
+
+    res.json(response.data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error processing the request." });
