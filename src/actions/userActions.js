@@ -40,7 +40,9 @@ export const updateUserDescription = (userEmail, userDescription) => dispatch =>
 };
 
 export const createNewNote = (userEmail, updatedNotes) => dispatch => {
-    userData.filter = userEmail;
+    userData.filter = {
+        email: userEmail
+    };
     userData.update = {
         $set: { notes: updatedNotes }  // Update the notes array for this user in the database
     };
@@ -49,6 +51,7 @@ export const createNewNote = (userEmail, updatedNotes) => dispatch => {
         .post("/action/createNewNote", userData)
         .then(res => {
             console.log(res.data);
+            dispatch(setUserNotes(updatedNotes));
         })
         .catch(err => {
             console.error('Error:', err);
@@ -69,7 +72,9 @@ export const createNewNote = (userEmail, updatedNotes) => dispatch => {
 };
 
 export const fetchUserNotes = (userEmail) => dispatch => {
-    userData.filter = userEmail;
+    userData.filter = {
+        email: userEmail
+    };
     
     api
         .post("/action/fetchUserNotes", userData)
@@ -96,4 +101,12 @@ export const fetchUserNotes = (userEmail) => dispatch => {
                 payload: errorData
             })
         });
+};
+
+// Set user notes
+export const setUserNotes = notes => {
+    return {
+        type: SET_USER_NOTES,
+        payload: notes
+    };
 };
