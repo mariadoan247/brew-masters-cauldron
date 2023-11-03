@@ -183,7 +183,6 @@ export default function NavBar({ mode, theme, colorMode, children }) {
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
                 const authenticated = isUserAuthenticated();
-                console.log(authenticated);
                 if (authenticated) {
                   navigate("/userAccount", { mode, theme })
                 } else {
