@@ -17,6 +17,8 @@ export default function UserAccount({ mode, theme, colorMode }) {
   const [pages, setPages] = React.useState([]);
   const user = useSelector((state) => state.auth.user);
   const notes = useSelector((state) => state.notes.notes);
+  
+  console.log(notes);
 
   // Function to update the "pages" data when a new page is visited
   const updateVisitedPage = (pageName) => {
