@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
+import { useDispatch } from "react-redux";
+import { createNewNote } from '../../actions/userActions';
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,12 +27,16 @@ import {
 } from '@mui/material';
 
 export const OverviewLatestNotes = (props) => {
-  const { notes = [], onSaveNotes, sx } = props;
+  const dispatch = useDispatch();
+
+  const { notes, user, onSaveNotes, sx } = props;
 
   const [openNoteDialog, setOpenNoteDialog] = useState(false);
   const [deleteConfirmationDialog, setDeleteConfirmationDialog] = useState(false);
   const [newNote, setNewNote] = useState('');
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
+
+  console.log(notes);
 
   const handleOpenNoteDialog = () => {
     setOpenNoteDialog(true);
@@ -41,12 +47,18 @@ export const OverviewLatestNotes = (props) => {
     setOpenNoteDialog(false);
   };
 
-  const handleSaveNote = () => {
+  const handleSaveNote = (event) => {
+    event.preventDefault();
     if (newNote.trim() !== '') {
-      // Save the new note
-      const updatedNotes = [...notes, newNote];
-      onSaveNotes(updatedNotes);
-      handleCloseNoteDialog();
+        const noteObject = {
+            details: newNote,
+            dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss')
+        };
+        const updatedNotes = [...notes, noteObject];
+
+        // Dispatch the action to create a new note
+        dispatch(createNewNote(user.email, updatedNotes)); // Make sure user's email is accessible
+        handleCloseNoteDialog();
     }
   };
 
@@ -58,8 +70,6 @@ export const OverviewLatestNotes = (props) => {
       setSelectedNoteIndex(-1);
     }
   };
-
-  const createdAt = format(new Date(), 'dd/MM/yyyy');
 
   return (
     <Card sx={sx}>
@@ -82,27 +92,27 @@ export const OverviewLatestNotes = (props) => {
           </TableHead>
           <TableBody>
             {notes.map((note, index) => (
-              <TableRow hover key={index}>
-                <TableCell>
-                  {note}
-                </TableCell>
-                <TableCell>
-                  {createdAt}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    color="error"
-                    onClick={() => {
-                      setDeleteConfirmationDialog(true);
-                      setSelectedNoteIndex(index);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </Button>
-                </TableCell>
-              </TableRow>
+                <TableRow hover key={index}>
+                    <TableCell>
+                        {note.details}
+                    </TableCell>
+                    <TableCell>
+                        {note.dateUpdated}
+                    </TableCell>
+                    <TableCell>
+                        <Button
+                            color="error"
+                            onClick={() => {
+                                setDeleteConfirmationDialog(true);
+                                setSelectedNoteIndex(index);
+                            }}
+                        >
+                            <DeleteIcon />
+                        </Button>
+                    </TableCell>
+                </TableRow>
             ))}
-          </TableBody>
+        </TableBody>
         </Table>
       </Box>
 
