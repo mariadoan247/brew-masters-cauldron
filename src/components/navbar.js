@@ -28,6 +28,9 @@ import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { isUserAuthenticated } from "../actions/authActions";
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import Button from "@mui/material/Button";
+
 
 const drawerWidth = 240;
 
@@ -54,13 +57,6 @@ const closedMixin = (theme) => ({
   },
 });
 
-// const DrawerHeader = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "flex-end",
-//   padding: theme.spacing(0, 1),
-//   ...theme.mixins.toolbar,
-// }));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -132,6 +128,9 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 export default function NavBar({ mode, theme, colorMode, children }) {
   const [open, setOpen] = React.useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const [showNotes, setShowNotes] = useState(false);
+  const [userNotes, setUserNotes] = useState('');
+
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -148,6 +147,8 @@ export default function NavBar({ mode, theme, colorMode, children }) {
   const handleTextFieldMouseEnter = (e) => {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
+
+
 
   const navigate = useNavigate();
 
@@ -179,6 +180,14 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                 </FormControl>
               </form>
             </SearchBoxContainer>
+            <IconButton
+              sx={{ alignSelf: "center" }}
+              onClick={() => {
+                setShowNotes(!showNotes); // Toggle the notes section
+              }}
+            >
+              <EditNoteIcon /> {/* Notes Icon */}
+            </IconButton>
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
@@ -285,8 +294,38 @@ export default function NavBar({ mode, theme, colorMode, children }) {
             </IconButton>
           </Drawer>
         </div>
-        {/* //insert here */}
-        {children}
+        {showNotes && (
+          <div
+            style={{
+              position: "absolute",
+              top: "56px", // Adjust the top position as needed
+              right: "20px", // Adjust the right position as needed
+              backgroundColor: "#fff", // Add background color if desired
+              padding: "10px",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <textarea
+                rows="5"
+                cols="30"
+                placeholder="Write your notes here..."
+                value={userNotes}
+                onChange={(e) => setUserNotes(e.target.value)}
+              ></textarea>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: "10px" }}
+                onClick={() => {
+                  setShowNotes(false);
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        )}
+        {children} 
       </ThemeProvider>
     </Box>
   );

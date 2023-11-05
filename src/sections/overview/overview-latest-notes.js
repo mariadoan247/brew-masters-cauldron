@@ -35,8 +35,45 @@ export const OverviewLatestNotes = (props) => {
   const [deleteConfirmationDialog, setDeleteConfirmationDialog] = useState(false);
   const [newNote, setNewNote] = useState('');
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
+  const [editingNoteIndex, setEditingNoteIndex] = useState(-1);
+  const [editedNote, setEditedNote] = useState('');
+  const [isNewNote, setIsNewNote] = useState(true); // Track if it's a new note
 
-  console.log(notes);
+  const handleEditNote = (index) => {
+    setEditingNoteIndex(index);
+    setEditedNote(notes[index].details);
+    setIsNewNote(false); // It's an existing note
+    handleOpenNoteDialog();
+  };
+
+
+  const handleUpdateNote = () => {
+    if (editedNote.trim() !== '') {
+      const updatedNotes = [...notes];
+      updatedNotes[editingNoteIndex] = {
+        ...updatedNotes[editingNoteIndex],
+        details: editedNote,
+        dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      };
+      onSaveNotes(updatedNotes);
+      handleCloseNoteDialog();
+      setEditingNoteIndex(-1);
+      setIsNewNote(true); // Reset back to new note for the next one
+    }
+  };
+
+  const handleSaveNewNote = () => {
+    if (newNote.trim() !== '') {
+      const noteObject = {
+        details: newNote,
+        dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      };
+      const updatedNotes = [...notes, noteObject];
+      onSaveNotes(updatedNotes);
+      handleCloseNoteDialog();
+      setIsNewNote(true); // Reset back to new note for the next one
+    }
+  };
 
   const handleOpenNoteDialog = () => {
     setOpenNoteDialog(true);
@@ -109,6 +146,12 @@ export const OverviewLatestNotes = (props) => {
                         >
                             <DeleteIcon />
                         </Button>
+                        <Button
+                    color="primary"
+                    onClick={() => handleEditNote(index)}
+                  >
+                    Edit
+                  </Button>
                     </TableCell>
                 </TableRow>
             ))}
@@ -141,12 +184,22 @@ export const OverviewLatestNotes = (props) => {
             rows={4}
             fullWidth
             variant="outlined"
-            value={newNote}
-            onChange={(e) => setNewNote(e.target.value)}
+            value={editingNoteIndex !== -1 ? editedNote : newNote}
+            onChange={(e) => {
+              if (editingNoteIndex !== -1) {
+                setEditedNote(e.target.value);
+              } else {
+                setNewNote(e.target.value);
+              }
+            }}
           />
-          <Button onClick={handleSaveNote}>Save</Button>
-          <Button onClick={handleCloseNoteDialog}>Close</Button>
-        </DialogContent>
+           {isNewNote ? (
+          <Button onClick={handleSaveNewNote}>Save</Button>
+        ) : (
+          <Button onClick={handleUpdateNote}>Update</Button>
+        )}
+        <Button onClick={handleCloseNoteDialog}>Close</Button>
+      </DialogContent>
       </Dialog>
 
       <Dialog open={deleteConfirmationDialog} onClose={() => setDeleteConfirmationDialog(false)}>
