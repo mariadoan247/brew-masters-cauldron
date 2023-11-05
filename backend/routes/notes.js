@@ -1,5 +1,4 @@
-import { getUserByEmail } from "../validation/getUserByEmail";
-
+const { getUserByEmail } = require("../validation/getUserByEmail");
 const express = require("express");
 const router = express.Router();
 const keys = require("../config/keys");
