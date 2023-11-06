@@ -28,7 +28,9 @@ router.post("/signUp", async (req, res) => {
     const newUser = new User({
       name: req.body.document.name,
       email: req.body.document.email,
-      password: hashedPassword
+      password: hashedPassword,
+      description: "",
+      notes: []
     });
 
     const response = await axios.post(url + '/insertOne', {
@@ -65,7 +67,8 @@ router.post("/signIn", async (req, res) => {
       const payload = {
         id: user.document.id,
         name: user.document.name,
-        email: user.document.email
+        email: user.document.email,
+        description: user.document.description
       };
 
       // Sign token
