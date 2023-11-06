@@ -39,7 +39,7 @@ export const updateUserDescription = (userEmail, userDescription) => dispatch =>
         });
 };
 
-export const createNewNote = (userEmail, updatedNotes) => dispatch => {
+export const updateNotes = (userEmail, updatedNotes) => dispatch => {
     userData.filter = {
         email: userEmail
     };
@@ -48,7 +48,7 @@ export const createNewNote = (userEmail, updatedNotes) => dispatch => {
     };
 
     api
-        .post("/action/createNewNote", userData)
+        .post("/action/updateNotes", userData)
         .then(res => {
             console.log(res.data);
             dispatch(setUserNotes(updatedNotes));
