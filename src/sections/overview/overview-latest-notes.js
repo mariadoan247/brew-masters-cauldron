@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { useDispatch } from "react-redux";
-import { createNewNote } from '../../actions/userActions';
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,9 +25,7 @@ import {
 } from '@mui/material';
 
 export const OverviewLatestNotes = (props) => {
-  const dispatch = useDispatch();
-
-  const { notes, user, onSaveNotes, sx } = props;
+  const { notes, onSaveNotes, sx } = props;
 
   const [openNoteDialog, setOpenNoteDialog] = useState(false);
   const [deleteConfirmationDialog, setDeleteConfirmationDialog] = useState(false);
@@ -46,21 +42,29 @@ export const OverviewLatestNotes = (props) => {
     handleOpenNoteDialog();
   };
 
-
   const handleUpdateNote = () => {
     if (editedNote.trim() !== '') {
-      const updatedNotes = [...notes];
-      updatedNotes[editingNoteIndex] = {
-        ...updatedNotes[editingNoteIndex],
+      const updatedNote = {
+        ...notes[editingNoteIndex],
         details: editedNote,
         dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       };
+  
+      // Remove the updated note from its current position
+      const updatedNotes = notes.filter((_, index) => index !== editingNoteIndex);
+  
+      // Unshift the updated note to start of the array
+      updatedNotes.unshift(updatedNote);
+  
+      // Save the updated notes array
       onSaveNotes(updatedNotes);
+      
+      // Close the dialog and reset state
       handleCloseNoteDialog();
       setEditingNoteIndex(-1);
-      setIsNewNote(true); // Reset back to new note for the next one
+      setIsNewNote(true);
     }
-  };
+  };  
 
   const handleSaveNewNote = () => {
     if (newNote.trim() !== '') {
@@ -68,7 +72,7 @@ export const OverviewLatestNotes = (props) => {
         details: newNote,
         dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       };
-      const updatedNotes = [...notes, noteObject];
+      const updatedNotes = [noteObject, ...notes];
       onSaveNotes(updatedNotes);
       handleCloseNoteDialog();
       setIsNewNote(true); // Reset back to new note for the next one
@@ -82,21 +86,6 @@ export const OverviewLatestNotes = (props) => {
   const handleCloseNoteDialog = () => {
     setNewNote('');
     setOpenNoteDialog(false);
-  };
-
-  const handleSaveNote = (event) => {
-    event.preventDefault();
-    if (newNote.trim() !== '') {
-        const noteObject = {
-            details: newNote,
-            dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss')
-        };
-        const updatedNotes = [...notes, noteObject];
-
-        // Dispatch the action to create a new note
-        dispatch(createNewNote(user.email, updatedNotes)); // Make sure user's email is accessible
-        handleCloseNoteDialog();
-    }
   };
 
   const handleDeleteNote = () => {
