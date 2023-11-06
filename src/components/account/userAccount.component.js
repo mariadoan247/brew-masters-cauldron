@@ -9,13 +9,18 @@ import { OverviewProfileDescript } from "../../sections/overview/overview-profil
 import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
 import { signOutUser } from "../../actions/authActions";
 import { createNewNote } from "../../actions/userActions";
+import { fetchUserNotes } from "../../actions/userActions";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
 import NavBar from "../navbar";
 
 export default function UserAccount({ mode, theme, colorMode }) {
+  const dispatch = useDispatch();
+
   const [pages, setPages] = React.useState([]);
   const user = useSelector((state) => state.auth.user);
+
+  dispatch(fetchUserNotes);
   const notes = useSelector((state) => state.notes.notes);
   
   console.log(notes);
@@ -26,7 +31,6 @@ export default function UserAccount({ mode, theme, colorMode }) {
     setPages(updatedPages);
   };
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   return (
