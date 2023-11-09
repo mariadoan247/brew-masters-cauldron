@@ -4,7 +4,7 @@ import { BlogPostCard } from "../../sections/@dashboard/blog";
 import POSTS from "../../_mock/blog";
 import BlogPostSort from "../../sections/@dashboard/blog/BlogPostsSort";
 import { useState, useEffect } from "react";
-import NavBar from "../navbar";
+import NavBar from "../wrappers/NavBar";
 
 // ----------------------------------------------------------------------
 

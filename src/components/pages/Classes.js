@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Container, Stack, Typography } from "@mui/material";
 import { ProductSort } from "../../sections/@dashboard/products";
 import PRODUCTS from "../../_mock/products";
-import NavBar from "../navbar";
+import NavBar from "../wrappers/NavBar";
 
 export default function Classes({ mode, theme, colorMode }) {
   const [selectedFilter] = React.useState("All"); // Default filter

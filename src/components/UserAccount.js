@@ -8,9 +8,9 @@ import { OverviewLatestPagesVisited } from "../sections/overview/overview-latest
 import { OverviewProfileDescript } from "../sections/overview/overview-profile-descript";
 import { OverviewUserInfo } from "../sections/overview/overview-user-info";
 import { signOutUser } from "../actions/authActions";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import NavBar from "./navbar";
+import NavBar from "./wrappers/NavBar";
 
 export default function MyApp({ mode, theme, colorMode }) {
   const [notes, setNotes] = React.useState([]); // Define the notes state
@@ -47,8 +47,8 @@ export default function MyApp({ mode, theme, colorMode }) {
           <Grid container spacing={3}>
             <Grid xs={12} lg={8}>
               <OverviewProfileDescript
-              //TODO: MAKE PROFILE DEETS HERE
-              username={user?.name || 'Loading...'}
+                //TODO: MAKE PROFILE DEETS HERE
+                username={user?.name || "Loading..."}
               />
             </Grid>
             <Grid xs={12} md={6} lg={4}>
@@ -56,8 +56,8 @@ export default function MyApp({ mode, theme, colorMode }) {
                 chartSeries={[63, 15, 22]}
                 labels={["Username", "Email"]}
                 sx={{ height: "100%" }}
-                username={user?.name || 'Loading...'}
-                email={user?.email || 'Loading...'}
+                username={user?.name || "Loading..."}
+                email={user?.email || "Loading..."}
               />
             </Grid>
 

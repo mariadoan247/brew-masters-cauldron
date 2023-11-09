@@ -12,7 +12,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
-import NavBar from "../navbar";
+import NavBar from "../wrappers/NavBar";
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 

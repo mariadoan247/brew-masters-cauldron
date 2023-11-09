@@ -16,7 +16,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Link } from "react-router-dom";
-import NavBar from "../navbar";
+import NavBar from "../wrappers/NavBar";
 
 const drawerWidth = 240;
 

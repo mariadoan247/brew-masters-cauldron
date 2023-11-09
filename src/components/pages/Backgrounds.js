@@ -12,27 +12,27 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Grid, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import NavBar from "../navbar";
+import NavBar from "../wrappers/NavBar";
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
+// const AppBar = styled(MuiAppBar, {
+//   shouldForwardProp: (prop) => prop !== "open",
+// })(({ theme, open }) => ({
+//   zIndex: theme.zIndex.drawer + 1,
+//   transition: theme.transitions.create(["width", "margin"], {
+//     easing: theme.transitions.easing.sharp,
+//     duration: theme.transitions.duration.leavingScreen,
+//   }),
+//   ...(open && {
+//     marginLeft: drawerWidth,
+//     width: `calc(100% - ${drawerWidth}px)`,
+//     transition: theme.transitions.create(["width", "margin"], {
+//       easing: theme.transitions.easing.sharp,
+//       duration: theme.transitions.duration.enteringScreen,
+//     }),
+//   }),
+// }));
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -120,7 +120,7 @@ export default function Backgrounds({ mode, theme, colorMode }) {
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
 
-        <AppBar
+        {/* <AppBar
           component="div"
           color="primary"
           position="static"
@@ -136,8 +136,8 @@ export default function Backgrounds({ mode, theme, colorMode }) {
               </Grid>
             </Grid>
           </Toolbar>
-        </AppBar>
-        <AppBar
+        </AppBar> */}
+        {/* <AppBar
           component="div"
           position="static"
           elevation={0}
@@ -153,7 +153,7 @@ export default function Backgrounds({ mode, theme, colorMode }) {
             {" "}
             description of backgrounds goes here{" "}
           </Typography>
-        </AppBar>
+        </AppBar> */}
 
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>

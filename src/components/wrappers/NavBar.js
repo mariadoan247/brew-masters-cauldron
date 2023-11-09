@@ -27,7 +27,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import { isUserAuthenticated } from "../actions/authActions";
+import { isUserAuthenticated } from "../../actions/authActions";
 
 const drawerWidth = 240;
 
