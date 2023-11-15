@@ -1,36 +1,43 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Container, Unstable_Grid2 as Grid } from "@mui/material";
-import { OverviewLatestNotes } from "../sections/overview/overview-latest-notes";
-import { OverviewLatestPagesVisited } from "../sections/overview/overview-latest-pages";
-import { OverviewProfileDescript } from "../sections/overview/overview-profile-descript";
-import { OverviewUserInfo } from "../sections/overview/overview-user-info";
-import { signOutUser } from "../actions/authActions";
+import { OverviewLatestNotes } from "../../sections/overview/overview-latest-notes";
+import { OverviewLatestPagesVisited } from "../../sections/overview/overview-latest-pages";
+import { OverviewProfileDescript } from "../../sections/overview/overview-profile-descript";
+import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
+import { signOutUser } from "../../actions/authActions";
+import { updateNotes } from "../../actions/userActions";
+import { fetchUserNotes } from "../../actions/userActions";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
-import NavBar from "./navbar";
+import NavBar from "../navbar";
 
-export default function MyApp({ mode, theme, colorMode }) {
-  const [notes, setNotes] = React.useState([]); // Define the notes state
-  const [pages, setPages] = React.useState([]);
+export default function UserAccount({ mode, theme, colorMode }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
+  const notes = useSelector((state) => state.notes.notes);
 
-  console.log(user);
+  useEffect(() => {
+    // Function to fetch user notes
+    const getUserNotes = () => {
+      if (user.email) {
+        dispatch(fetchUserNotes(user.email));
+      }
+    };
+
+    getUserNotes();
+  }, [user.email, dispatch]);
+
+  const [pages, setPages] = React.useState([]);
 
   // Function to update the "pages" data when a new page is visited
   const updateVisitedPage = (pageName) => {
     const updatedPages = [...pages, { name: pageName, updatedAt: new Date() }];
     setPages(updatedPages);
   };
-
-  const handleSaveNotes = (updatedNotes) => {
-    setNotes(updatedNotes); // Update the notes state when saving notes
-  };
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -47,8 +54,8 @@ export default function MyApp({ mode, theme, colorMode }) {
           <Grid container spacing={3}>
             <Grid xs={12} lg={8}>
               <OverviewProfileDescript
-              //TODO: MAKE PROFILE DEETS HERE
-              username={user?.name || 'Loading...'}
+                //TODO: MAKE PROFILE DEETS HERE
+                username={user?.name || 'Loading...'}
               />
             </Grid>
             <Grid xs={12} md={6} lg={4}>
@@ -71,7 +78,8 @@ export default function MyApp({ mode, theme, colorMode }) {
             <Grid xs={12} md={12} lg={8}>
               <OverviewLatestNotes
                 notes={notes}
-                onSaveNotes={handleSaveNotes}
+                user={user}
+                onSaveNotes={(updatedNotes) => dispatch(updateNotes(user.email, updatedNotes))}
                 sx={{ height: "100%" }}
               />
             </Grid>

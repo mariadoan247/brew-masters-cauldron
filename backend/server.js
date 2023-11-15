@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const PORT = 4000;
 const users = require('./routes/users');
+const notes = require('./routes/notes');
 const cors = require('cors');
 
 app.use(cors());
@@ -35,6 +36,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 app.use("/action", users);
+app.use("/action", notes);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);

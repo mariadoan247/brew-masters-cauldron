@@ -17,7 +17,17 @@ let User = new Schema({
     description: {
         type: String,
         required: false
-    }
+    },
+    notes: [{
+        details: {
+            type: String,
+            required: true
+        },
+        dateUpdated: {
+            type: Date,
+            default: Date.now
+        }
+    }] // In the future you can create a separate note schema which will be able to hold more notes
 });
 
 module.exports = mongoose.model('User', User);

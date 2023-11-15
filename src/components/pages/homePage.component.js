@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import * as React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -27,6 +27,12 @@ import FaceRetouchingOffIcon from "@mui/icons-material/FaceRetouchingOff";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { isUserAuthenticated } from "../../actions/authActions";
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import Button from "@mui/material/Button";
+import { useDispatch, useSelector } from 'react-redux';
+import { updateNotes } from "../../actions/userActions";
+import { format } from 'date-fns';
+import { fetchUserNotes } from "../../actions/userActions";
 
 const drawerWidth = 240;
 
@@ -98,7 +104,36 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
+  const [showNotes, setShowNotes] = React.useState(false);
+  const [userNotes, setUserNotes] = React.useState('');
+  const dispatch = useDispatch();
+  const isAuthenticated = isUserAuthenticated();
+  const userEmail = useSelector((state) => state.auth.user.email);
+  const notes = useSelector((state) => state.notes.notes);
 
+  useEffect(() => {
+    // Function to fetch user notes
+    const getUserNotes = () => {
+      if (userEmail) {
+        dispatch(fetchUserNotes(userEmail));
+      }
+    };
+
+    getUserNotes();
+  }, [userEmail, dispatch]);
+
+  const handleSaveNote = () => {
+    if (userNotes.trim()) {
+      const noteObject = {
+        details: userNotes,
+        dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      };
+      const updatedNotes = [noteObject, ...notes];
+      dispatch(updateNotes(userEmail, updatedNotes));
+      setUserNotes(''); // Clear the textarea after saving
+      setShowNotes(false); // Hide the notes section after saving
+    }
+  };
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -133,12 +168,50 @@ export default function MyApp({ mode, theme, colorMode }) {
               width="40"
               height="40"
             ></img>
+            <div style={{ flex: 1 }} /> 
+            {isAuthenticated && (
+          <IconButton
+            sx={{ alignSelf: "center" }}
+            onClick={() => {
+              setShowNotes(!showNotes); // Toggle the notes section
+            }}
+          >
+            <EditNoteIcon /> {/* Notes Icon */}
+          </IconButton>
+        )}
+        {showNotes && isAuthenticated && (
+          <div
+          style={{
+            position: "absolute",
+            top: "65px", // Adjust the top position as needed
+            right: "20px", // Adjust the right position as needed
+            backgroundColor: theme.palette.background.paper,
+            padding: "10px",
+          }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <textarea
+                rows="5"
+                cols="30"
+                placeholder="Write your notes here..."
+                value={userNotes}
+                onChange={(e) => setUserNotes(e.target.value)}
+              ></textarea>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: "10px" }}
+                onClick={handleSaveNote}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        )}
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
-                const authenticated = isUserAuthenticated();
-                console.log(authenticated);
-                if (authenticated) {
+                if (isAuthenticated) {
                   navigate("/userAccount", { mode, theme })
                 } else {
                   navigate("/signin", { mode, theme })
@@ -240,6 +313,7 @@ export default function MyApp({ mode, theme, colorMode }) {
             </IconButton>
           </Drawer>
         </div>
+        
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>
