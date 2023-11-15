@@ -169,14 +169,45 @@ export default function MyApp({ mode, theme, colorMode }) {
               height="40"
             ></img>
             <div style={{ flex: 1 }} /> 
-            <IconButton
-              sx={{ alignSelf: "center" }}
-              onClick={() => {
-                setShowNotes(!showNotes); // Toggle the notes section
-              }}
-            >
-              <EditNoteIcon /> {/* Notes Icon */}
-            </IconButton>
+            {isAuthenticated && (
+          <IconButton
+            sx={{ alignSelf: "center" }}
+            onClick={() => {
+              setShowNotes(!showNotes); // Toggle the notes section
+            }}
+          >
+            <EditNoteIcon /> {/* Notes Icon */}
+          </IconButton>
+        )}
+        {showNotes && isAuthenticated && (
+          <div
+          style={{
+            position: "absolute",
+            top: "65px", // Adjust the top position as needed
+            right: "20px", // Adjust the right position as needed
+            backgroundColor: theme.palette.background.paper,
+            padding: "10px",
+          }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <textarea
+                rows="5"
+                cols="30"
+                placeholder="Write your notes here..."
+                value={userNotes}
+                onChange={(e) => setUserNotes(e.target.value)}
+              ></textarea>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: "10px" }}
+                onClick={handleSaveNote}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        )}
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
@@ -282,45 +313,7 @@ export default function MyApp({ mode, theme, colorMode }) {
             </IconButton>
           </Drawer>
         </div>
-        {isAuthenticated && (
-          <IconButton
-            sx={{ alignSelf: "center" }}
-            onClick={() => {
-              setShowNotes(!showNotes); // Toggle the notes section
-            }}
-          >
-            <EditNoteIcon /> {/* Notes Icon */}
-          </IconButton>
-        )}
-        {showNotes && isAuthenticated && (
-          <div
-            style={{
-              position: "absolute",
-              top: "56px", // Adjust the top position as needed
-              right: "20px", // Adjust the right position as needed
-              backgroundColor: "#fff", // Add background color if desired
-              padding: "10px",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <textarea
-                rows="5"
-                cols="30"
-                placeholder="Write your notes here..."
-                value={userNotes}
-                onChange={(e) => setUserNotes(e.target.value)}
-              ></textarea>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ marginTop: "10px" }}
-                onClick={handleSaveNote}
-              >
-                Save
-              </Button>
-            </div>
-          </div>
-        )}
+        
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>

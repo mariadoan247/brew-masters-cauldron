@@ -65,7 +65,7 @@ const closedMixin = (theme) => ({
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.drawer + 2,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -83,6 +83,7 @@ const AppBar = styled(MuiAppBar, {
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
@@ -179,8 +180,6 @@ export default function NavBar({ mode, theme, colorMode, children }) {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
 
-
-
   const navigate = useNavigate();
 
   return (
@@ -211,14 +210,45 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                 </FormControl>
               </form>
             </SearchBoxContainer>
-            <IconButton
-              sx={{ alignSelf: "center" }}
-              onClick={() => {
-                setShowNotes(!showNotes); // Toggle the notes section
-              }}
-            >
-              <EditNoteIcon /> {/* Notes Icon */}
-            </IconButton>
+            {isAuthenticated && (
+              <IconButton
+                sx={{ alignSelf: "center" }}
+                onClick={() => {
+                  setShowNotes(!showNotes); // Toggle the notes section
+                }}
+              >
+                <EditNoteIcon /> {/* Notes Icon */}
+              </IconButton>
+            )}
+            {showNotes && isAuthenticated && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "65px", // Adjust the top position as needed
+                  right: "20px", // Adjust the right position as needed
+                  backgroundColor: theme.palette.background.paper,
+                  padding: "10px",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <textarea
+                    rows="5"
+                    cols="30"
+                    placeholder="Write your notes here..."
+                    value={userNotes}
+                    onChange={(e) => setUserNotes(e.target.value)}
+                  ></textarea>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ marginTop: "10px" }}
+                    onClick={handleSaveNote}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            )}
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
@@ -324,45 +354,7 @@ export default function NavBar({ mode, theme, colorMode, children }) {
             </IconButton>
           </Drawer>
         </div>
-        {isAuthenticated && (
-          <IconButton
-            sx={{ alignSelf: "center" }}
-            onClick={() => {
-              setShowNotes(!showNotes); // Toggle the notes section
-            }}
-          >
-            <EditNoteIcon /> {/* Notes Icon */}
-          </IconButton>
-        )}
-        {showNotes && isAuthenticated && (
-          <div
-            style={{
-              position: "absolute",
-              top: "56px", // Adjust the top position as needed
-              right: "20px", // Adjust the right position as needed
-              backgroundColor: "#fff", // Add background color if desired
-              padding: "10px",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <textarea
-                rows="5"
-                cols="30"
-                placeholder="Write your notes here..."
-                value={userNotes}
-                onChange={(e) => setUserNotes(e.target.value)}
-              ></textarea>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ marginTop: "10px" }}
-                onClick={handleSaveNote}
-              >
-                Save
-              </Button>
-            </div>
-          </div>
-        )}
+
         {children}
       </ThemeProvider>
     </Box>
