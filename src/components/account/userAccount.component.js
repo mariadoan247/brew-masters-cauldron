@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Container, Unstable_Grid2 as Grid } from "@mui/material";
 import { OverviewLatestNotes } from "../../sections/overview/overview-latest-notes";
-import { OverviewLatestPagesVisited } from "../../sections/overview/overview-latest-pages";
+import { OverviewLatestCharacters } from "../../sections/overview/overview-latest-characters";
 import { OverviewProfileDescript } from "../../sections/overview/overview-profile-descript";
 import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
 import { signOutUser } from "../../actions/authActions";
@@ -72,7 +72,7 @@ export default function UserAccount({ mode, theme, colorMode }) {
             </Grid>
 
             <Grid xs={12} md={6} lg={4}>
-              <OverviewLatestPagesVisited
+              <OverviewLatestCharacters
                 pages={pages}
                 updatePage={updateVisitedPage}
                 sx={{ height: "100%" }}

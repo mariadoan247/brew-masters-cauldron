@@ -17,17 +17,16 @@ import {
   SvgIcon
 } from '@mui/material';
 
-export const OverviewLatestPagesVisited = (props) => {
+export const OverviewLatestCharacters = (props) => {
   const { pages = [], sx } = props;
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Pages Visited" />
+      <CardHeader title="Your Characters" />
       <List>
         {pages.map((page, index) => {
           const hasDivider = index < pages.length - 1;
           const ago = formatDistanceToNow(page.updatedAt);
-
           return (
             <ListItem
               divider={hasDivider}
@@ -93,7 +92,7 @@ export const OverviewLatestPagesVisited = (props) => {
   );
 };
 
-OverviewLatestPagesVisited.propTypes = {
+OverviewLatestCharacters.propTypes = {
   pages: PropTypes.array,
   sx: PropTypes.object
 };

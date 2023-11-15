@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardContent,
   Dialog,
+  Divider,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -48,6 +49,7 @@ export const OverviewProfileDescript = (props) => {
       <CardHeader
         title={`${username}'s Profile`}
       />
+           <Divider />
       <CardContent>
         {editMode ? (
           <TextField

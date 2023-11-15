@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 
 export const OverviewLatestNotes = (props) => {
-  const { notes, OverviewLatestPagesVisited, sx } = props;
+  const { notes, OverviewLatestCharacters, sx } = props;
 
   const [openNoteDialog, setOpenNoteDialog] = useState(false);
   const [deleteConfirmationDialog, setDeleteConfirmationDialog] = useState(false);
@@ -57,7 +57,7 @@ export const OverviewLatestNotes = (props) => {
       updatedNotes.unshift(updatedNote);
   
       // Save the updated notes array
-      OverviewLatestPagesVisited(updatedNotes);
+      OverviewLatestCharacters(updatedNotes);
       
       // Close the dialog and reset state
       handleCloseNoteDialog();
@@ -73,7 +73,7 @@ export const OverviewLatestNotes = (props) => {
         dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       };
       const updatedNotes = [noteObject, ...notes];
-      OverviewLatestPagesVisited(updatedNotes);
+      OverviewLatestCharacters(updatedNotes);
       handleCloseNoteDialog();
       setIsNewNote(true); // Reset back to new note for the next one
     }
@@ -91,7 +91,7 @@ export const OverviewLatestNotes = (props) => {
   const handleDeleteNote = () => {
     if (selectedNoteIndex !== -1) {
       const updatedNotes = notes.filter((_, index) => index !== selectedNoteIndex);
-      OverviewLatestPagesVisited(updatedNotes);
+      OverviewLatestCharacters(updatedNotes);
       setDeleteConfirmationDialog(false);
       setSelectedNoteIndex(-1);
     }
@@ -209,6 +209,6 @@ export const OverviewLatestNotes = (props) => {
 
 OverviewLatestNotes.propTypes = {
   notes: PropTypes.array,
-  OverviewLatestPagesVisited: PropTypes.func,
+  OverviewLatestCharacters: PropTypes.func,
   sx: PropTypes.object,
 };
