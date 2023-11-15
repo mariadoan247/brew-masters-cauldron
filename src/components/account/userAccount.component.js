@@ -9,6 +9,7 @@ import { OverviewProfileDescript } from "../../sections/overview/overview-profil
 import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
 import { signOutUser } from "../../actions/authActions";
 import { updateNotes } from "../../actions/userActions";
+import { updateUserDescription } from "../../actions/userActions";
 import { fetchUserNotes } from "../../actions/userActions";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
@@ -56,7 +57,9 @@ export default function UserAccount({ mode, theme, colorMode }) {
               <OverviewProfileDescript
                 //TODO: MAKE PROFILE DEETS HERE
                 username={user?.name || 'Loading...'}
+                onSaveDescription={(userDescription) => dispatch(updateUserDescription(user.email, userDescription))}
               />
+              
             </Grid>
             <Grid xs={12} md={6} lg={4}>
               <OverviewUserInfo
