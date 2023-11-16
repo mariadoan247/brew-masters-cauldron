@@ -1,10 +1,27 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { Grid, Container, Stack, Typography } from "@mui/material";
 import { BlogPostCard } from "../../sections/@dashboard/blog";
 import POSTS from "../../_mock/blog";
 import NavBar from "../navbar";
+import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { fetchRaces } from "../../actions/raceActions";
 
 export default function Races({ mode, theme, colorMode }) {
+  const dispatch = useDispatch();
+  const races = useSelector((state) => state.races.races);
+
+  useEffect(() => {
+    // Function to fetch user notes
+    const getRaces = () => {
+      dispatch(fetchRaces());
+    };
+
+    getRaces();
+  }, [dispatch]);
+
+  console.log(races);
+
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
       <Container style={{ paddingTop: "70px" }}>
@@ -19,8 +36,8 @@ export default function Races({ mode, theme, colorMode }) {
           </Typography>
         </Stack>
         <Grid container spacing={3}>
-          {POSTS.map((post) => ( // Use all posts without filtering
-            <BlogPostCard key={post.id} post={post} />
+          {Array.isArray(races) && races.map((race) => ( // Use all posts without filtering
+            <BlogPostCard key={race._id} post={race} />
           ))}
         </Grid>
       </Container>
