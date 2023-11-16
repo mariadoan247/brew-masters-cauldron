@@ -2,7 +2,6 @@ const { getUserByEmail } = require("../validation/getUserByEmail");
 const express = require("express");
 const router = express.Router();
 const keys = require("../config/keys");
-const jwt = require("jsonwebtoken");
 
 const axios = require("axios");
 
