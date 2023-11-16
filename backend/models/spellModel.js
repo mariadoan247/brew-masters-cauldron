@@ -42,7 +42,13 @@ let SpellSchema = new Schema (
                         "type": "string"
                     }
                 },
-                "roll": {}
+                "roll": {},
+                "isHomebrew": {
+                    "type": "boolean"
+                },
+                "public": {
+                    "type": "boolean"
+                }
             },
             "required": [
                 "name",

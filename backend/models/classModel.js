@@ -85,6 +85,12 @@ let ClassSchema = new Schema (
                 },
                 "wealth": {
                     "type": "string"
+                },
+                "isHomebrew": {
+                    "type": "boolean"
+                },
+                "public": {
+                    "type": "boolean"
                 }
             },
             "required": [
