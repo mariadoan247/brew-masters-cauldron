@@ -24,6 +24,12 @@ let FeatSchema = new Schema (
                 "modifier": {},
                 "proficiency": {
                     "type": "string"
+                },
+                "isHomebrew": {
+                    "type": "boolean"
+                },
+                "public": {
+                    "type": "boolean"
                 }
             },
             "required": [

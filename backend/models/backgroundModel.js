@@ -30,6 +30,12 @@ let BackgroundSchema = new Schema (
                             "text"
                         ]
                     }
+                },
+                "isHomebrew": {
+                    "type": "boolean"
+                },
+                "public": {
+                    "type": "boolean"
                 }
             },
             "required": [

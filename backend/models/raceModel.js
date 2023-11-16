@@ -30,6 +30,12 @@ let RaceSchema = new Schema (
                 "trait": {},
                 "modifier": {
                     "type": "string"
+                },
+                "isHomebrew": {
+                    "type": "boolean"
+                },
+                "public": {
+                    "type": "boolean"
                 }
             },
             "required": [

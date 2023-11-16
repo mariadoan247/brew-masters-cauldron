@@ -110,6 +110,12 @@ let MonsterSchema = new Schema (
                         "name",
                         "text"
                     ]
+                },
+                "isHomebrew": {
+                    "type": "boolean"
+                },
+                "public": {
+                    "type": "boolean"
                 }
             },
             "required": [

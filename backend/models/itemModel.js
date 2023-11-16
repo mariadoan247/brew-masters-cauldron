@@ -50,6 +50,12 @@ let ItemSchema = new Schema (
                 },
                 "range": {
                     "type": "string"
+                },
+                "isHomebrew": {
+                    "type": "boolean"
+                },
+                "public": {
+                    "type": "boolean"
                 }
             },
             "required": [
