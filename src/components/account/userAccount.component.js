@@ -4,11 +4,12 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Container, Unstable_Grid2 as Grid } from "@mui/material";
 import { OverviewLatestNotes } from "../../sections/overview/overview-latest-notes";
-import { OverviewLatestPagesVisited } from "../../sections/overview/overview-latest-pages";
+import { OverviewLatestCharacters } from "../../sections/overview/overview-latest-characters";
 import { OverviewProfileDescript } from "../../sections/overview/overview-profile-descript";
 import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
 import { signOutUser } from "../../actions/authActions";
 import { updateNotes } from "../../actions/userActions";
+import { updateUserDescription } from "../../actions/userActions";
 import { fetchUserNotes } from "../../actions/userActions";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
@@ -56,7 +57,9 @@ export default function UserAccount({ mode, theme, colorMode }) {
               <OverviewProfileDescript
                 //TODO: MAKE PROFILE DEETS HERE
                 username={user?.name || 'Loading...'}
+                onSaveDescription={(userDescription) => dispatch(updateUserDescription(user.email, userDescription))}
               />
+              
             </Grid>
             <Grid xs={12} md={6} lg={4}>
               <OverviewUserInfo
@@ -69,7 +72,7 @@ export default function UserAccount({ mode, theme, colorMode }) {
             </Grid>
 
             <Grid xs={12} md={6} lg={4}>
-              <OverviewLatestPagesVisited
+              <OverviewLatestCharacters
                 pages={pages}
                 updatePage={updateVisitedPage}
                 sx={{ height: "100%" }}
