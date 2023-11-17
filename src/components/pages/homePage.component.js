@@ -313,7 +313,7 @@ export default function MyApp({ mode, theme, colorMode }) {
                   }}
                   onClick={() => {
                     // Handle navigation to the survey page for creating a character
-                    navigate("/createCharacter");
+                    navigate("/characters");
                   }}
                 >
                   <ListItemIcon
