@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateNotes } from "../../actions/userActions";
 import { format } from 'date-fns';
 import { fetchUserNotes } from "../../actions/userActions";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const drawerWidth = 240;
 
@@ -301,6 +302,37 @@ export default function MyApp({ mode, theme, colorMode }) {
             <div style={{ flexGrow: 1 }} />{" "}
             {/* Add a flexible div to push the theme toggle icon to the bottom */}
             <Divider />
+            <List>
+              <ListItem key="CreateCharacter" disablePadding>
+                <ListItemButton
+               
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                  onClick={() => {
+                    // Handle navigation to the survey page for creating a character
+                    navigate("/characters");
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <AssignmentIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                  color="inherit"
+                    primary="Create A Character"
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
             <IconButton
               onClick={() => colorMode.toggleColorMode()}
               color="inherit"
