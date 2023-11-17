@@ -5,7 +5,7 @@ import { GET_ERRORS, SET_RACES } from "./types";
 const api = axios.create();
 
 const raceData = {
-    collection: "races2",
+    collection: "races",
     database: "5e-compendium",
     dataSource: "brewmasters-cauldron",
 }
