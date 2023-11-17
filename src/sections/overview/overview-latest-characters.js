@@ -12,13 +12,12 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
   SvgIcon
 } from '@mui/material';
 
 export const OverviewLatestCharacters = (props) => {
-  const { pages = [], sx } = props;
+  const { pages = [], createdCharacter, sx } = props;
 
   return (
     <Card sx={sx}>
@@ -27,37 +26,12 @@ export const OverviewLatestCharacters = (props) => {
         {pages.map((page, index) => {
           const hasDivider = index < pages.length - 1;
           const ago = formatDistanceToNow(page.updatedAt);
+
           return (
             <ListItem
               divider={hasDivider}
               key={page.id}
             >
-              <ListItemAvatar>
-                {
-                  page.image
-                    ? (
-                      <Box
-                        component="img"
-                        src={page.image}
-                        sx={{
-                          borderRadius: 1,
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                    : (
-                      <Box
-                        sx={{
-                          borderRadius: 1,
-                          backgroundColor: 'neutral.200',
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                }
-              </ListItemAvatar>
               <ListItemText
                 primary={page.name}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
@@ -72,6 +46,18 @@ export const OverviewLatestCharacters = (props) => {
             </ListItem>
           );
         })}
+
+        {/* Display the created character */}
+        {createdCharacter && (
+          <ListItem>
+            <ListItemText
+              primary={createdCharacter.name}
+              primaryTypographyProps={{ variant: 'subtitle1' }}
+              secondary="Newly Created Character"
+              secondaryTypographyProps={{ variant: 'body2' }}
+            />
+          </ListItem>
+        )}
       </List>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
@@ -94,5 +80,6 @@ export const OverviewLatestCharacters = (props) => {
 
 OverviewLatestCharacters.propTypes = {
   pages: PropTypes.array,
+  createdCharacter: PropTypes.object, // Add the prop for the created character
   sx: PropTypes.object
 };

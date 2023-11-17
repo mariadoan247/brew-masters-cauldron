@@ -14,6 +14,7 @@ import {
     Checkbox,
     Box,
 } from "@mui/material";
+import { OverviewLatestCharacters } from "../../sections/overview/overview-latest-characters";
 import NavBar from "../navbar";
 
 const classes = ["Artificer",
@@ -299,6 +300,7 @@ export default function Characters({ mode, theme, colorMode }) {
             spell: characterSpell,
             inventory: characterInventory,
         };
+
         console.log("Character created:", character);
     };
 
@@ -455,7 +457,9 @@ export default function Characters({ mode, theme, colorMode }) {
                         </form>
                     </Paper>
                 </Box>
+
             </Container>
         </NavBar>
+        
     );
 }
