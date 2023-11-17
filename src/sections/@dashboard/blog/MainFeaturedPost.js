@@ -20,6 +20,16 @@ function MainFeaturedPost(props) {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundImage: `url(${post.image})`,
+        '&::before': { // Create a pseudo-element to apply the blur effect
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          backdropFilter: 'blur(10px)', // Apply the blur effect
+          background: 'rgba(0,0,0,0.5)', // Darken the image to make the text stand out more
+        },
       }}
     >
       {/* Increase the priority of the hero background image */}
