@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Grid, Container, Stack, Typography } from "@mui/material";
 import { BlogPostCard } from "../../sections/@dashboard/blog";
-import POSTS from "../../_mock/blog";
 import NavBar from "../navbar";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
