@@ -7,6 +7,12 @@ const PORT = 4000;
 const users = require('./routes/users');
 const notes = require('./routes/notes');
 const races = require('./routes/races');
+const classes = require('./routes/classes')
+const backgrounds = require('./routes/backgrounds');
+const spells = require('./routes/spells');
+const items = require('./routes/items');
+const feats = require('./routes/feats');
+const monsters = require('./routes/monsters');
 const cors = require('cors');
 
 app.use(cors());
@@ -39,6 +45,7 @@ require("./config/passport")(passport);
 app.use("/action", users);
 app.use("/action", notes);
 app.use("/action", races);
+app.use("/action", classes);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);

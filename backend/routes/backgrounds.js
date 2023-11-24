@@ -7,11 +7,11 @@ const axios = require("axios");
 const apiKey = keys.apiKey;
 const url = keys.url;
 
-router.post("/fetchRaces", async (req, res) => {
+router.post("/fetchBackgrounds", async (req, res) => {
     try {
-        console.log("Received fetch races request");
+        console.log("Received fetch backgrounds request");
 
-        const races = await axios.post(url + '/find', {
+        const backgrounds = await axios.post(url + '/find', {
             collection: req.body.collection,
             database: req.body.database,
             dataSource: req.body.dataSource
@@ -22,12 +22,12 @@ router.post("/fetchRaces", async (req, res) => {
             }
         });
 
-        // If the race exists
-        if (races && races.data.documents) {
-            // Return the races directly
-            res.json(races.data.documents);
+        // If the background exists
+        if (backgrounds && backgrounds.data.documents) {
+            // Return the backgrounds directly
+            res.json(backgrounds.data.documents);
         } else {
-            res.status(400).json({ error: "Races not found." });
+            res.status(400).json({ error: "Backgrounds not found." });
         }
     } catch (error) {
         console.error(error);

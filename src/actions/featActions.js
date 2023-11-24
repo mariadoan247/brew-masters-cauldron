@@ -1,23 +1,23 @@
 import axios from "axios";
 
-import { GET_ERRORS, SET_RACES } from "./types";
+import { GET_ERRORS, SET_FEATS } from "./types";
 
 const api = axios.create();
 
-const raceData = {
-    collection: "races",
+const featData = {
+    collection: "feats",
     database: "5e-compendium",
     dataSource: "brewmasters-cauldron",
 }
 
-export const fetchRaces = () => dispatch => {
+export const fetchFeats = () => dispatch => {
     api
-        .post("/action/fetchRaces", raceData)
+        .post("/action/fetchFeats", featData)
         .then(res => {
-            const fetchedRaces = res.data;
+            const fetchedFeats = res.data;
             dispatch({
-                type: SET_RACES,
-                payload: fetchedRaces
+                type: SET_FEATS,
+                payload: fetchedFeats
             });
         })
         .catch(err => {
@@ -38,10 +38,10 @@ export const fetchRaces = () => dispatch => {
         });
 };
 
-// Set races
-export const setRaces = races => {
-    return {
-        type: SET_RACES,
-        payload: races
+// Set feats
+export const setFeats = feats => {
+    return { 
+        type: SET_FEATS,
+        payload: feats
     };
 };
