@@ -19,6 +19,7 @@ import jwt_decode from 'jwt-decode';
 import { setCurrentUser } from './actions/authActions';
 import setAuthToken from './utils/setAuthToken';
 import store from './store';
+import Characters from './components/pages/createCharacter.component';
 
 function App() {
   useEffect(() => {
@@ -140,6 +141,12 @@ function App() {
               path="/feats"
               element={
                 <Feats mode={mode} theme={theme} colorMode={colorMode} />
+              }
+            />
+            <Route
+              path="/characters"
+              element={
+                <Characters mode={mode} theme={theme} colorMode={colorMode} />
               }
             />
           </Routes>

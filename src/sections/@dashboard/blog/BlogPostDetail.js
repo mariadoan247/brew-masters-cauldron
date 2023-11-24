@@ -4,26 +4,31 @@ import { Grid, Container } from '@mui/material';
 import MainFeaturedPost from './MainFeaturedPost';
 import Main from './Main';
 import Sidebar from './Sidebar';
+import NavBar from "../../../components/navbar";
 import post1 from './blog-post.1.md';
 import post2 from './blog-post.2.md';
 import post3 from './blog-post.3.md';
-import NavBar from "../../../components/navbar";
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export default function BlogPostDetail({ mode, theme, colorMode }) {
-    
+export default function ({ mode, theme, colorMode }) {
+    const { postId } = useParams();
+    const races = useSelector((state) => state.races.races);
+    const raceDetails = races.find((race) => race._id === postId);
+
+    console.log(raceDetails);
+
+    if (!raceDetails) {
+        return <div>Race details not found</div>;
+    }
+
     const mainFeaturedPost = {
-        title: 'Title of a longer featured blog post',
-        description:
-            "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-        image: 'https://source.unsplash.com/random?wallpapers',
+        title: raceDetails.name,
+        description: "size: " + raceDetails.size + "\nspeed: " + raceDetails.speed,
+        image: raceDetails.image,
         imageText: 'main image description',
-        linkText: 'Continue reading…',
     };
 
-
-    const posts = [post1, post2, post3];
-
-    
     const sidebar = {
         title: 'About',
         description:
@@ -44,18 +49,20 @@ export default function BlogPostDetail({ mode, theme, colorMode }) {
 
     };
 
+    const posts = [post1, post2, post3];
+
     return (
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
             <Box>
                 <Container maxWidth="lg" sx={{ marginTop: '100px' }} >
                     <main>
-                        <MainFeaturedPost post={mainFeaturedPost}  />
+                        <MainFeaturedPost post={mainFeaturedPost} />
                         <Grid container spacing={5} sx={{ mt: 3 }}>
                             <Main title="From the firehose" posts={posts} />
                             <Sidebar
                                 title={sidebar.title}
                                 description={sidebar.description}
-                                archives={sidebar.archives}  
+                                archives={sidebar.archives}
                             />
                         </Grid>
                     </main>

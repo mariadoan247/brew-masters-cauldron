@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Link, Card, Grid, Typography, CardContent } from '@mui/material';
+import { Link, Card, Grid, CardContent } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 const StyledCardMedia = styled('div')({
@@ -43,11 +43,10 @@ const StyledCover = styled('img')({
 });
 
 BlogPostCard.propTypes = {
-  post: PropTypes.object.isRequired,
-  index: PropTypes.number,
+  post: PropTypes.object.isRequired
 };
 
-export default function BlogPostCard({ post, index }) {
+export default function BlogPostCard({ post }) {
   const { image, name } = post;
 
   return (
