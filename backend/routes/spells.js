@@ -1,3 +1,4 @@
+// use Express to create a router, enabling the program to handle different routes separately
 const express = require("express");
 const router = express.Router();
 const keys = require("../config/keys");
@@ -7,11 +8,12 @@ const axios = require("axios");
 const apiKey = keys.apiKey;
 const url = keys.url;
 
+// define a POST route at /fetchSpells
 router.post("/fetchSpells", async (req, res) => {
     try {
-        console.log("Received fetch spells request");
+        console.log("Received fetch spells request"); // log receipt of fetch spells request
 
-        const spells = await axios.post(url + '/find', {
+        const spellsResponse = await axios.post(url + '/find', { // make POST request to another endpoint /find with provided data
             collection: req.body.collection,
             database: req.body.database,
             dataSource: req.body.dataSource
@@ -23,10 +25,10 @@ router.post("/fetchSpells", async (req, res) => {
         });
 
         // If the spell exists
-        if (spells && spells.data.documents) {
-            // Return the spells directly
-            res.json(spells.data.documents);
-        } else {
+        if (spellsResponse && spellsResponse.data && spellsResponse.data.documents) {
+            // Return the spells directly as JSON
+            res.json(spellsResponse.data.documents);
+        } else { // If spell does not exist, return error message
             res.status(400).json({ error: "Spells not found." });
         }
     } catch (error) {

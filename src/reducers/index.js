@@ -1,3 +1,5 @@
+// combine individual reducers into single root reducer called "combineReducers" that creates the Redux store
+
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
@@ -14,5 +16,11 @@ export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
   notes: notesReducer,
-  races: raceReducer
+  races: raceReducer,
+  classes: classReducer,
+  backgrounds: backgroundReducer,
+  spells: spellReducer,
+  items: itemReducer,
+  feats: featReducer,
+  monsters: monsterReducer
 });

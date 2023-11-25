@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
     FormControl,
     InputLabel,
@@ -285,6 +286,30 @@ export default function Characters({ mode, theme, colorMode }) {
     const [characterBackground, setCharacterBackground] = useState("");
     const [characterSpell, setCharacterSpell] = useState([]);
     const [characterInventory, setCharacterInventory] = useState([]);
+    const [availableRaces, setAvailableRaces] = useState([]);
+    const [availableClasses, setAvailableClasses] = useState([]);
+    const [availableBackgrounds, setAvailableBackgrounds] = useState([]);
+    const [availableSpells, setAvailableSpells] = useState([]);
+    const [availableItems, setAvailableItems] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async (category, setFunction) => {
+            try {
+                const response = await axios.post('/api/${category}/fetch${category.charAt(0)toUpperCase() + category.slice(1)}');
+                if (response.data && response.data[category]) {
+                    setFunction(response.data[category]);
+                }
+            } catch (error) {
+                console.error('Error fetching ${category}', error);
+            }
+        };
+
+        fetchData("races", setAvailableRaces);
+        fetchData("classes", setAvailableClasses);
+        fetchData("backgrounds", setAvailableBackgrounds);
+        fetchData("spells", setAvailableSpells);
+        fetchData("items", setAvailableItems);
+    }, []);
 
     const navigate = useNavigate();
 
@@ -350,7 +375,7 @@ export default function Characters({ mode, theme, colorMode }) {
                                             value={characterRace}
                                             onChange={(event) => setCharacterRace(event.target.value)}
                                         >
-                                            {races.map((race) => (
+                                            {availableRaces.map((race) => (
                                                 <MenuItem key={race} value={race}>
                                                     {race}
                                                 </MenuItem>
@@ -367,7 +392,7 @@ export default function Characters({ mode, theme, colorMode }) {
                                             value={characterClass}
                                             onChange={(event) => setCharacterClass(event.target.value)}
                                         >
-                                            {classes.map((charClass) => (
+                                            {availableClasses.map((charClass) => (
                                                 <MenuItem key={charClass} value={charClass}>
                                                     {charClass}
                                                 </MenuItem>
@@ -387,6 +412,12 @@ export default function Characters({ mode, theme, colorMode }) {
                                             <MenuItem value="Lawful Good">Lawful Good</MenuItem>
                                             <MenuItem value="Neutral Good">Neutral Good</MenuItem>
                                             <MenuItem value="Chaotic Good">Chaotic Good</MenuItem>
+                                            <MenuItem value="Lawful Neutral">Lawful Neutral</MenuItem>
+                                            <MenuItem value="True Neutral">True Neutral</MenuItem>
+                                            <MenuItem value="Chaotic Neutral">Chaotic Neutral</MenuItem>
+                                            <MenuItem value="Lawful Evil">Lawful Evil</MenuItem>
+                                            <MenuItem value="Neutral Evil">Neutral Evil</MenuItem>
+                                            <MenuItem value="Chaotic Evil">Chaotic Evil</MenuItem>
                                             {/* Add more alignment options */}
                                         </Select>
                                     </FormControl>
@@ -400,7 +431,7 @@ export default function Characters({ mode, theme, colorMode }) {
                                             value={characterBackground}
                                             onChange={(event) => setCharacterBackground(event.target.value)}
                                         >
-                                            {backgrounds.map((bg) => (
+                                            {availableBackgrounds.map((bg) => (
                                                 <MenuItem key={bg} value={bg}>
                                                     {bg}
                                                 </MenuItem>
@@ -419,7 +450,7 @@ export default function Characters({ mode, theme, colorMode }) {
                                             onChange={(event) => setCharacterSpell(event.target.value)}
                                             renderValue={(selected) => selected.join(", ")}
                                         >
-                                            {spells.map((item) => (
+                                            {availableSpells.map((item) => (
                                                 <MenuItem key={item} value={item}>
                                                     <Checkbox checked={characterSpell.includes(item)} color="primary" />
                                                     {item}
@@ -440,7 +471,7 @@ export default function Characters({ mode, theme, colorMode }) {
                                             onChange={(event) => setCharacterInventory(event.target.value)}
                                             renderValue={(selected) => selected.join(", ")}
                                         >
-                                            {inventory.map((item) => (
+                                            {availableItems.map((item) => (
                                                 <MenuItem key={item} value={item}>
                                                     <Checkbox checked={characterInventory.includes(item)} color="primary" />
                                                     {item}

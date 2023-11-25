@@ -1,3 +1,4 @@
+// use Express to create a router, enabling the program to handle different routes separately
 const express = require("express");
 const router = express.Router();
 const keys = require("../config/keys");
@@ -7,11 +8,12 @@ const axios = require("axios");
 const apiKey = keys.apiKey;
 const url = keys.url;
 
+// define a POST route at /fetchBackgrounds
 router.post("/fetchBackgrounds", async (req, res) => {
     try {
-        console.log("Received fetch backgrounds request");
+        console.log("Received fetch backgrounds request"); // log receipt of fetch backgrounds request
 
-        const backgrounds = await axios.post(url + '/find', {
+        const backgroundsResponse = await axios.post(url + '/find', { // make POST request to another endpoint /find with provided data
             collection: req.body.collection,
             database: req.body.database,
             dataSource: req.body.dataSource
@@ -23,10 +25,10 @@ router.post("/fetchBackgrounds", async (req, res) => {
         });
 
         // If the background exists
-        if (backgrounds && backgrounds.data.documents) {
-            // Return the backgrounds directly
-            res.json(backgrounds.data.documents);
-        } else {
+        if (backgroundsResponse && backgroundsResponse.data && backgroundsResponse.data.documents) {
+            // Return the backgrounds directly as JSON
+            res.json(backgroundsResponse.data.documents);
+        } else { // If background does not exist, return error message
             res.status(400).json({ error: "Backgrounds not found." });
         }
     } catch (error) {
