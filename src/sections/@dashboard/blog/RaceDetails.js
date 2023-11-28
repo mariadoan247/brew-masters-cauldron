@@ -7,7 +7,6 @@ import {
     List,
     ListItem,
     ListItemText,
-    Chip,
     Divider,
 } from '@mui/material';
 import MainFeaturedPost from './MainFeaturedPost';
