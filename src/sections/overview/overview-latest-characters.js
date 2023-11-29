@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import {
+  Box,
   Button,
   Card,
   CardHeader,
@@ -10,7 +11,6 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
-  IconButton,
   List,
   ListItem,
   ListItemText,
