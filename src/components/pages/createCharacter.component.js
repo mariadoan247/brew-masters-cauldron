@@ -15,7 +15,6 @@ import {
     Checkbox,
     Box,
 } from "@mui/material";
-import { OverviewLatestCharacters } from "../../sections/overview/overview-latest-characters";
 import NavBar from "../navbar";
 
 const classes = ["Artificer",
@@ -327,7 +326,11 @@ export default function Characters({ mode, theme, colorMode }) {
         };
 
         console.log("Character created:", character);
+
+        // Pass the created character to the route
+        navigate("/userAccount", { state: { createdCharacter: character } });
     };
+    
 
     return (
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
