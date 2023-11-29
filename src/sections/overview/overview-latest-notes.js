@@ -24,8 +24,9 @@ import {
   TextField,
 } from '@mui/material';
 
+
 export const OverviewLatestNotes = (props) => {
-  const { notes, OverviewLatestCharacters, sx } = props;
+  const { notes, onSaveNotes, sx } = props;
 
   const [openNoteDialog, setOpenNoteDialog] = useState(false);
   const [deleteConfirmationDialog, setDeleteConfirmationDialog] = useState(false);
@@ -49,16 +50,12 @@ export const OverviewLatestNotes = (props) => {
         details: editedNote,
         dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       };
-  
       // Remove the updated note from its current position
       const updatedNotes = notes.filter((_, index) => index !== editingNoteIndex);
-  
       // Unshift the updated note to start of the array
       updatedNotes.unshift(updatedNote);
-  
       // Save the updated notes array
-      OverviewLatestCharacters(updatedNotes);
-      
+      onSaveNotes(updatedNotes);
       // Close the dialog and reset state
       handleCloseNoteDialog();
       setEditingNoteIndex(-1);
@@ -73,7 +70,7 @@ export const OverviewLatestNotes = (props) => {
         dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       };
       const updatedNotes = [noteObject, ...notes];
-      OverviewLatestCharacters(updatedNotes);
+      onSaveNotes(updatedNotes);
       handleCloseNoteDialog();
       setIsNewNote(true); // Reset back to new note for the next one
     }
@@ -91,7 +88,7 @@ export const OverviewLatestNotes = (props) => {
   const handleDeleteNote = () => {
     if (selectedNoteIndex !== -1) {
       const updatedNotes = notes.filter((_, index) => index !== selectedNoteIndex);
-      OverviewLatestCharacters(updatedNotes);
+      onSaveNotes(updatedNotes);
       setDeleteConfirmationDialog(false);
       setSelectedNoteIndex(-1);
     }
@@ -209,6 +206,6 @@ export const OverviewLatestNotes = (props) => {
 
 OverviewLatestNotes.propTypes = {
   notes: PropTypes.array,
-  OverviewLatestCharacters: PropTypes.func,
+  onSaveNotes: PropTypes.func,
   sx: PropTypes.object,
 };
