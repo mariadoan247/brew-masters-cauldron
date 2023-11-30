@@ -14,14 +14,17 @@ import Inventory from "./components/pages/inventory.component";
 import Monsters from "./components/pages/monsters.component";
 import Feats from "./components/pages/feats.component";
 import Account from "./components/account/userAccount.component";
-import BlogPostDetail from "./sections/@dashboard/blog/BlogPostDetail";
+import BlogPostDetail from "./sections/@dashboard/blog/RaceDetails";
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser } from './actions/authActions';
 import setAuthToken from './utils/setAuthToken';
 import store from './store';
 import Characters from './components/pages/createCharacter.component';
+import { fetchRaces } from "./actions/raceActions"
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch();
   useEffect(() => {
     // Check for token
     if (localStorage.jwtToken) {
@@ -43,6 +46,14 @@ function App() {
       }
     }
   }, []);
+  useEffect(() => {
+    // Function to fetch user notes
+    const getRaces = () => {
+      dispatch(fetchRaces());
+    };
+
+    getRaces();
+  }, [dispatch]);
   const [mode, setMode] = React.useState("dark");
   const colorMode = React.useMemo(
     () => ({

@@ -16,10 +16,8 @@ import {
     Checkbox,
     Box,
 } from "@mui/material";
-import { OverviewLatestCharacters } from "../../sections/overview/overview-latest-characters";
 import NavBar from "../navbar";
 
-/*
 const classes = ["Artificer",
     "Barbarian",
     "Bard",
@@ -279,18 +277,17 @@ const spells = ["Acid Arrow",
     "Sleep",
     "Thunderwave",
     "Web"]
-    */
 
-const fetchData = async (category, setFunction) => {
-    try { // /action/fetchRaces
-        const response = await axios.post(`/action/fetch${category.charAt(0).toUpperCase() + category.slice(1)}`);
-        if (response.data && response.data[category]) {
-            setFunction(response.data[category]);
+    const fetchData = async (category, setFunction) => {
+        try { // /action/fetchRaces
+            const response = await axios.post(`/action/fetch${category.charAt(0).toUpperCase() + category.slice(1)}`);
+            if (response.data && response.data[category]) {
+                setFunction(response.data[category]);
+            }
+        } catch (error) {
+            console.error(`Error fetching ${category}`, error);
         }
-    } catch (error) {
-        console.error(`Error fetching ${category}`, error);
-    }
-};
+    };
 
 export default function Characters({ mode, theme, colorMode }) {
     const [characterName, setCharacterName] = useState("");
@@ -340,7 +337,11 @@ export default function Characters({ mode, theme, colorMode }) {
         };
 
         console.log("Character created:", character);
+
+        // Pass the created character to the route
+        navigate("/userAccount", { state: { createdCharacter: character } });
     };
+    
 
     return (
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
