@@ -1,7 +1,4 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -17,26 +14,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Link } from "react-router-dom";
 import NavBar from "../wrappers/NavBar";
-
-const drawerWidth = 240;
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
+import AppBarTest from "../wrappers/AppBarTest";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -127,42 +105,12 @@ export default function Spells({ mode, theme, colorMode }) {
           <Grid container spacing={10} alignItems="center">
             <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
           </Grid>
-
-          <AppBar
-            component="div"
-            color="primary"
-            position="static"
-            elevation={0}
-            sx={{ zIndex: 0 }}
-          >
-            <Toolbar>
-              <Grid container alignItems="center" spacing={1}>
-                <Grid item xs>
-                  <Typography color="inherit" variant="h5" component="h1">
-                    Spells
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Toolbar>
-          </AppBar>
-          <AppBar
-            component="div"
-            position="static"
-            elevation={0}
-            sx={{ zIndex: 0 }}
-          >
-            <Tabs
-              value={selectedTab}
-              textColor="inherit"
-              onChange={handleChangeTab}
-            >
-              <Tab label="By Level" />
-              <Tab label="By School" />
-              <Tab label="By Class" />
-              <Tab label="By Damage" />
-            </Tabs>
-          </AppBar>
-
+          <AppBarTest>
+            <Typography color="inherit" variant="h5" component="h1">
+              Spells
+            </Typography>
+          </AppBarTest>
+          {/* pass in handle tab changes */}
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
             <TableContainer sx={{ maxHeight: 440 }}>
               <Table stickyHeader aria-label="sticky table">

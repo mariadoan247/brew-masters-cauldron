@@ -13,6 +13,7 @@ import TableRow from "@mui/material/TableRow";
 import { Grid, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../wrappers/NavBar";
+import AppBarTest from "../wrappers/AppBarTest";
 
 const drawerWidth = 240;
 
@@ -120,23 +121,11 @@ export default function Backgrounds({ mode, theme, colorMode }) {
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
 
-        <AppBar
-          component="div"
-          color="primary"
-          position="static"
-          elevation={0}
-          sx={{ zIndex: 0 }}
-        >
-          <Toolbar>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item xs>
-                <Typography color="inherit" variant="h5" component="h1">
-                  Backgrounds
-                </Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
+        <AppBarTest>
+          <Typography color="inherit" variant="h5" component="h1">
+            Backgrounds
+          </Typography>
+        </AppBarTest>
         <AppBar
           component="div"
           position="static"
