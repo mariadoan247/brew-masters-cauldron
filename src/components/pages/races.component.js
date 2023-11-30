@@ -1,10 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 import { Grid, Container, Stack, Typography } from "@mui/material";
 import { BlogPostCard } from "../../sections/@dashboard/blog";
-import POSTS from "../../_mock/blog";
 import NavBar from "../navbar";
+import { useSelector } from 'react-redux';
 
 export default function Races({ mode, theme, colorMode }) {
+  const races = useSelector((state) => state.races.races);
+
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
       <Container style={{ paddingTop: "70px" }}>
@@ -19,8 +21,8 @@ export default function Races({ mode, theme, colorMode }) {
           </Typography>
         </Stack>
         <Grid container spacing={3}>
-          {POSTS.map((post) => ( // Use all posts without filtering
-            <BlogPostCard key={post.id} post={post} />
+          {Array.isArray(races) && races.map((race) => ( // Use all posts without filtering
+            <BlogPostCard key={race._id} post={race} />
           ))}
         </Grid>
       </Container>

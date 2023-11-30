@@ -15,7 +15,6 @@ const userData = {
 // Sign Up User
 export const signUpUser = (newUser, navigate) => dispatch => {
     userData.document = newUser;
-    console.log("userData:", userData);
     api
         .post("/action/signUp", userData)
         .then(res => {
@@ -43,7 +42,6 @@ export const signUpUser = (newUser, navigate) => dispatch => {
 // Sign in - get user token
 export const signInUser = (userSignIn, navigate) => dispatch => {
     userData.filter = userSignIn;
-    console.log("userData:", userData);
     api
         .post("/action/signIn", userData)
         .then(res => {
