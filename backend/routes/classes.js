@@ -37,4 +37,37 @@ router.post("/fetchClasses", async (req, res) => {
     }
 });
 
+// define a GET route at /getClassNames
+router.get("/getClassNames", async (req, res) => {
+    try {
+        console.log("Received get class names request"); // log receipt of get class names request
+
+        const classesResponse = await axios.post(url + '/find', { 
+            collection: req.body.collection,
+            database: req.body.database,
+            dataSource: req.body.dataSource
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': apiKey
+            }
+        });
+
+        // If the class exists
+        if (classesResponse && classesResponse.data && classesResponse.data.documents) {
+            // Extract names from each class object
+            const classNames = classesResponse.data.documents.map(classObj => classObj.name); // classObj used, class is reserved term
+            
+            // Return the names directly as JSON
+            res.json({ classNames });
+        } else {
+            // If class does not exist, return error message
+            res.status(400).json({ error: "Classes not found." });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error processing the request." });
+    }
+});
+
 module.exports = router;

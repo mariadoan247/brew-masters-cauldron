@@ -1,7 +1,8 @@
-import { SET_BACKGROUNDS } from "../actions/types";
+import { SET_BACKGROUNDS, SET_BACKGROUND_NAMES } from "../actions/types";
 
 const initialState = {
   backgrounds: [],
+  backgroundNames: [],
   loading: false
 };
 
@@ -12,6 +13,11 @@ function backgroundReducer(state = initialState, action) {
         ...state,
         backgrounds: action.payload
       };
+    case SET_BACKGROUND_NAMES:
+      return {
+        ...state,
+        backgroundNames: action.payload
+      }
     default:
       return state;
   }

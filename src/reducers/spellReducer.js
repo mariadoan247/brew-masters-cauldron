@@ -1,7 +1,8 @@
-import { SET_SPELLS } from "../actions/types";
+import { SET_SPELLS, SET_SPELL_NAMES } from "../actions/types";
 
 const initialState = {
   spells: [],
+  spellNames: [],
   loading: false
 };
 
@@ -12,6 +13,11 @@ function spellReducer(state = initialState, action) {
         ...state,
         spells: action.payload
       };
+    case SET_SPELL_NAMES:
+      return {
+        ...state,
+        spellNames: action.payload
+      }
     default:
       return state;
   }

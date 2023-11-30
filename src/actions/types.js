@@ -11,3 +11,11 @@ export const SET_SPELLS = "SET_SPELLS";
 export const SET_ITEMS = "SET_ITEMS";
 export const SET_FEATS = "SET_FEATS";
 export const SET_MONSTERS = "SET_MONSTERS";
+
+export const SET_RACE_NAMES = "SET_RACE_NAMES";
+export const SET_CLASS_NAMES = "SET_CLASS_NAMES";
+export const SET_BACKGROUND_NAMES = "SET_BACKGROUND_NAMES";
+export const SET_SPELL_NAMES = "SET_SPELL_NAMES";
+export const SET_ITEM_NAMES = "SET_ITEM_NAMES";
+export const SET_FEAT_NAMES = "SET_FEAT_NAMES";
+export const SET_MONSTER_NAMES = "SET_MONSTER_NAMES";

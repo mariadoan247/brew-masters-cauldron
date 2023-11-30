@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from 'react-redux';
 import {
     FormControl,
     InputLabel,
@@ -18,6 +19,7 @@ import {
 import { OverviewLatestCharacters } from "../../sections/overview/overview-latest-characters";
 import NavBar from "../navbar";
 
+/*
 const classes = ["Artificer",
     "Barbarian",
     "Bard",
@@ -277,6 +279,18 @@ const spells = ["Acid Arrow",
     "Sleep",
     "Thunderwave",
     "Web"]
+    */
+
+const fetchData = async (category, setFunction) => {
+    try { // /action/fetchRaces
+        const response = await axios.post(`/action/fetch${category.charAt(0).toUpperCase() + category.slice(1)}`);
+        if (response.data && response.data[category]) {
+            setFunction(response.data[category]);
+        }
+    } catch (error) {
+        console.error(`Error fetching ${category}`, error);
+    }
+};
 
 export default function Characters({ mode, theme, colorMode }) {
     const [characterName, setCharacterName] = useState("");
@@ -291,18 +305,17 @@ export default function Characters({ mode, theme, colorMode }) {
     const [availableBackgrounds, setAvailableBackgrounds] = useState([]);
     const [availableSpells, setAvailableSpells] = useState([]);
     const [availableItems, setAvailableItems] = useState([]);
+    const availableRaceNames = useSelector((state) => state.races.races).map(c => c.name);
+    const availableClassNames = useSelector((state) => state.classes.classes).map(c => c.name);
+    const availableBackgroundNames = useSelector((state) => state.backgrounds.backgrounds).map(c => c.name);
+    const availableSpellNames = useSelector((state) => state.spells.spells).map(c => c.name);
+    const availableItemNames = useSelector((state) => state.items.items).map(c => c.name);
+
+    console.log(availableRaceNames);
+
+    //  const user = useSelector((state) => state.auth.user);
 
     useEffect(() => {
-        const fetchData = async (category, setFunction) => {
-            try {
-                const response = await axios.post('/api/${category}/fetch${category.charAt(0)toUpperCase() + category.slice(1)}');
-                if (response.data && response.data[category]) {
-                    setFunction(response.data[category]);
-                }
-            } catch (error) {
-                console.error('Error fetching ${category}', error);
-            }
-        };
 
         fetchData("races", setAvailableRaces);
         fetchData("classes", setAvailableClasses);
@@ -375,9 +388,9 @@ export default function Characters({ mode, theme, colorMode }) {
                                             value={characterRace}
                                             onChange={(event) => setCharacterRace(event.target.value)}
                                         >
-                                            {availableRaces.map((race) => (
-                                                <MenuItem key={race} value={race}>
-                                                    {race}
+                                            {availableRaceNames.map((name, index) => (
+                                                <MenuItem key={index} value={name}>
+                                                    {name}
                                                 </MenuItem>
                                             ))}
                                         </Select>
@@ -392,9 +405,9 @@ export default function Characters({ mode, theme, colorMode }) {
                                             value={characterClass}
                                             onChange={(event) => setCharacterClass(event.target.value)}
                                         >
-                                            {availableClasses.map((charClass) => (
-                                                <MenuItem key={charClass} value={charClass}>
-                                                    {charClass}
+                                            {availableClassNames.map((name, index) => (
+                                                <MenuItem key={index} value={name}>
+                                                    {name}
                                                 </MenuItem>
                                             ))}
                                         </Select>
@@ -431,9 +444,9 @@ export default function Characters({ mode, theme, colorMode }) {
                                             value={characterBackground}
                                             onChange={(event) => setCharacterBackground(event.target.value)}
                                         >
-                                            {availableBackgrounds.map((bg) => (
-                                                <MenuItem key={bg} value={bg}>
-                                                    {bg}
+                                            {availableBackgroundNames.map((name, index) => (
+                                                <MenuItem key={index} value={name}>
+                                                    {name}
                                                 </MenuItem>
                                             ))}
                                         </Select>
@@ -450,10 +463,10 @@ export default function Characters({ mode, theme, colorMode }) {
                                             onChange={(event) => setCharacterSpell(event.target.value)}
                                             renderValue={(selected) => selected.join(", ")}
                                         >
-                                            {availableSpells.map((item) => (
-                                                <MenuItem key={item} value={item}>
-                                                    <Checkbox checked={characterSpell.includes(item)} color="primary" />
-                                                    {item}
+                                            {availableSpellNames.map((name, index) => (
+                                                <MenuItem key={index} value={name}>
+                                                    <Checkbox checked={characterSpell.includes(index)} color="primary" />
+                                                    {name}
                                                 </MenuItem>
                                             ))}
 
@@ -471,10 +484,10 @@ export default function Characters({ mode, theme, colorMode }) {
                                             onChange={(event) => setCharacterInventory(event.target.value)}
                                             renderValue={(selected) => selected.join(", ")}
                                         >
-                                            {availableItems.map((item) => (
-                                                <MenuItem key={item} value={item}>
-                                                    <Checkbox checked={characterInventory.includes(item)} color="primary" />
-                                                    {item}
+                                            {availableItemNames.map((name, index) => (
+                                                <MenuItem key={index} value={name}>
+                                                    <Checkbox checked={characterSpell.includes(index)} color="primary" />
+                                                    {name}
                                                 </MenuItem>
                                             ))}
                                         </Select>

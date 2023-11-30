@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { GET_ERRORS, SET_RACES } from "./types";
+import { GET_ERRORS, SET_RACES, SET_RACE_NAMES } from "./types";
 
 const api = axios.create(); // Axios instance called api
 
@@ -38,10 +38,29 @@ export const fetchRaces = () => dispatch => { // Action creator function
         });
 };
 
-// Set races
-export const setRaces = races => { // Action creator function
-    return { // Update Redux store's races with provided data
-        type: SET_RACES,
-        payload: races
-    };
+export const getRaceNames = () => (dispatch) => {
+    api
+        .post("/action/getRaceNames", raceData)
+        .then((res) => {
+            const raceNames = res.data.raceNames;
+            dispatch({
+                type: SET_RACE_NAMES,
+                payload: raceNames,
+            });
+        })
+        .catch((err) => {
+            console.error("Error:", err);
+            let errorData = {};
+            if (err.response) {
+                errorData = err.response.data;
+            } else if (err.request) {
+                errorData = { message: "No response received from server." };
+            } else {
+                errorData = { message: err.message };
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errorData,
+            });
+        });
 };

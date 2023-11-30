@@ -37,4 +37,37 @@ router.post("/fetchMonsters", async (req, res) => {
     }
 });
 
+// define a GET route at /getMonsterNames
+router.get("/getMonsterNames", async (req, res) => {
+    try {
+        console.log("Received get monster names request"); // log receipt of get monster names request
+
+        const monstersResponse = await axios.post(url + '/find', { 
+            collection: req.body.collection,
+            database: req.body.database,
+            dataSource: req.body.dataSource
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': apiKey
+            }
+        });
+
+        // If the monster exists
+        if (monstersResponse && monstersResponse.data && monstersResponse.data.documents) {
+            // Extract names from each monster object
+            const monsterNames = monstersResponse.data.documents.map(monster => monster.name);
+            
+            // Return the names directly as JSON
+            res.json({ monsterNames });
+        } else {
+            // If monster does not exist, return error message
+            res.status(400).json({ error: "Monsters not found." });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error processing the request." });
+    }
+});
+
 module.exports = router;

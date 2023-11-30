@@ -37,4 +37,37 @@ router.post("/fetchBackgrounds", async (req, res) => {
     }
 });
 
+// define a GET route at /getBackgroundNames
+router.get("/getBackgroundNames", async (req, res) => {
+    try {
+        console.log("Received get background names request"); // log receipt of get background names request
+
+        const backgroundsResponse = await axios.post(url + '/find', { 
+            collection: req.body.collection,
+            database: req.body.database,
+            dataSource: req.body.dataSource
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': apiKey
+            }
+        });
+
+        // If the background exists
+        if (backgroundsResponse && backgroundsResponse.data && backgroundsResponse.data.documents) {
+            // Extract names from each background object
+            const backgroundNames = backgroundsResponse.data.documents.map(background => background.name);
+            
+            // Return the names directly as JSON
+            res.json({ backgroundNames });
+        } else {
+            // If background does not exist, return error message
+            res.status(400).json({ error: "Backgrounds not found." });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error processing the request." });
+    }
+});
+
 module.exports = router;

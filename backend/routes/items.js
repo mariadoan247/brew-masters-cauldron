@@ -37,4 +37,37 @@ router.post("/fetchItems", async (req, res) => {
     }
 });
 
+// define a GET route at /getItemNames
+router.get("/getItemNames", async (req, res) => {
+    try {
+        console.log("Received get item names request"); // log receipt of get item names request
+
+        const itemsResponse = await axios.post(url + '/find', { 
+            collection: req.body.collection,
+            database: req.body.database,
+            dataSource: req.body.dataSource
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': apiKey
+            }
+        });
+
+        // If the item exists
+        if (itemsResponse && itemsResponse.data && itemsResponse.data.documents) {
+            // Extract names from each item object
+            const itemNames = itemsResponse.data.documents.map(item => item.name);
+            
+            // Return the names directly as JSON
+            res.json({ itemNames });
+        } else {
+            // If item does not exist, return error message
+            res.status(400).json({ error: "Items not found." });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error processing the request." });
+    }
+});
+
 module.exports = router;
