@@ -21,6 +21,12 @@ import setAuthToken from './utils/setAuthToken';
 import store from './store';
 import Characters from './components/pages/createCharacter.component';
 import { fetchRaces } from "./actions/raceActions"
+import { fetchClasses } from "./actions/classActions"
+import { fetchBackgrounds } from "./actions/backgroundActions"
+import { fetchSpells } from "./actions/spellActions"
+import { fetchItems } from "./actions/itemActions"
+import { fetchFeats } from "./actions/featActions"
+import { fetchMonsters } from "./actions/monsterActions"
 import { useDispatch } from "react-redux";
 
 function App() {
@@ -52,7 +58,38 @@ function App() {
       dispatch(fetchRaces());
     };
 
+    const getClasses = () => {
+      dispatch(fetchClasses());
+    };
+
+    const getBackgrounds = () => {
+      dispatch(fetchBackgrounds());
+    };
+
+    const getSpells = () => {
+      dispatch(fetchSpells());
+    };
+
+    const getItems = () => {
+      dispatch(fetchItems());
+    };
+
+    const getFeats = () => {
+      dispatch(fetchFeats());
+    };
+
+    const getMonsters = () => {
+      dispatch(fetchMonsters());
+    };
+
     getRaces();
+    getClasses();
+    getBackgrounds();
+    getSpells();
+    getItems();
+    getFeats();
+    getMonsters();
+    
   }, [dispatch]);
   const [mode, setMode] = React.useState("dark");
   const colorMode = React.useMemo(
