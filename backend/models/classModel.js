@@ -9,19 +9,19 @@ let ClassSchema = new Schema (
         "items": {
             "type": "object",
             "properties": {
-                "name": {
+                "name": { //done (twice)
                     "type": "string"
                 },
-                "hd": {
+                "hd": { //done
                     "type": "number"
                 },
-                "proficiency": {
+                "proficiency": { //done
                     "type": "string"
                 },
-                "spellAbility": {
+                "spellAbility": { //done
                     "type": "string"
                 },
-                "numSkills": {
+                "numSkills": { //done
                     "type": "number"
                 },
                 "autolevel": {
@@ -67,29 +67,29 @@ let ClassSchema = new Schema (
                                     "modifier"
                                 ]
                             },
-                            "slots": {
+                            "slots": { //done
                                 "type": "string"
                             }
                         },
                         "required": []
                     }
                 },
-                "armor": {
+                "armor": { //done
                     "type": "string"
                 },
-                "weapons": {
+                "weapons": { //done
                     "type": "string"
                 },
-                "tools": {
+                "tools": { //done
                     "type": "string"
                 },
-                "wealth": {
+                "wealth": { //done
                     "type": "string"
                 },
                 "isHomebrew": {
                     "type": "boolean"
                 },
-                "public": {
+                "public": { //shouldn't be publicly displayed
                     "type": "boolean"
                 }
             },
