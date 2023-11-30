@@ -11,7 +11,6 @@ import { Grid, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../wrappers/NavBar";
 import AppBarTest from "../wrappers/AppBarTest";
-import { AppBarComponent } from "../wrappers/AppBar";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -51,7 +50,7 @@ function createData(name, code, population, size) {
   return { name, code, population, size, density };
 }
 
-const rows = [
+const initialRows = [
   createData("India", "IN", 1324171354, 3287263),
   createData("China", "CN", 1403500365, 9596961),
   createData("Italy", "IT", 60483973, 301340),
@@ -72,6 +71,29 @@ const rows = [
 export default function Backgrounds({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [sortedColumn, setSortedColumn] = React.useState(null);
+  const [sortDirection, setSortDirection] = React.useState("asc");
+  const [rows, setRows] = React.useState(initialRows);
+
+  const sortData = (data, sortBy, direction) => {
+    const sortedData = [...data].sort((a, b) => {
+      if (direction === "asc") {
+        return a[sortBy] > b[sortBy] ? 1 : -1;
+      } else {
+        return a[sortBy] < b[sortBy] ? 1 : -1;
+      }
+    });
+
+    return sortedData;
+  };
+
+  const handleSort = (columnId) => {
+    const isAsc = sortedColumn === columnId && sortDirection === "asc";
+    const newDirection = isAsc ? "desc" : "asc";
+    setSortDirection(newDirection);
+    setSortedColumn(columnId);
+    setRows(sortData(rows, columnId, newDirection));
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -89,9 +111,9 @@ export default function Backgrounds({ mode, theme, colorMode }) {
         sx={{
           marginTop: "140px",
           marginLeft: "50px",
-          minHeight: "150vh", // Set a minimum height for the container
-          display: "flex", // Make it a flex container
-          flexDirection: "column", // Stack children vertically
+          minHeight: "150vh",
+          display: "flex",
+          flexDirection: "column",
           width: "95%",
         }}
       >
@@ -114,7 +136,8 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      style={{ minWidth: column.minWidth }}
+                      style={{ minWidth: column.minWidth, cursor: "pointer" }}
+                      onClick={() => handleSort(column.id)}
                     >
                       {column.label}
                     </TableCell>
@@ -136,10 +159,6 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {/* {column.format && typeof value === 'number'
-                                                                        ? column.format(value)
-                                                                        : value}
-                              {/* Render Name as a link */}
                               {column.id === "name" ? (
                                 <Link to={`/backgrounds/${row.name}`}>
                                   {value}
