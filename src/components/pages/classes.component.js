@@ -1,12 +1,12 @@
-import { Grid } from "@mui/material";
-import * as React from "react";
-import { Container, Stack, Typography } from "@mui/material";
+import * as React from 'react';
+import { Grid, Container, Stack, Typography } from "@mui/material";
 import { BlogPostCard } from "../../sections/@dashboard/blog";
-import PRODUCTS from "../../_mock/products";
 import NavBar from "../navbar";
+import { useSelector } from 'react-redux';
 
 export default function Classes({ mode, theme, colorMode }) {
-  const filteredClasses = PRODUCTS; // Use all classes without filtering
+  //const filteredClasses = PRODUCTS; // Use all classes without filtering
+  const classes = useSelector((state) => state.classes.classes);
 
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -22,8 +22,8 @@ export default function Classes({ mode, theme, colorMode }) {
           </Typography>
         </Stack>
         <Grid container spacing={3}>
-          {filteredClasses.map((classes) => (
-            <BlogPostCard key={classes.id} post={classes} />
+          {Array.isArray(classes) && classes.map((classObj) => ( // Use all posts without filtering
+            <BlogPostCard key={classObj._id} post={classObj} />
           ))}
         </Grid>
       </Container>

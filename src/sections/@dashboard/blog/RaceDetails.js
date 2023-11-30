@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-export default function BlogPostDetail({ mode, theme, colorMode }) {
+export default function BlogRaceDetail({ mode, theme, colorMode }) {
     const { postId } = useParams();
     const races = useSelector((state) => state.races.races);
     const raceDetails = races.find((race) => race._id === postId);
