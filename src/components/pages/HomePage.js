@@ -3,7 +3,6 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -27,6 +26,7 @@ import FaceRetouchingOffIcon from "@mui/icons-material/FaceRetouchingOff";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { isUserAuthenticated } from "../../actions/authActions";
+import { AppBarComponent } from "../wrappers/AppBar";
 
 const drawerWidth = 240;
 
@@ -61,24 +61,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -98,7 +80,6 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
-
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -122,7 +103,7 @@ export default function MyApp({ mode, theme, colorMode }) {
     <Box>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppBar position="fixed" open={open}>
+        <AppBarComponent position="fixed" open={open}>
           <Toolbar>
             <img
               src="/logo.png"
@@ -132,23 +113,23 @@ export default function MyApp({ mode, theme, colorMode }) {
               alt="logo.png"
               width="40"
               height="40"
-            ></img>
+            />
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
                 const authenticated = isUserAuthenticated();
                 console.log(authenticated);
                 if (authenticated) {
-                  navigate("/userAccount", { mode, theme })
+                  navigate("/userAccount", { mode, theme });
                 } else {
-                  navigate("/signin", { mode, theme })
+                  navigate("/signin", { mode, theme });
                 }
               }}
             >
               {<AccountCircleIcon />}
             </IconButton>
           </Toolbar>
-        </AppBar>
+        </AppBarComponent>
         <div
           sx={{ display: "flex" }}
           onMouseEnter={handleMouseEnter}

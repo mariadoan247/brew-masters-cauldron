@@ -1,7 +1,5 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -105,7 +103,10 @@ export default function Spells({ mode, theme, colorMode }) {
           <Grid container spacing={10} alignItems="center">
             <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
           </Grid>
-          <AppBarTest>
+          <AppBarTest
+            selectedTab={selectedTab}
+            handleChangeTab={() => handleChangeTab()}
+          >
             <Typography color="inherit" variant="h5" component="h1">
               Spells
             </Typography>

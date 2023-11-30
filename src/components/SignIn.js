@@ -1,44 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
-import { signInUser } from '../actions/authActions';
+import React, { useState, useEffect } from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { ThemeProvider } from "@mui/material/styles";
+import { signInUser } from "../actions/authActions";
 import { connect } from "react-redux";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
 
-
 function SignIn({ auth, errors: propErrors, ...props }, theme) {
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const dispatch = useDispatch();
@@ -48,15 +50,14 @@ function SignIn({ auth, errors: propErrors, ...props }, theme) {
 
   useEffect(() => {
     if (propErrors) {
-        setErrors(propErrors);
+      setErrors(propErrors);
     }
   }, [propErrors]);
-
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -67,38 +68,41 @@ function SignIn({ auth, errors: propErrors, ...props }, theme) {
 
   return (
     <ThemeProvider theme={theme}>
-       <CssBaseline />
+      <CssBaseline />
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="back"
-            component={RouterLink}
-            to="/" // Link it to your home page
-          >
-            <ArrowBackIcon />
-            Back to Home
-          </IconButton>
+          <img
+            src="/logo.png"
+            onClick={() => {
+              navigate("/");
+            }}
+            alt="logo.png"
+            width="40"
+            height="40"
+          />
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="xs">
-       
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               onChange={handleChange}
               value={formData.email}
@@ -141,12 +145,16 @@ function SignIn({ auth, errors: propErrors, ...props }, theme) {
             </Button>
             <Grid container>
               <Grid item xs>
-              <Link component={RouterLink} to="/forgotpassword" variant="body2">
+                <Link
+                  component={RouterLink}
+                  to="/forgotpassword"
+                  variant="body2"
+                >
                   {"Forgot password?"}
                 </Link>
               </Grid>
               <Grid item>
-              <Link component={RouterLink} to="/signup" variant="body2">
+                <Link component={RouterLink} to="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -159,9 +167,9 @@ function SignIn({ auth, errors: propErrors, ...props }, theme) {
   );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
 });
 
 export default connect(mapStateToProps, { signInUser })(SignIn);

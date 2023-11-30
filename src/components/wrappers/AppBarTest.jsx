@@ -26,10 +26,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const AppBarTest = ({selectedTab, children }) => {
-  const handleChangeTab = () => {
-    // Handle tab change logic here
-  };
+const AppBarTest = ({ selectedTab, handleChangeTab, children }) => {
   return (
     <>
       <AppBar
@@ -78,7 +75,7 @@ const AppBarTest = ({selectedTab, children }) => {
           sx={{ marginTop: -0.5, marginBottom: 2 }}
         >
           {" "}
-          description of backgrounds goes here{" "}
+          description goes here{" "}
         </Typography>
       </AppBar>
     </>
