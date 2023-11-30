@@ -1,3 +1,4 @@
+<<<<<<<< HEAD:src/components/SignIn.js
 import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,6 +17,28 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import { signInUser } from "../actions/authActions";
+========
+import React, { useState, useEffect } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { ThemeProvider } from '@mui/material/styles';
+import { signInUser } from '../../actions/authActions';
+>>>>>>>> origin:src/components/account/signIn.component.js
 import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
 

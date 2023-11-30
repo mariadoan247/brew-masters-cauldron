@@ -1,8 +1,9 @@
 import { TextField } from "@mui/material";
-import * as React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,7 +27,13 @@ import FaceRetouchingOffIcon from "@mui/icons-material/FaceRetouchingOff";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { isUserAuthenticated } from "../../actions/authActions";
-import { AppBarComponent } from "../wrappers/AppBar";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import Button from "@mui/material/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { updateNotes } from "../../actions/userActions";
+import { format } from "date-fns";
+import { fetchUserNotes } from "../../actions/userActions";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const drawerWidth = 240;
 
@@ -61,6 +68,24 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(["width", "margin"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -80,6 +105,36 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
+  const [showNotes, setShowNotes] = React.useState(false);
+  const [userNotes, setUserNotes] = React.useState("");
+  const dispatch = useDispatch();
+  const isAuthenticated = isUserAuthenticated();
+  const userEmail = useSelector((state) => state.auth.user.email);
+  const notes = useSelector((state) => state.notes.notes);
+
+  useEffect(() => {
+    // Function to fetch user notes
+    const getUserNotes = () => {
+      if (userEmail) {
+        dispatch(fetchUserNotes(userEmail));
+      }
+    };
+
+    getUserNotes();
+  }, [userEmail, dispatch]);
+
+  const handleSaveNote = () => {
+    if (userNotes.trim()) {
+      const noteObject = {
+        details: userNotes,
+        dateUpdated: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+      };
+      const updatedNotes = [noteObject, ...notes];
+      dispatch(updateNotes(userEmail, updatedNotes));
+      setUserNotes(""); // Clear the textarea after saving
+      setShowNotes(false); // Hide the notes section after saving
+    }
+  };
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -103,7 +158,7 @@ export default function MyApp({ mode, theme, colorMode }) {
     <Box>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppBarComponent position="fixed" open={open}>
+        <AppBar position="fixed" open={open}>
           <Toolbar>
             <img
               src="/logo.png"
@@ -113,13 +168,51 @@ export default function MyApp({ mode, theme, colorMode }) {
               alt="logo.png"
               width="40"
               height="40"
-            />
+            ></img>
+            <div style={{ flex: 1 }} />
+            {isAuthenticated && (
+              <IconButton
+                sx={{ alignSelf: "center" }}
+                onClick={() => {
+                  setShowNotes(!showNotes); // Toggle the notes section
+                }}
+              >
+                <EditNoteIcon /> {/* Notes Icon */}
+              </IconButton>
+            )}
+            {showNotes && isAuthenticated && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "65px", // Adjust the top position as needed
+                  right: "20px", // Adjust the right position as needed
+                  backgroundColor: theme.palette.background.paper,
+                  padding: "10px",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <textarea
+                    rows="5"
+                    cols="30"
+                    placeholder="Write your notes here..."
+                    value={userNotes}
+                    onChange={(e) => setUserNotes(e.target.value)}
+                  ></textarea>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ marginTop: "10px" }}
+                    onClick={handleSaveNote}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            )}
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
-                const authenticated = isUserAuthenticated();
-                console.log(authenticated);
-                if (authenticated) {
+                if (isAuthenticated) {
                   navigate("/userAccount", { mode, theme });
                 } else {
                   navigate("/signin", { mode, theme });
@@ -129,7 +222,7 @@ export default function MyApp({ mode, theme, colorMode }) {
               {<AccountCircleIcon />}
             </IconButton>
           </Toolbar>
-        </AppBarComponent>
+        </AppBar>
         <div
           sx={{ display: "flex" }}
           onMouseEnter={handleMouseEnter}
@@ -209,6 +302,36 @@ export default function MyApp({ mode, theme, colorMode }) {
             <div style={{ flexGrow: 1 }} />{" "}
             {/* Add a flexible div to push the theme toggle icon to the bottom */}
             <Divider />
+            <List>
+              <ListItem key="CreateCharacter" disablePadding>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                  onClick={() => {
+                    // Handle navigation to the survey page for creating a character
+                    navigate("/characters");
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <AssignmentIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    color="inherit"
+                    primary="Create A Character"
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
             <IconButton
               onClick={() => colorMode.toggleColorMode()}
               color="inherit"
@@ -221,6 +344,7 @@ export default function MyApp({ mode, theme, colorMode }) {
             </IconButton>
           </Drawer>
         </div>
+
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>

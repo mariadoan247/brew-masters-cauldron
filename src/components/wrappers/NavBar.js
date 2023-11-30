@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -27,7 +27,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import { isUserAuthenticated } from "../../actions/authActions";
+import { isUserAuthenticated } from "../actions/authActions";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import Button from "@mui/material/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { updateNotes } from "../actions/userActions";
+import { format } from "date-fns";
+import { fetchUserNotes } from "../actions/userActions";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const drawerWidth = 240;
 
@@ -54,18 +61,10 @@ const closedMixin = (theme) => ({
   },
 });
 
-// const DrawerHeader = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "flex-end",
-//   padding: theme.spacing(0, 1),
-//   ...theme.mixins.toolbar,
-// }));
-
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.drawer + 2,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -83,6 +82,7 @@ const AppBar = styled(MuiAppBar, {
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
@@ -131,7 +131,37 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar({ mode, theme, colorMode, children }) {
   const [open, setOpen] = React.useState(false);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
+  const [showNotes, setShowNotes] = useState(false);
+  const [userNotes, setUserNotes] = useState("");
+  const dispatch = useDispatch();
+  const isAuthenticated = isUserAuthenticated();
+  const userEmail = useSelector((state) => state.auth.user.email);
+  const notes = useSelector((state) => state.notes.notes);
+
+  useEffect(() => {
+    // Function to fetch user notes
+    const getUserNotes = () => {
+      if (userEmail) {
+        dispatch(fetchUserNotes(userEmail));
+      }
+    };
+
+    getUserNotes();
+  }, [userEmail, dispatch]);
+
+  const handleSaveNote = () => {
+    if (userNotes.trim()) {
+      const noteObject = {
+        details: userNotes,
+        dateUpdated: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+      };
+      const updatedNotes = [noteObject, ...notes];
+      dispatch(updateNotes(userEmail, updatedNotes));
+      setUserNotes(""); // Clear the textarea after saving
+      setShowNotes(false); // Hide the notes section after saving
+    }
+  };
 
   const handleMouseEnter = () => {
     if (!open) {
@@ -179,15 +209,52 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                 </FormControl>
               </form>
             </SearchBoxContainer>
+            {isAuthenticated && (
+              <IconButton
+                sx={{ alignSelf: "center" }}
+                onClick={() => {
+                  setShowNotes(!showNotes); // Toggle the notes section
+                }}
+              >
+                <EditNoteIcon /> {/* Notes Icon */}
+              </IconButton>
+            )}
+            {showNotes && isAuthenticated && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "65px", // Adjust the top position as needed
+                  right: "20px", // Adjust the right position as needed
+                  backgroundColor: theme.palette.background.paper,
+                  padding: "10px",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <textarea
+                    rows="5"
+                    cols="30"
+                    placeholder="Write your notes here..."
+                    value={userNotes}
+                    onChange={(e) => setUserNotes(e.target.value)}
+                  ></textarea>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ marginTop: "10px" }}
+                    onClick={handleSaveNote}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            )}
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
-                const authenticated = isUserAuthenticated();
-                console.log(authenticated);
-                if (authenticated) {
-                  navigate("/userAccount", { mode, theme })
+                if (isAuthenticated) {
+                  navigate("/userAccount", { mode, theme });
                 } else {
-                  navigate("/signin", { mode, theme })
+                  navigate("/signin", { mode, theme });
                 }
               }}
             >
@@ -271,9 +338,38 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                 </ListItem>
               ))}
             </List>
-            <div style={{ flexGrow: 1 }} />{" "}
-            {/* Add a flexible div to push the theme toggle icon to the bottom */}
-            <Divider />
+            <div style={{ flexGrow: 1 }} /> <Divider />
+            {/*TODO: add an icon that navigates to a new page where the user can build new dungeons and dragon characters */}
+            <List>
+              <ListItem key="Characters" disablePadding>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                  onClick={() => {
+                    // Handle navigation to the survey page for creating a character
+                    navigate("/characters");
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <AssignmentIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    color="inherit"
+                    primary="Create A Character"
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
             <IconButton
               onClick={() => colorMode.toggleColorMode()}
               color="inherit"
@@ -286,7 +382,7 @@ export default function NavBar({ mode, theme, colorMode, children }) {
             </IconButton>
           </Drawer>
         </div>
-        {/* //insert here */}
+
         {children}
       </ThemeProvider>
     </Box>

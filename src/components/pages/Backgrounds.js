@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import { Grid, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../wrappers/NavBar";
-import AppBarTest from "../wrappers/AppBarTest";
+import AppBar from "../wrappers/AppBar";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -121,11 +121,11 @@ export default function Backgrounds({ mode, theme, colorMode }) {
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
 
-        <AppBarTest>
+        <AppBar>
           <Typography color="inherit" variant="h5" component="h1">
             Backgrounds
           </Typography>
-        </AppBarTest>
+        </AppBar>
 
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>

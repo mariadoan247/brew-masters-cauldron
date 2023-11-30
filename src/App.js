@@ -14,13 +14,23 @@ import Inventory from "./components/pages/Inventory";
 import Monsters from "./components/pages/Monsters";
 import Feats from "./components/pages/Feats";
 import Account from "./components/UserAccount";
-import BlogPostDetail from "./sections/@dashboard/blog/BlogPostDetail";
+import BlogPostDetail from "./sections/@dashboard/blog/RaceDetails";
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser } from './actions/authActions';
 import setAuthToken from './utils/setAuthToken';
 import store from './store';
+import Characters from './components/pages/createCharacter.component';
+import { fetchRaces } from "./actions/raceActions"
+import { fetchClasses } from "./actions/classActions"
+import { fetchBackgrounds } from "./actions/backgroundActions"
+import { fetchSpells } from "./actions/spellActions"
+import { fetchItems } from "./actions/itemActions"
+import { fetchFeats } from "./actions/featActions"
+import { fetchMonsters } from "./actions/monsterActions"
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch();
   useEffect(() => {
     // Check for token
     if (localStorage.jwtToken) {
@@ -42,6 +52,45 @@ function App() {
       }
     }
   }, []);
+  useEffect(() => {
+    // Function to fetch user notes
+    const getRaces = () => {
+      dispatch(fetchRaces());
+    };
+
+    const getClasses = () => {
+      dispatch(fetchClasses());
+    };
+
+    const getBackgrounds = () => {
+      dispatch(fetchBackgrounds());
+    };
+
+    const getSpells = () => {
+      dispatch(fetchSpells());
+    };
+
+    const getItems = () => {
+      dispatch(fetchItems());
+    };
+
+    const getFeats = () => {
+      dispatch(fetchFeats());
+    };
+
+    const getMonsters = () => {
+      dispatch(fetchMonsters());
+    };
+
+    getRaces();
+    getClasses();
+    getBackgrounds();
+    getSpells();
+    getItems();
+    getFeats();
+    getMonsters();
+    
+  }, [dispatch]);
   const [mode, setMode] = React.useState("dark");
   const colorMode = React.useMemo(
     () => ({
@@ -140,6 +189,12 @@ function App() {
               path="/feats"
               element={
                 <Feats mode={mode} theme={theme} colorMode={colorMode} />
+              }
+            />
+            <Route
+              path="/characters"
+              element={
+                <Characters mode={mode} theme={theme} colorMode={colorMode} />
               }
             />
           </Routes>
