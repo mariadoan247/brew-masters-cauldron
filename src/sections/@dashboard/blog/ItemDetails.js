@@ -48,8 +48,8 @@ export default function BlogItemDetail({ mode, theme, colorMode }) {
                     <Typography variant="subtitle1" gutterBottom>
                         Weight: {itemDetails.weight || "none"}
                     </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Text: {itemDetails.text.join(' ') || "text function did not work"}
+                    <Typography variant="body2" color="textSecondary">
+                        {itemDetails.text.join(' ') || "text function did not work"}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
                         Magic: {itemDetails.magic || "none"}
