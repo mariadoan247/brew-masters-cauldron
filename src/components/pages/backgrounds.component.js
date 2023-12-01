@@ -15,6 +15,7 @@ import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
 
 const drawerWidth = 240;
 
@@ -69,10 +70,7 @@ const columns = [
   },
 ];
 
-function createData(name, source, skills, languages, tools, gold) {
-  return { name, source, skills, languages, tools, gold };
-}
-
+/*
 const initialRows = [
   createData(
     "Acolyte (Background)",
@@ -99,13 +97,13 @@ const initialRows = [
     "25 gp"
   ),
 ];
+*/
 
 export default function Backgrounds({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState(initialRows);
   const backgrounds = useSelector((state) => state.backgrounds.backgrounds);
 
   const sortData = (data, sortBy, direction) => {
@@ -125,7 +123,6 @@ export default function Backgrounds({ mode, theme, colorMode }) {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-    setRows(sortData(rows, columnId, newDirection));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -215,24 +212,23 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
+                  {backgrounds
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
+                  .map((background) => {
                     return (
                       <TableRow
                         hover
                         role="checkbox"
                         tabIndex={-1}
-                        key={row.code}
+                        key={background._id}
                       >
                         {columns.map((column) => {
-                          const value = row[column.id];
+                          const value = background[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {column.id === "name" ? (
-                                <Link to={`/backgrounds/${row.name}`}>
-                                  {value}
-                                </Link>
+                                // Using BlogPostCard for rendering the title as a hyperlink
+                                <BlogPostCard key={background._id} post={background} />
                               ) : column.format && typeof value === "number" ? (
                                 column.format(value)
                               ) : (
@@ -250,7 +246,7 @@ export default function Backgrounds({ mode, theme, colorMode }) {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={backgrounds.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

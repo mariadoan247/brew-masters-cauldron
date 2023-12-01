@@ -27,7 +27,7 @@ export default function BlogBackgroundDetail({ mode, theme, colorMode }) {
 
     const mainFeaturedPost = {
         title: backgroundDetails.name,
-        description: "Description here",
+        description: "",
         image: backgroundDetails.image,
         imageText: 'main image description',
     };
@@ -35,9 +35,24 @@ export default function BlogBackgroundDetail({ mode, theme, colorMode }) {
     // Helper function to render traits
     const renderTrait = (trait) => (
         <ListItem key={trait.name}>
-            <ListItemText primary={trait.name} secondary={trait.text.join(' ')} />
+          <ListItemText
+            primary={trait.name}
+            secondary={
+              Array.isArray(trait.text) ? (
+                <div dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(trait.text.join(" ")) }} />
+              ) : (
+                decodeHtmlEntities(trait.text)
+              )
+            }
+          />
         </ListItem>
-    );
+      );
+      
+      function decodeHtmlEntities(html) {
+        const txt = document.createElement('textarea');
+        txt.innerHTML = html;
+        return txt.value;
+      }      
 
     return (
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>

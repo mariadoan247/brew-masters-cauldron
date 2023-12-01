@@ -53,21 +53,21 @@ export default function BlogPostCard({ post }) {
   const pathSegments = location.pathname.split('/');
   const category = pathSegments[1] || null;
   
-  console.log(location)
-  console.log(category)
+  const showImage = ['races', 'classes'].includes(category)
+
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <RouterLink to={category ? `/${category}/blog/${post._id}` : `/blog/${post._id}`} style={{ textDecoration: 'none' }}>
         <Card sx={{ position: 'relative' }}>
           <StyledCardMedia sx={{ pt: 'calc(100% * 4 / 3)' }}>
-            <StyledCover alt={name} src={image} />
+          <StyledCover alt={name} src={image} />
           </StyledCardMedia>
 
           <StyledCardContent>
             <StyledTitle
               color="inherit"
               variant="subtitle2"
-              to={category ? `/${category}/blog/${post._id}` : `/blog/${post.__id}`}
+              to={category ? `/${category}/blog/${post._id}` : `/blog/${post._id}`}
             >
               {name}
             </StyledTitle>
