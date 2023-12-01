@@ -73,8 +73,7 @@ export default function BlogClassDetail({ mode, theme, colorMode }) {
         const armor = classDetails.autolevel.map((feature) => feature.feature?.armor || "No armor");
         const weapons = classDetails.autolevel.map((feature) => feature.feature?.weapons || "No weapons");
         const tools = classDetails.autolevel.map((feature) => feature.feature?.tools || "No tools");
-        const wealth = classDetails.autolevel.map((feature) => feature.feature?.wealth || "No wealth");
-
+        const wealth = classDetails.autolevel.map((feature) => feature.feature?.wealth || "No wealth"); 
     return ( 
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
             <Container maxWidth="lg" sx={{ my: 5 }}>
