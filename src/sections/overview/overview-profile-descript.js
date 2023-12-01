@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -42,6 +42,10 @@ export const OverviewProfileDescript = (props) => {
     setOpenSaveDialog(false);
     setProfileDescription(initialDescription);
   };
+
+  useEffect(() => {
+    setProfileDescription(initialDescription);
+  }, [initialDescription]);
 
   return (
     <Card sx={sx}>
