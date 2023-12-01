@@ -75,7 +75,7 @@ export default function BlogClassDetail({ mode, theme, colorMode }) {
         const tools = classDetails.autolevel.map((feature) => feature.feature?.tools || "No tools");
         const wealth = classDetails.autolevel.map((feature) => feature.feature?.wealth || "No wealth");
 
-    return (
+    return ( 
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
             <Container maxWidth="lg" sx={{ my: 5 }}>
                 <MainFeaturedPost post={mainFeaturedPost} />
