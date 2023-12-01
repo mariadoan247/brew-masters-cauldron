@@ -57,6 +57,7 @@ export default function UserAccount({ mode, theme, colorMode }) {
               <OverviewProfileDescript
                 //TODO: MAKE PROFILE DEETS HERE
                 username={user?.name || 'Loading...'}
+                initialDescription={user?.description || 'Please write your profile description here!'}
                 onSaveDescription={(userDescription) => dispatch(updateUserDescription(user.email, userDescription))}
               />
               
