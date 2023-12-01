@@ -62,7 +62,7 @@ export const OverviewProfileDescript = (props) => {
             
           />
         ) : (
-          <div>{profileDescription || 'Please write your profile description here!'}</div>
+          <div>{profileDescription}</div>
         )}
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end' }}>
