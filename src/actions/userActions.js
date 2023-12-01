@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { GET_ERRORS, SET_USER_NOTES } from "./types";
+import { setCurrentUser } from "./authActions";
 
 const api = axios.create();
 
@@ -10,16 +11,23 @@ const userData = {
     dataSource: "brewmasters-cauldron",
 }
 
+
 // update user description (Stretch goal)
-export const updateUserDescription = (userEmail, userDescription) => dispatch => {
-    userData.filter = userEmail;
+export const updateUserDescription = (userEmail, userDescription) => (dispatch, getState) => {
+    userData.filter.email = userEmail;
     userData.update = {
-        $set: userDescription
+        $set: { description: userDescription }  // Update the description for this user in the database
     };
     api
         .post("/action/updateUserDescription", userData)
         .then(res => {
-            console.log(res.data);
+            const currentState = getState(); // Accessing current state
+            const updatedUser = {
+                ...currentState.auth.user, // Spreading the existing user object
+                description: userDescription // Overwriting description with new value
+            };
+
+            dispatch(setCurrentUser(updatedUser));
         })
         .catch(err => {
             console.error('Error:', err);
@@ -35,7 +43,7 @@ export const updateUserDescription = (userEmail, userDescription) => dispatch =>
             dispatch({
                 type: GET_ERRORS,
                 payload: errorData
-            })
+            });
         });
 };
 
