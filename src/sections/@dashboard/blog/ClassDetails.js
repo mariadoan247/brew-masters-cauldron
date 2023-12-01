@@ -33,64 +33,47 @@ export default function BlogClassDetail({ mode, theme, colorMode }) {
     };
 
     // Helper function to render autolevel features
-    const renderAutoLevelFeature = (feature) => (
-        <Grid container spacing={3} key={feature.name}>
-            <Grid item xs={12}>
-                <Typography variant="subtitle1" gutterBottom>
-                    {feature.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {feature.slots}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {feature.spellAbility}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {feature.proficiency}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {feature.armor}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {feature.weapons}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {feature.tools}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {feature.wealth}
-                </Typography>
-                {feature.feature && (
-                <React.Fragment>
+    const renderAutoLevelFeature = (feature) => {
+        return (
+            <ListItem key={feature.name}>
+                <ListItemText>
                     <Typography variant="subtitle1" gutterBottom>
-                        {feature.feature.name}
+                        {feature.name}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                        {feature.feature.text.join(' ')}
+                        {feature.slots}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                        {feature.feature.modifier || "No modifier"}
+                        {feature.spellAbility}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                        {feature.feature.proficiency || "No proficiency"}
+                        {feature.proficiency}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {feature.feature.armor || "No armor"}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {feature.feature.weapons || "No weapons"}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {feature.feature.tools || "No tools"}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {feature.feature.wealth || "No wealth"}
-                    </Typography>
-                </React.Fragment>
-            )}
-            </Grid>
-        </Grid>
-    );
+                    {feature.feature && (
+                        <>
+                            <Typography variant="subtitle1" gutterBottom>
+                                {feature.feature.name}
+                            </Typography>
+                            {feature.feature.text &&
+                                feature.feature.text
+                                    .filter((text) => text !== null)
+                                    .map((text, index) => (
+                                        <Typography key={index} variant="body2" color="textSecondary">
+                                            {typeof text == 'object' ? JSON.stringify(text): text}
+                                        </Typography>
+                                    ))}
+                        </>
+                    )}
+                </ListItemText>
+            </ListItem>
+        );
+    };
+
+        // Extract attributes for armor, weapons, tools, and wealth from autolevel
+        const armor = classDetails.autolevel.map((feature) => feature.feature?.armor || "No armor");
+        const weapons = classDetails.autolevel.map((feature) => feature.feature?.weapons || "No weapons");
+        const tools = classDetails.autolevel.map((feature) => feature.feature?.tools || "No tools");
+        const wealth = classDetails.autolevel.map((feature) => feature.feature?.wealth || "No wealth");
 
     return (
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -108,6 +91,18 @@ export default function BlogClassDetail({ mode, theme, colorMode }) {
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
                         Spell Ability: {classDetails.spellAbility || "No spell ability for this class"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Armor: {classDetails.armor || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Weapons: {classDetails.weapons || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Tools: {classDetails.tools || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Wealth: {classDetails.wealth || "none"}
                     </Typography>
                 </Box>
                 <Grid container spacing={3}>
