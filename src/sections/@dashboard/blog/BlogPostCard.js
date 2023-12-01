@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
 import { Link, Card, Grid, CardContent } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 const StyledCardMedia = styled('div')({
   position: 'relative',
@@ -48,10 +48,16 @@ BlogPostCard.propTypes = {
 
 export default function BlogPostCard({ post }) {
   const { image, name } = post;
+  const location = useLocation();
 
+  const pathSegments = location.pathname.split('/');
+  const category = pathSegments[1] || null;
+  
+  console.log(location)
+  console.log(category)
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
-      <RouterLink to={`/blog/${post._id}`} style={{ textDecoration: 'none' }}>
+      <RouterLink to={category ? `/${category}/blog/${post._id}` : `/blog/${post._id}`} style={{ textDecoration: 'none' }}>
         <Card sx={{ position: 'relative' }}>
           <StyledCardMedia sx={{ pt: 'calc(100% * 4 / 3)' }}>
             <StyledCover alt={name} src={image} />
@@ -61,7 +67,7 @@ export default function BlogPostCard({ post }) {
             <StyledTitle
               color="inherit"
               variant="subtitle2"
-              to={`/blog/${post._id}`}
+              to={category ? `/${category}/blog/${post._id}` : `/blog/${post.__id}`}
             >
               {name}
             </StyledTitle>

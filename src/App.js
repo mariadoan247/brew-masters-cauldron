@@ -14,7 +14,8 @@ import Inventory from "./components/pages/inventory.component";
 import Monsters from "./components/pages/monsters.component";
 import Feats from "./components/pages/feats.component";
 import Account from "./components/account/userAccount.component";
-import BlogPostDetail from "./sections/@dashboard/blog/RaceDetails";
+import BlogRaceDetail from "./sections/@dashboard/blog/RaceDetails";
+import BlogClassDetail from "./sections/@dashboard/blog/ClassDetails";
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser } from './actions/authActions';
 import setAuthToken from './utils/setAuthToken';
@@ -152,9 +153,19 @@ function App() {
               }
             />
             <Route
-              path="/blog/:postId"
+              path="/races/blog/:postId" // race
               element={
-                <BlogPostDetail
+                <BlogRaceDetail
+                  mode={mode}
+                  theme={theme}
+                  colorMode={colorMode}
+                />
+              }
+            />
+            <Route
+              path="/classes/blog/:postId" // race
+              element={
+                <BlogClassDetail
                   mode={mode}
                   theme={theme}
                   colorMode={colorMode}
