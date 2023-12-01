@@ -105,11 +105,6 @@ router.post("/updateUserDescription", async (req, res) => {
   try {
     console.log("Received update user description request");
 
-    const updatedDescription = new Note({
-        details: req.body.document.details,
-        dateEdited: req.body.document.dateEdited
-    });
-
     const response = await axios.post(url + '/updateOne', {
       collection: req.body.collection,
       database: req.body.database,
@@ -118,7 +113,9 @@ router.post("/updateUserDescription", async (req, res) => {
           email: req.body.filter.email
       },
       update: {
-          $set: req.body.set
+          $set: {
+            description: req.body.update.$set.description
+          }
       }
     }, {
     headers: {

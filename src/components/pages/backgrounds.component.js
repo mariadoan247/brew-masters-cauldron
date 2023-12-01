@@ -1,7 +1,6 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,6 +12,9 @@ import TableRow from "@mui/material/TableRow";
 import { Grid, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../navbar";
+import Toolbar from "@mui/material/Toolbar";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -41,58 +43,90 @@ const columns = [
     id: "skills",
     label: "Skills",
     minWidth: 170,
-    align: "right",
+    align: "left",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "languages",
     label: "Languages",
     minWidth: 170,
-    align: "right",
+    align: "left",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "tools",
     label: "Tools",
     minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
+    align: "left",
+    format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "gold",
     label: "Gold",
     minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
+    align: "left",
+    format: (value) => value.toLocaleString("en-US"),
   },
 ];
 
-function createData(name, code, population, size) {
-  const density = population / size;
-  return { name, code, population, size, density };
+function createData(name, source, skills, languages, tools, gold) {
+  return { name, source, skills, languages, tools, gold };
 }
 
-const rows = [
-  createData("India", "IN", 1324171354, 3287263),
-  createData("China", "CN", 1403500365, 9596961),
-  createData("Italy", "IT", 60483973, 301340),
-  createData("United States", "US", 327167434, 9833520),
-  createData("Canada", "CA", 37602103, 9984670),
-  createData("Australia", "AU", 25475400, 7692024),
-  createData("Germany", "DE", 83019200, 357578),
-  createData("Ireland", "IE", 4857000, 70273),
-  createData("Mexico", "MX", 126577691, 1972550),
-  createData("Japan", "JP", 126317000, 377973),
-  createData("France", "FR", 67022000, 640679),
-  createData("United Kingdom", "GB", 67545757, 242495),
-  createData("Russia", "RU", 146793744, 17098246),
-  createData("Nigeria", "NG", 200962417, 923768),
-  createData("Brazil", "BR", 210147125, 8515767),
+const initialRows = [
+  createData(
+    "Acolyte (Background)",
+    "PHB",
+    "Insight (Wis), Religion (Int)",
+    "Any x2",
+    "None",
+    "15 gp"
+  ),
+  createData(
+    "Anthropologist",
+    "ToA",
+    "Insight (Wis), Religion (Int)",
+    "Any x2",
+    "None",
+    "10 gp"
+  ),
+  createData(
+    "Archaeologist",
+    "ToA",
+    "Insight (Wis), Religion (Int)",
+    "Any x1",
+    "cartographer's tools/navigator's tools",
+    "25 gp"
+  ),
 ];
 
 export default function Backgrounds({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [sortedColumn, setSortedColumn] = React.useState(null);
+  const [sortDirection, setSortDirection] = React.useState("asc");
+  const [rows, setRows] = React.useState(initialRows);
+  const backgrounds = useSelector((state) => state.backgrounds.backgrounds);
+
+  const sortData = (data, sortBy, direction) => {
+    const sortedData = [...data].sort((a, b) => {
+      if (direction === "asc") {
+        return a[sortBy] > b[sortBy] ? 1 : -1;
+      } else {
+        return a[sortBy] < b[sortBy] ? 1 : -1;
+      }
+    });
+
+    return sortedData;
+  };
+
+  const handleSort = (columnId) => {
+    const isAsc = sortedColumn === columnId && sortDirection === "asc";
+    const newDirection = isAsc ? "desc" : "asc";
+    setSortDirection(newDirection);
+    setSortedColumn(columnId);
+    setRows(sortData(rows, columnId, newDirection));
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -110,9 +144,9 @@ export default function Backgrounds({ mode, theme, colorMode }) {
         sx={{
           marginTop: "140px",
           marginLeft: "50px",
-          minHeight: "150vh", // Set a minimum height for the container
-          display: "flex", // Make it a flex container
-          flexDirection: "column", // Stack children vertically
+          minHeight: "150vh",
+          display: "flex",
+          flexDirection: "column",
           width: "95%",
         }}
       >
@@ -151,7 +185,10 @@ export default function Backgrounds({ mode, theme, colorMode }) {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            description of backgrounds goes here{" "}
+            Your character's background reveals where you came from, how you
+            became an adventurer, and your place in the world. Choosing a
+            background provides you with important story cues about your
+            character's identity.{" "}
           </Typography>
         </AppBar>
 
@@ -164,9 +201,15 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      style={{ minWidth: column.minWidth }}
+                      style={{ minWidth: column.minWidth, cursor: "pointer" }}
+                      onClick={() => handleSort(column.id)}
                     >
-                      {column.label}
+                      <Grid container alignItems="center" spacing={1}>
+                        <Grid item>{column.label}</Grid>
+                        <Grid item>
+                          <SwapVertIcon fontSize="small" />
+                        </Grid>
+                      </Grid>
                     </TableCell>
                   ))}
                 </TableRow>
@@ -186,10 +229,6 @@ export default function Backgrounds({ mode, theme, colorMode }) {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {/* {column.format && typeof value === 'number'
-                                                                        ? column.format(value)
-                                                                        : value} */}
-                              {/* Render Name as a link */}
                               {column.id === "name" ? (
                                 <Link to={`/backgrounds/${row.name}`}>
                                   {value}
