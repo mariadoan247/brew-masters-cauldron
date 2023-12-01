@@ -47,8 +47,9 @@ BlogPostCard.propTypes = {
 };
 
 export default function BlogPostCard({ post }) {
-  const { image, name } = post;
   const location = useLocation();
+
+  const { image, name } = post;
 
   const pathSegments = location.pathname.split('/');
   const category = pathSegments[1] || null;

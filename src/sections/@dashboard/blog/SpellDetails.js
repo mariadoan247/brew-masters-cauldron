@@ -73,19 +73,20 @@ export default function BlogSpellDetail({ mode, theme, colorMode }) {
                     <Typography variant="subtitle1" gutterBottom>
                         Classes: {spellDetails.classes}
                     </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Text: {spellDetails.text.join(' ')}
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Roll: {spellDetails.roll}
+                    <Typography variant="body2" color="textSecondary">
+                        {spellDetails.text.join(' ')}
                     </Typography>
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Typography variant="h6" gutterBottom>Traits</Typography>
-                        <List>
-                            {spellDetails.trait.map(renderTrait)}
-                        </List>
+                        {spellDetails.trait ? (
+                            <List>
+                                {spellDetails.trait.map(renderTrait)}
+                            </List>
+                        ) : (
+                            <div>No traits for this spell</div>
+                        )}
                     </Grid>
                 </Grid>
             </Container>

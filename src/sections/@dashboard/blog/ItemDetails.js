@@ -29,17 +29,10 @@ export default function BlogItemDetail({ mode, theme, colorMode }) {
 
     const mainFeaturedPost = {
         title: itemDetails.name,
-        description: "Size: " + itemDetails.size + " | Speed: " + itemDetails.speed + " | Ability: " + itemDetails.ability,
+        description: "Type: " + itemDetails.type,
         image: itemDetails.image,
         imageText: 'main image description',
     };
-
-    // Helper function to render traits
-    const renderTrait = (trait) => (
-        <ListItem key={trait.name}>
-            <ListItemText primary={trait.name} secondary={trait.text.join(' ')} />
-        </ListItem>
-    );
 
     return (
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -53,20 +46,42 @@ export default function BlogItemDetail({ mode, theme, colorMode }) {
                         Public: {itemDetails.public ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
-                        Spell Ability: {itemDetails.spellAbility || "No spell ability for this item"}
+                        Weight: {itemDetails.weight || "none"}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
-                        Proficiency: {itemDetails.proficiency || "No proficiencies for this item"}
+                        Text: {itemDetails.text.join(' ') || "text function did not work"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Magic: {itemDetails.magic || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Detail: {itemDetails.detail || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Value: {itemDetails.value || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Strength: {itemDetails.strength || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Stealth: {itemDetails.stealth || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Dmg1: {itemDetails.dmg1 || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Dmg2: {itemDetails.dmg2 || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Dmg Type: {itemDetails.dmgType || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Property: {itemDetails.property || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Range: {itemDetails.range || "none"}
                     </Typography>
                 </Box>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6" gutterBottom>Traits</Typography>
-                        <List>
-                            {itemDetails.trait.map(renderTrait)}
-                        </List>
-                    </Grid>
-                </Grid>
             </Container>
         </NavBar>
     );

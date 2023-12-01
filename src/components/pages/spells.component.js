@@ -17,6 +17,7 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
 
 const drawerWidth = 240;
 
@@ -111,7 +112,7 @@ const spellsByClass = [
   // Add more data for spells by class
 ];
 
-const Spells = ({ mode, theme, colorMode }) => {
+export default function Spells ({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [selectedTab, setSelectedTab] = React.useState(0);
@@ -306,7 +307,7 @@ const Spells = ({ mode, theme, colorMode }) => {
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {column.id === "name" ? (
-                                <Link to={`/spells/${row.name}`}>{value}</Link>
+                                <BlogPostCard title={value} image={row.image} /> // Assuming image is a property of the row object
                               ) : column.format && typeof value === "number" ? (
                                 column.format(value)
                               ) : (
@@ -335,5 +336,3 @@ const Spells = ({ mode, theme, colorMode }) => {
     </NavBar>
   );
 };
-
-export default Spells;
