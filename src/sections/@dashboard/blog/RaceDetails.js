@@ -47,7 +47,7 @@ export default function BlogRaceDetail({ mode, theme, colorMode }) {
                     <Typography variant="h5" gutterBottom>Details</Typography>
                     <Divider sx={{ mb: 2 }} />
                     <Typography variant="subtitle1" gutterBottom>
-                        Homebrew: {raceDetails.isHomebrew ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}  |  
+                        Homebrew: {raceDetails.isHomebrew ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}  |
                         Public: {raceDetails.public ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
@@ -57,13 +57,11 @@ export default function BlogRaceDetail({ mode, theme, colorMode }) {
                         Proficiency: {raceDetails.proficiency || "No proficiencies for this race"}
                     </Typography>
                 </Box>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6" gutterBottom>Traits</Typography>
-                        <List>
-                            {raceDetails.trait.map(renderTrait)}
-                        </List>
-                    </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>Traits</Typography>
+                    <List>
+                        {Array.isArray(raceDetails.trait) ? raceDetails.trait.map(renderTrait) : null}
+                    </List>
                 </Grid>
             </Container>
         </NavBar>

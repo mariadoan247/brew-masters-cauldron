@@ -153,13 +153,15 @@ export default function NavBar({ mode, theme, colorMode, children }) {
   const availableMonsterslNames = useSelector((state) => state.spells.monsters);
   const availableFeatsNames = useSelector((state) => state.items.feats);
 
+  const races = Array.isArray(availableRaceNames) ? availableRaceNames : [];
+
   const handleInputChange = (event, value) => {
     setSearchInput(value);
   };
   // Define an array of pages where you want to search
   const searchableItems = [
     { page: "classes", content: availableClassNames },
-    { page: "races", content: availableRaceNames },
+    { page: "races", content: races },
     { page: "backgrounds", content: availableBackgroundNames },
     { page: "spells", content: availableSpellNames },
     { page: "inventory", content: availableItemNames },
@@ -272,7 +274,9 @@ export default function NavBar({ mode, theme, colorMode, children }) {
               width="40"
               height="40"
             ></img>
+            
             <SearchBoxContainer>
+              
               <Autocomplete
                 freeSolo
                 options={searchableItems.map((item) => ({ label: item.page, value: item.content }))}
