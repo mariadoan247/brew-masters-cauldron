@@ -94,7 +94,7 @@ const Monsters = ({ mode, theme, colorMode }) => {
             mb={2} // Reduced the marginBottom to create space between title and description
           >
             <Typography variant="h4" gutterBottom>
-              Backgrounds
+              Monsters
             </Typography>
           </Stack>
         </AppBar>
