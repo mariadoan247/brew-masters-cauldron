@@ -16,6 +16,11 @@ import Feats from "./components/pages/feats.component";
 import Account from "./components/account/userAccount.component";
 import BlogRaceDetail from "./sections/@dashboard/blog/RaceDetails";
 import BlogClassDetail from "./sections/@dashboard/blog/ClassDetails";
+import BlogBackgroundDetail from "./sections/@dashboard/blog/BackgroundDetails";
+import BlogSpellDetail from "./sections/@dashboard/blog/SpellDetails";
+import BlogItemDetail from "./sections/@dashboard/blog/ItemDetails";
+import BlogFeatDetail from "./sections/@dashboard/blog/FeatDetails";
+import BlogMonsterDetail from "./sections/@dashboard/blog/MonsterDetails";
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser } from './actions/authActions';
 import setAuthToken from './utils/setAuthToken';
@@ -45,7 +50,7 @@ function App() {
 
       // Set user and isAuthenticated
       store.dispatch(setCurrentUser(decoded));
-
+      
       // Check for expired token
       const currentTime = Date.now() / 1000;
       if (decoded.exp < currentTime) {
@@ -176,6 +181,56 @@ function App() {
               path="/classes/blog/:postId" // race
               element={
                 <BlogClassDetail
+                  mode={mode}
+                  theme={theme}
+                  colorMode={colorMode}
+                />
+              }
+            />
+            <Route
+              path="/backgrounds/blog/:postId" // race
+              element={
+                <BlogBackgroundDetail
+                  mode={mode}
+                  theme={theme}
+                  colorMode={colorMode}
+                />
+              }
+            />
+            <Route
+              path="/spells/blog/:postId" // race
+              element={
+                <BlogSpellDetail
+                  mode={mode}
+                  theme={theme}
+                  colorMode={colorMode}
+                />
+              }
+            />
+            <Route
+              path="/items/blog/:postId" // race
+              element={
+                <BlogItemDetail
+                  mode={mode}
+                  theme={theme}
+                  colorMode={colorMode}
+                />
+              }
+            />
+            <Route
+              path="/feats/blog/:postId" // race
+              element={
+                <BlogFeatDetail
+                  mode={mode}
+                  theme={theme}
+                  colorMode={colorMode}
+                />
+              }
+            />
+            <Route
+              path="/monsters/blog/:postId" // race
+              element={
+                <BlogMonsterDetail
                   mode={mode}
                   theme={theme}
                   colorMode={colorMode}

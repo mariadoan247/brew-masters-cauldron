@@ -14,9 +14,8 @@ import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
 
 const drawerWidth = 240;
 
@@ -38,234 +37,16 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const columnsByCategory = {
-  // Weapons
-  0: [
-    {
-      id: "weapon",
-      label: "Weapon",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "cost",
-      label: "Cost",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "damage",
-      label: "Damage",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "weight",
-      label: "Weight",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "properties",
-      label: "Properties",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-  ],
-  // Tools
-  1: [
-    {
-      id: "item",
-      label: "Item",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "cost",
-      label: "Cost",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "weight",
-      label: "Weight",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-  ],
-  // Mounts & Vehicles
-  2: [
-    {
-      id: "item",
-      label: "Item",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "cost",
-      label: "Cost",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "speed",
-      label: "Speed",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "capacity",
-      label: "Capacity",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-  ],
-  // Trinkets
-  3: [
-    {
-      id: "d100",
-      label: "d100",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "trinket",
-      label: "Trinket",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-  ],
-  // Equipment
-  4: [
-    {
-      id: "classType",
-      label: "Class",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "funds",
-      label: "Funds",
-      minWidth: 170,
-      align: "left",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-  ],
-};
-
-function createWeapon(weapon, cost, damage, weight, properties) {
-  return { weapon, cost, damage, weight, properties };
-}
-
-const inventoryByWeapons = [
-  createWeapon("Club", "1 sp", "1d4 bludgeoning", "2 lb.", "Light"),
-  createWeapon(
-    "Dagger",
-    "1 gp",
-    "1d4 piercing",
-    "1 lb.",
-    "	Finesse, light, thrown (range 20/60)"
-  ),
+const columns = [
+  { id: "name", label: "Name", minWidth: 170 }
 ];
 
-function createTools(item, cost, weight) {
-  return { item, cost, weight };
-}
-
-const inventoryByTools = [
-  createTools("name school1", "class1", "damage1"),
-  createTools("name school2", "class2", "damage2"),
-];
-
-function createMounts(item, cost, speed, capacity) {
-  return { item, cost, speed, capacity };
-}
-
-const inventoryByMount = [
-  createMounts("name school1", "class1", "damage1", "damage1"),
-  createMounts("name school2", "class2", "damage2", "damage2"),
-];
-
-function createTrinkets(d100, trinket) {
-  return { d100, trinket };
-}
-
-const inventoryByTrinkets = [
-  createTrinkets("name school1", "class1"),
-  createTrinkets("name school2", "class2"),
-];
-
-function createEquipment(classType, funds) {
-  return { classType, funds };
-}
-
-const inventoryByEquipment = [
-  createEquipment("name school1", "class1"),
-  createEquipment("name school2", "class2"),
-];
-
-const Inventory = ({ mode, theme, colorMode }) => {
+export default function Items({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [selectedTab, setSelectedTab] = React.useState(0);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState([]);
-  const inventory = useSelector((state) => state.inventory?.inventory ?? []);
-
-  React.useEffect(() => {
-    switch (selectedTab) {
-      case 0:
-        setRows(inventoryByWeapons);
-        break;
-      case 1:
-        setRows(inventoryByTools);
-        break;
-      case 2:
-        setRows(inventoryByMount);
-        break;
-      case 3:
-        setRows(inventoryByTrinkets);
-        break;
-      case 4:
-        setRows(inventoryByEquipment);
-        break;
-      // Add cases for other tabs
-
-      default:
-        break;
-    }
-  }, [selectedTab]);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeTab = (event, newValue) => {
-    setSelectedTab(newValue);
-    setPage(0); // Reset page when changing tabs
-    setSortedColumn(null); // Reset sorting when changing tabs
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const items = useSelector((state) => state.items.items);
 
   const sortData = (data, sortBy, direction) => {
     const sortedData = [...data].sort((a, b) => {
@@ -284,46 +65,16 @@ const Inventory = ({ mode, theme, colorMode }) => {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-
-    let sortedData = [];
-
-    // Choose the correct dataset based on the selected tab
-    switch (selectedTab) {
-      case 0:
-        sortedData = sortData(inventoryByWeapons, columnId, newDirection);
-        break;
-      case 1:
-        sortedData = sortData(inventoryByTools, columnId, newDirection);
-        break;
-      case 2:
-        sortedData = sortData(inventoryByMount, columnId, newDirection);
-        break;
-      case 3:
-        sortedData = sortData(inventoryByTrinkets, columnId, newDirection);
-        break;
-      case 4:
-        sortedData = sortData(inventoryByEquipment, columnId, newDirection);
-        break;
-      // Add cases for other tabs
-
-      default:
-        break;
-    }
-
-    setRows(sortedData);
   };
 
-  // Display data based on the selected tab
-  const displayedRows = (() => {
-    const sortedData = sortData(rows, sortedColumn, sortDirection);
-    return sortedData.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
-  })();
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-  // Choose the correct columns based on the selected tab
-  const currentColumns = columnsByCategory[selectedTab];
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -341,6 +92,7 @@ const Inventory = ({ mode, theme, colorMode }) => {
         <Grid container spacing={10} alignItems="center">
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
+
         <AppBar
           component="div"
           color="primary"
@@ -372,27 +124,8 @@ const Inventory = ({ mode, theme, colorMode }) => {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            Things you can carry. From weapons to tools, and even to trinkets!{" "}
+            INVENTORY DESCRIPTION HERE{" "}
           </Typography>
-        </AppBar>
-        <AppBar
-          component="div"
-          position="static"
-          elevation={0}
-          sx={{ zIndex: 0 }}
-        >
-          <Tabs
-            value={selectedTab}
-            textColor="inherit"
-            onChange={handleChangeTab}
-          >
-            <Tab label="Weapons" />
-            <Tab label="Tools" />
-            <Tab label="Mounts & Vehicles" />
-            <Tab label="Trinkets" />
-            <Tab label="Equipment" />
-            {/* Add other tabs as needed */}
-          </Tabs>
         </AppBar>
 
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -400,7 +133,7 @@ const Inventory = ({ mode, theme, colorMode }) => {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  {currentColumns.map((column) => (
+                  {columns.map((column) => (
                     <TableCell
                       key={column.id}
                       align={column.align}
@@ -418,38 +151,41 @@ const Inventory = ({ mode, theme, colorMode }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedRows.map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      {currentColumns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.id === "name" ? (
-                              <Link to={`/inventory/${row.name}`}>{value}</Link>
-                            ) : column.format && typeof value === "number" ? (
-                              column.format(value)
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+                  {items
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((item) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={item._id}
+                      >
+                        {columns.map((column) => {
+                          const value = item[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.id === "name" ? (
+                                // Using BlogPostCard for rendering the title as a hyperlink
+                                <BlogPostCard key={item._id} post={item} />
+                              ) : column.format && typeof value === "number" ? (
+                                column.format(value)
+                              ) : (
+                                value
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={displayedRows.length}
+            count={items.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -459,6 +195,4 @@ const Inventory = ({ mode, theme, colorMode }) => {
       </Container>
     </NavBar>
   );
-};
-
-export default Inventory;
+}

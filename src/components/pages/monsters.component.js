@@ -15,6 +15,7 @@ import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
 
 const drawerWidth = 240;
 
@@ -37,89 +38,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const columns = [
-  {
-    id: "name",
-    label: "Name",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "str",
-    label: "STR",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "dex",
-    label: "DEX",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "con",
-    label: "CON",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "int",
-    label: "INT",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "wis",
-    label: "WIS",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "cha",
-    label: "CHA",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-];
-
-function createData(name, str, dex, con, int, wis, cha) {
-  return { name, str, dex, con, int, wis, cha };
-}
-
-const initialRows = [
-  createData(
-    "Baphomet",
-    "30 (+10)",
-    "14 (+2)",
-    "26 (+8)",
-    "18 (+4)",
-    "24 (+7)",
-    "16 (+3)"
-  ),
-  createData(
-    "Black Dragon Wyrmling",
-    "33 (+10)",
-    "14 (+2)",
-    "26 (+4)",
-    "18 (+4)",
-    "54 (+7)",
-    "26 (+3)"
-  ),
-  createData(
-    "Cranium Rat",
-    "33 (+1)",
-    "22 (+2)",
-    "16 (+8)",
-    "18 (+4)",
-    "24 (+7)",
-    "16 (+14)"
-  ),
+  { id: "name", label: "Name", minWidth: 170 }
 ];
 
 export default function Monsters({ mode, theme, colorMode }) {
@@ -127,7 +46,6 @@ export default function Monsters({ mode, theme, colorMode }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState(initialRows);
   const monsters = useSelector((state) => state.monsters.monsters);
 
   const sortData = (data, sortBy, direction) => {
@@ -147,7 +65,6 @@ export default function Monsters({ mode, theme, colorMode }) {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-    setRows(sortData(rows, columnId, newDirection));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -207,11 +124,7 @@ export default function Monsters({ mode, theme, colorMode }) {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            In the Dungeons & Dragons fantasy role-playing game, the term
-            monster refers to a variety of creatures, some adapted from folklore
-            and legends and others invented specifically for the game. Included
-            are traditional monsters such as dragons, supernatural creatures
-            such as ghosts, and mundane or fantastic animals.{" "}
+            MONSTER DESCRIPTION HERE{" "}
           </Typography>
         </AppBar>
 
@@ -238,24 +151,23 @@ export default function Monsters({ mode, theme, colorMode }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
+                  {monsters
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
+                  .map((monster) => {
                     return (
                       <TableRow
                         hover
                         role="checkbox"
                         tabIndex={-1}
-                        key={row.code}
+                        key={monster._id}
                       >
                         {columns.map((column) => {
-                          const value = row[column.id];
+                          const value = monster[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {column.id === "name" ? (
-                                <Link to={`/monsters/${row.name}`}>
-                                  {value}
-                                </Link>
+                                // Using BlogPostCard for rendering the title as a hyperlink
+                                <BlogPostCard key={monster._id} post={monster} />
                               ) : column.format && typeof value === "number" ? (
                                 column.format(value)
                               ) : (
@@ -273,7 +185,7 @@ export default function Monsters({ mode, theme, colorMode }) {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={monsters.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
