@@ -30,7 +30,8 @@ router.post("/signUp", async (req, res) => {
       email: req.body.document.email,
       password: hashedPassword,
       description: "",
-      notes: []
+      notes: [],
+      characters: []
     });
 
     const response = await axios.post(url + '/insertOne', {
