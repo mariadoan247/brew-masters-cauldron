@@ -14,8 +14,6 @@ import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
@@ -40,110 +38,28 @@ const AppBar = styled(MuiAppBar, {
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
-  {
-    id: "classVal",
-    label: "By Class",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "damage",
-    label: "By Damage",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "level",
-    label: "By Level",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "school",
-    label: "By School",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "other",
-    label: "By Other",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
+  // Additional columns as needed
 ];
 
-function createData(name, classVal, damage, level, school, other) {
-  return { name, classVal, damage, level, school, other };
+function createData(name) {
+  return { name };
 }
 
-const spellsByLevel = [
-  createData("name level1", "class1", "damage1", "level1", "school1", "other1"),
-  createData("name level2", "class2", "damage2", "level2", "school2", "other2"),
-];
-
-const spellsBySchool = [
-  createData(
-    "name school1",
-    "class1",
-    "damage1",
-    "level1",
-    "school1",
-    "other1"
-  ),
-  createData(
-    "name school2",
-    "class2",
-    "damage2",
-    "level2",
-    "school2",
-    "other2"
-  ),
-];
-
-const spellsByClass = [
-  createData("name class1", "class1", "damage1", "level1", "school1", "other1"),
-  createData("name class2", "class2", "damage2", "level2", "school2", "other2"),
-  // Add more data for spells by class
+const spells = [
+  createData("name1"),
+  createData("name2"),
+  // Add more data for spells
 ];
 
 const Spells = ({ mode, theme, colorMode }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [selectedTab, setSelectedTab] = React.useState(0);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState([]);
-  const spells = useSelector((state) => state.spells.spells);
-
-  React.useEffect(() => {
-    switch (selectedTab) {
-      case 0:
-        setRows(spellsByLevel);
-        break;
-      case 1:
-        setRows(spellsBySchool);
-        break;
-      case 2:
-        setRows(spellsByClass);
-        break;
-      default:
-        break;
-    }
-  }, [selectedTab]);
+  const [rows, setRows] = React.useState(spells);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-  };
-
-  const handleChangeTab = (event, newValue) => {
-    setSelectedTab(newValue);
-    setPage(0); // Reset page when changing tabs
-    setSortedColumn(null); // Reset sorting when changing tabs
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -168,35 +84,8 @@ const Spells = ({ mode, theme, colorMode }) => {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-
-    let sortedData = [];
-
-    // Choose the correct dataset based on the selected tab
-    switch (selectedTab) {
-      case 0:
-        sortedData = sortData(spellsByLevel, columnId, newDirection);
-        break;
-      case 1:
-        sortedData = sortData(spellsBySchool, columnId, newDirection);
-        break;
-      case 2:
-        sortedData = sortData(spellsByClass, columnId, newDirection);
-        break;
-      default:
-        break;
-    }
-
-    setRows(sortedData);
+    setRows(sortData(rows, columnId, newDirection));
   };
-
-  // Display data based on the selected tab
-  const displayedRows = (() => {
-    const sortedData = sortData(rows, sortedColumn, sortDirection);
-    return sortedData.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
-  })();
 
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -227,7 +116,7 @@ const Spells = ({ mode, theme, colorMode }) => {
                 <Typography color="inherit" variant="h5" component="h1">
                   Spells
                 </Typography>
-              </Grid>
+                </Grid>
             </Grid>
           </Toolbar>
         </AppBar>
@@ -237,7 +126,7 @@ const Spells = ({ mode, theme, colorMode }) => {
           elevation={0}
           sx={{ zIndex: 0 }}
         >
-          <Typography
+                <Typography
             color="inherit"
             variant="body1"
             component="p"
@@ -250,24 +139,9 @@ const Spells = ({ mode, theme, colorMode }) => {
             limited expression. The more powerful a spell, the higher the level
             of spell slot it must be cast with.{" "}
           </Typography>
-        </AppBar>
-        <AppBar
-          component="div"
-          position="static"
-          elevation={0}
-          sx={{ zIndex: 0 }}
-        >
-          <Tabs
-            value={selectedTab}
-            textColor="inherit"
-            onChange={handleChangeTab}
-          >
-            <Tab label="By Level" />
-            <Tab label="By School" />
-            <Tab label="By Class" />
-          </Tabs>
-        </AppBar>
 
+            
+        </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
@@ -276,7 +150,7 @@ const Spells = ({ mode, theme, colorMode }) => {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      align={column.align}
+                      align="left"
                       style={{ minWidth: column.minWidth, cursor: "pointer" }}
                       onClick={() => handleSort(column.id)}
                     >
@@ -291,40 +165,28 @@ const Spells = ({ mode, theme, colorMode }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedRows
+                {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.code}
-                      >
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.id === "name" ? (
-                                <Link to={`/spells/${row.name}`}>{value}</Link>
-                              ) : column.format && typeof value === "number" ? (
-                                column.format(value)
-                              ) : (
-                                value
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
+                  .map((row) => (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align="left">
+                          {column.id === "name" ? (
+                            <Link to={`/spells/${row.name}`}>{row.name}</Link>
+                          ) : (
+                            row[column.id]
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={displayedRows.length}
+            count={rows.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

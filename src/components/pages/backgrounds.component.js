@@ -38,39 +38,39 @@ const AppBar = styled(MuiAppBar, {
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
-  { id: "source", label: "Source", minWidth: 100 },
-  {
-    id: "skills",
-    label: "Skills",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "languages",
-    label: "Languages",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "tools",
-    label: "Tools",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "gold",
-    label: "Gold",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
+  // { id: "source", label: "Source", minWidth: 100 },
+  // {
+  //   id: "skills",
+  //   label: "Skills",
+  //   minWidth: 170,
+  //   align: "left",
+  //   format: (value) => value.toLocaleString("en-US"),
+  // },
+  // {
+  //   id: "languages",
+  //   label: "Languages",
+  //   minWidth: 170,
+  //   align: "left",
+  //   format: (value) => value.toLocaleString("en-US"),
+  // },
+  // {
+  //   id: "tools",
+  //   label: "Tools",
+  //   minWidth: 170,
+  //   align: "left",
+  //   format: (value) => value.toLocaleString("en-US"),
+  // },
+  // {
+  //   id: "gold",
+  //   label: "Gold",
+  //   minWidth: 170,
+  //   align: "left",
+  //   format: (value) => value.toLocaleString("en-US"),
+  // },
 ];
 
-function createData(name, source, skills, languages, tools, gold) {
-  return { name, source, skills, languages, tools, gold };
+function createData(name) {
+  return { name};
 }
 
 const initialRows = [
