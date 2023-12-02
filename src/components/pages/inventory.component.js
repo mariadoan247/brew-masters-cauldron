@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
 
 const drawerWidth = 240;
 
@@ -36,35 +38,15 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  // Additional columns as needed
+  { id: "name", label: "Name", minWidth: 170 }
 ];
 
-function createData(name) {
-  return { name };
-}
-
-const inventory = [
-  createData("name1"),
-  createData("name2"),
-  // Add more data for inventory
-];
-
-const Inventory = ({ mode, theme, colorMode }) => {
+export default function Items({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState(inventory);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const items = useSelector((state) => state.items.items);
 
   const sortData = (data, sortBy, direction) => {
     const sortedData = [...data].sort((a, b) => {
@@ -83,7 +65,15 @@ const Inventory = ({ mode, theme, colorMode }) => {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-    setRows(sortData(rows, columnId, newDirection));
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
@@ -102,6 +92,7 @@ const Inventory = ({ mode, theme, colorMode }) => {
         <Grid container spacing={10} alignItems="center">
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
+
         <AppBar
           component="div"
           color="primary"
@@ -133,7 +124,7 @@ const Inventory = ({ mode, theme, colorMode }) => {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            Things you can carry. From weapons to tools, and even to trinkets!{" "}
+            INVENTORY DESCRIPTION HERE{" "}
           </Typography>
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -159,35 +150,41 @@ const Inventory = ({ mode, theme, colorMode }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
+                  {items
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                    >
-                      {columns.map((column) => (
-                        <TableCell key={column.id} align="left">
-                          {column.id === "name" ? (
-                            <Link to={`/inventory/${row.name}`}>
-                              {row.name}
-                            </Link>
-                          ) : (
-                            row[column.id]
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                  .map((item) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={item._id}
+                      >
+                        {columns.map((column) => {
+                          const value = item[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.id === "name" ? (
+                                // Using BlogPostCard for rendering the title as a hyperlink
+                                <BlogPostCard key={item._id} post={item} />
+                              ) : column.format && typeof value === "number" ? (
+                                column.format(value)
+                              ) : (
+                                value
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={items.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -197,6 +194,4 @@ const Inventory = ({ mode, theme, colorMode }) => {
       </Container>
     </NavBar>
   );
-};
-
-export default Inventory;
+}

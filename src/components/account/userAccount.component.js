@@ -9,6 +9,7 @@ import { OverviewProfileDescript } from "../../sections/overview/overview-profil
 import { OverviewUserInfo } from "../../sections/overview/overview-user-info";
 import { signOutUser } from "../../actions/authActions";
 import { updateNotes } from "../../actions/userActions";
+import { updateCharacters } from "../../actions/userActions";
 import { updateUserDescription } from "../../actions/userActions";
 import { fetchUserNotes } from "../../actions/userActions";
 import { useSelector } from 'react-redux';
@@ -20,6 +21,8 @@ export default function UserAccount({ mode, theme, colorMode }) {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const notes = useSelector((state) => state.notes.notes);
+  const characters = useSelector((state) => state.characters.characters);
+  console.log("Characters from Redux:", characters);
 
   useEffect(() => {
     // Function to fetch user notes
@@ -31,14 +34,6 @@ export default function UserAccount({ mode, theme, colorMode }) {
 
     getUserNotes();
   }, [user.email, dispatch]);
-
-  const [pages, setPages] = React.useState([]);
-
-  // Function to update the "pages" data when a new page is visited
-  const updateVisitedPage = (pageName) => {
-    const updatedPages = [...pages, { name: pageName, updatedAt: new Date() }];
-    setPages(updatedPages);
-  };
 
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -74,8 +69,9 @@ export default function UserAccount({ mode, theme, colorMode }) {
 
             <Grid xs={12} md={6} lg={4}>
               <OverviewLatestCharacters
-                pages={pages}
-                updatePage={updateVisitedPage}
+                characters={characters}
+                user={user}
+                updateCharacters={(updatedCharacters) => dispatch(updateCharacters(user.email, updatedCharacters))}
                 sx={{ height: "100%" }}
               />
             </Grid>

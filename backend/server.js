@@ -6,6 +6,7 @@ const passport = require("passport"); // handles user authentication strategies
 const PORT = 4000;
 const users = require('./routes/users');
 const notes = require('./routes/notes');
+const characters = require('./routes/characters');
 const races = require('./routes/races');
 const classes = require('./routes/classes')
 const backgrounds = require('./routes/backgrounds');
@@ -45,6 +46,7 @@ require("./config/passport")(passport);
 // Route config, routes are handled by corresponding imported route handlers
 app.use("/action", users);
 app.use("/action", notes);
+app.use("/action", characters);
 app.use("/action", races);
 app.use("/action", classes);
 app.use("/action", backgrounds);

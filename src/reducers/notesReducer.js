@@ -1,8 +1,7 @@
 import { SET_USER_NOTES } from "../actions/types";
 
 const initialState = {
-  notes: [],
-  loading: false
+  notes: []
 };
 
 function notesReducer(state = initialState, action) {

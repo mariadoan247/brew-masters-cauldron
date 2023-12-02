@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
 
 const drawerWidth = 240;
 
@@ -36,18 +38,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  // Additional columns as needed
-];
-
-function createData(name) {
-  return { name };
-}
-
-const monsters = [
-  createData("name1"),
-  createData("name2"),
-  // Add more data for monsters
+  { id: "name", label: "Name", minWidth: 170 }
 ];
 
 const Monsters = ({ mode, theme, colorMode }) => {
@@ -55,16 +46,7 @@ const Monsters = ({ mode, theme, colorMode }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState(monsters);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const monsters = useSelector((state) => state.monsters.monsters);
 
   const sortData = (data, sortBy, direction) => {
     const sortedData = [...data].sort((a, b) => {
@@ -83,7 +65,6 @@ const Monsters = ({ mode, theme, colorMode }) => {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-    setRows(sortData(rows, columnId, newDirection));
   };
 
   return (
@@ -133,11 +114,7 @@ const Monsters = ({ mode, theme, colorMode }) => {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            In the Dungeons & Dragons fantasy role-playing game, the term
-            monster refers to a variety of creatures, some adapted from folklore
-            and legends and others invented specifically for the game. Included
-            are traditional monsters such as dragons, supernatural creatures
-            such as ghosts, and mundane or fantastic animals.{" "}
+            MONSTER DESCRIPTION HERE{" "}
           </Typography>
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -163,33 +140,41 @@ const Monsters = ({ mode, theme, colorMode }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
+                  {monsters
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                    >
-                      {columns.map((column) => (
-                        <TableCell key={column.id} align="left">
-                          {column.id === "name" ? (
-                            <Link to={`/monsters/${row.name}`}>{row.name}</Link>
-                          ) : (
-                            row[column.id]
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                  .map((monster) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={monster._id}
+                      >
+                        {columns.map((column) => {
+                          const value = monster[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.id === "name" ? (
+                                // Using BlogPostCard for rendering the title as a hyperlink
+                                <BlogPostCard key={monster._id} post={monster} />
+                              ) : column.format && typeof value === "number" ? (
+                                column.format(value)
+                              ) : (
+                                value
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={monsters.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

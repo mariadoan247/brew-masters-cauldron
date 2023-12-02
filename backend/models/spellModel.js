@@ -9,10 +9,10 @@ let SpellSchema = new Schema (
         "items": {
             "type": "object",
             "properties": {
-                "name": {
+                "name": { //done
                     "type": "string"
                 },
-                "level": {
+                "level": { //done
                     "type": "number"
                 },
                 "school": {

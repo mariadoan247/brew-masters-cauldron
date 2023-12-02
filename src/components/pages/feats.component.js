@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
 
 const drawerWidth = 240;
 
@@ -36,35 +38,15 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  // Additional columns as needed
+  { id: "name", label: "Name", minWidth: 170 }
 ];
 
-function createData(name) {
-  return { name };
-}
-
-const feats = [
-  createData("name1"),
-  createData("name2"),
-  // Add more data for monsters
-];
-
-const Feats = ({ mode, theme, colorMode }) => {
+export default function Feats({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState(feats);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const feats = useSelector((state) => state.feats.feats);
 
   const sortData = (data, sortBy, direction) => {
     const sortedData = [...data].sort((a, b) => {
@@ -83,7 +65,15 @@ const Feats = ({ mode, theme, colorMode }) => {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-    setRows(sortData(rows, columnId, newDirection));
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
@@ -102,6 +92,7 @@ const Feats = ({ mode, theme, colorMode }) => {
         <Grid container spacing={10} alignItems="center">
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
+
         <AppBar
           component="div"
           color="primary"
@@ -133,10 +124,7 @@ const Feats = ({ mode, theme, colorMode }) => {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            A feat represents a talent or an area of expertise that gives a
-            character special capabilities. It embodies training, experience,
-            and abilities beyond what a class provides. At certain levels, your
-            class gives you the Ability Score Improvement feature.{" "}
+            FEAT DESCRIPTION HERE{" "}
           </Typography>
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -162,33 +150,41 @@ const Feats = ({ mode, theme, colorMode }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
+                  {feats
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                    >
-                      {columns.map((column) => (
-                        <TableCell key={column.id} align="left">
-                          {column.id === "name" ? (
-                            <Link to={`/feats/${row.name}`}>{row.name}</Link>
-                          ) : (
-                            row[column.id]
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                  .map((feat) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={feat._id}
+                      >
+                        {columns.map((column) => {
+                          const value = feat[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.id === "name" ? (
+                                // Using BlogPostCard for rendering the title as a hyperlink
+                                <BlogPostCard key={feat._id} post={feat} />
+                              ) : column.format && typeof value === "number" ? (
+                                column.format(value)
+                              ) : (
+                                value
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={feats.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -198,6 +194,4 @@ const Feats = ({ mode, theme, colorMode }) => {
       </Container>
     </NavBar>
   );
-};
-
-export default Feats;
+}

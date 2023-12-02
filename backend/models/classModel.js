@@ -29,9 +29,15 @@ let ClassSchema = new Schema (
                     "items": {
                         "type": "object",
                         "properties": {
+                            "@level": {
+                                "type": "string"
+                            },
                             "feature": {
                                 "type": "object",
                                 "properties": {
+                                    "@optional": {
+                                        "type": "string"
+                                    },
                                     "name": {
                                         "type": "string"
                                     },
@@ -67,11 +73,12 @@ let ClassSchema = new Schema (
                                     "modifier"
                                 ]
                             },
-                            "slots": { //done
-                                "type": "string"
-                            }
+                            "slots": {}
                         },
-                        "required": []
+                        "required": [
+                            "@level",
+                            "slots"
+                        ]
                     }
                 },
                 "armor": { //done
@@ -102,5 +109,5 @@ let ClassSchema = new Schema (
                 "autolevel"
             ]
         }
-    }
+    },
 );
