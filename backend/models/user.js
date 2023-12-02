@@ -27,7 +27,37 @@ let User = new Schema({
             type: Date,
             default: Date.now
         }
-    }] // In the future you can create a separate note schema which will be able to hold more notes
+    }], // In the future you can create a separate note schema which will be able to hold more notes
+    characters: [{
+        name: {
+            type: String,
+            required: true
+        },
+        race: {
+            type: String,
+            required: true
+        },
+        class: {
+            type: String,
+            required: true
+        },
+        alignment: {
+            type: String,
+            required: true
+        },
+        background: {
+            type: String,
+            required: true
+        },
+        spells: [{
+            type: String,
+            required: true
+        }],
+        inventory: [{
+            type: String,
+            required: true
+        }]
+    }] // In the future you can create a separate character schema which will be able to hold more characters
 });
 
 module.exports = mongoose.model('User', User);
