@@ -59,7 +59,7 @@ export default function BlogPostCard({ post }) {
   if (showImage) {
     return (
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <RouterLink to={category === 'inventory' ? `/inventory/blog/${post._id}` : `/${category}/blog/${post._id}`} style={{ textDecoration: 'none' }}>
+        <RouterLink to={category === 'inventory' ? `/items/blog/${post._id}` : `/${category}/blog/${post._id}`} style={{ textDecoration: 'none' }}>
           <Card sx={{ position: 'relative' }}>
             <StyledCardMedia sx={{ pt: 'calc(100% * 4 / 3)' }}>
             <StyledCover alt={name} src={image} />
@@ -80,9 +80,9 @@ export default function BlogPostCard({ post }) {
     );
   } else {
     return (
-      <RouterLink to={collection ? `/${category}/blog/${post._id}` : `/blog/${post._id}`} style = {{ textDecoration: 'none' }}>
-        {name}
-      </RouterLink>
+    <RouterLink to={category === 'inventory' ? `/items/blog/${post._id}` : `/${category}/blog/${post._id}`} style={{ textDecoration: 'none' }}>
+      {name}
+    </RouterLink>
     );
   }
 }
