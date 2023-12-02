@@ -53,12 +53,13 @@ export default function BlogPostCard({ post }) {
 
   const pathSegments = location.pathname.split('/');
   const category = pathSegments[1] || null;
-  
+  const collection = category === 'inventory' ? 'items' : category;
+
   const showImage = ['races', 'classes'].includes(category)
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
-      <RouterLink to={category ? `/${category}/blog/${post._id}` : `/blog/${post._id}`} style={{ textDecoration: 'none' }}>
+      <RouterLink to={category === 'inventory' ? `/inventory/blog/${post._id}` : `/${category}/blog/${post._id}`} style={{ textDecoration: 'none' }}>
         <Card sx={{ position: 'relative' }}>
           <StyledCardMedia sx={{ pt: 'calc(100% * 4 / 3)' }}>
           <StyledCover alt={name} src={image} />
@@ -68,7 +69,7 @@ export default function BlogPostCard({ post }) {
             <StyledTitle
               color="inherit"
               variant="subtitle2"
-              to={category ? `/${category}/blog/${post._id}` : `/blog/${post._id}`}
+              to={collection ? `/${category}/blog/${post._id}` : `/blog/${post._id}`}
             >
               {name}
             </StyledTitle>

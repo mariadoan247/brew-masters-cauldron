@@ -70,35 +70,6 @@ const columns = [
   },
 ];
 
-/*
-const initialRows = [
-  createData(
-    "Acolyte (Background)",
-    "PHB",
-    "Insight (Wis), Religion (Int)",
-    "Any x2",
-    "None",
-    "15 gp"
-  ),
-  createData(
-    "Anthropologist",
-    "ToA",
-    "Insight (Wis), Religion (Int)",
-    "Any x2",
-    "None",
-    "10 gp"
-  ),
-  createData(
-    "Archaeologist",
-    "ToA",
-    "Insight (Wis), Religion (Int)",
-    "Any x1",
-    "cartographer's tools/navigator's tools",
-    "25 gp"
-  ),
-];
-*/
-
 export default function Backgrounds({ mode, theme, colorMode }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

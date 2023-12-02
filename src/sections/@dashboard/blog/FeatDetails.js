@@ -1,5 +1,3 @@
-// DOES NOT MATCH FEAT SCHEMA RN IT DOES NOT WORK!!!
-
 import * as React from "react";
 import {
     Box,
@@ -29,7 +27,7 @@ export default function BlogFeatDetail({ mode, theme, colorMode }) {
 
     const mainFeaturedPost = {
         title: featDetails.name,
-        description: "Size: " + featDetails.size + " | Speed: " + featDetails.speed + " | Ability: " + featDetails.ability,
+        description: "",
         image: featDetails.image,
         imageText: 'main image description',
     };
@@ -53,7 +51,7 @@ export default function BlogFeatDetail({ mode, theme, colorMode }) {
                         Public: {featDetails.public ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
-                        Spell Ability: {featDetails.spellAbility || "No spell ability for this feat"}
+                        Prerequisite: {featDetails.prerequisite || "No prerequisite for this feat"}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
                         Proficiency: {featDetails.proficiency || "No proficiencies for this feat"}
@@ -61,10 +59,10 @@ export default function BlogFeatDetail({ mode, theme, colorMode }) {
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Typography variant="h6" gutterBottom>Traits</Typography>
-                        <List>
-                            {featDetails.trait.map(renderTrait)}
-                        </List>
+                        <Typography variant="h6" gutterBottom>
+                        Details
+                        </Typography>
+                        <List>{featDetails.trait.map(renderTrait)}</List>
                     </Grid>
                 </Grid>
             </Container>

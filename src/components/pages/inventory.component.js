@@ -17,6 +17,8 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { useSelector } from "react-redux";
+import {BlogPostCard } from "../../sections/@dashboard/blog";
+
 
 const drawerWidth = 240;
 
@@ -168,6 +170,7 @@ const columnsByCategory = {
   ],
 };
 
+/*
 function createWeapon(weapon, cost, damage, weight, properties) {
   return { weapon, cost, damage, weight, properties };
 }
@@ -218,6 +221,7 @@ const inventoryByEquipment = [
   createEquipment("name school1", "class1"),
   createEquipment("name school2", "class2"),
 ];
+*/
 
 const Inventory = ({ mode, theme, colorMode }) => {
   const [page, setPage] = React.useState(0);
@@ -226,31 +230,12 @@ const Inventory = ({ mode, theme, colorMode }) => {
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
   const [rows, setRows] = React.useState([]);
-  const inventory = useSelector((state) => state.inventory?.inventory ?? []);
+  const items = useSelector((state) => state.items.items);
 
   React.useEffect(() => {
-    switch (selectedTab) {
-      case 0:
-        setRows(inventoryByWeapons);
-        break;
-      case 1:
-        setRows(inventoryByTools);
-        break;
-      case 2:
-        setRows(inventoryByMount);
-        break;
-      case 3:
-        setRows(inventoryByTrinkets);
-        break;
-      case 4:
-        setRows(inventoryByEquipment);
-        break;
-      // Add cases for other tabs
-
-      default:
-        break;
-    }
-  }, [selectedTab]);
+    const selectedTabItems = items[selectedTab];
+    setRows(selectedTabItems || []);
+  }, [selectedTab, items]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -288,27 +273,8 @@ const Inventory = ({ mode, theme, colorMode }) => {
     let sortedData = [];
 
     // Choose the correct dataset based on the selected tab
-    switch (selectedTab) {
-      case 0:
-        sortedData = sortData(inventoryByWeapons, columnId, newDirection);
-        break;
-      case 1:
-        sortedData = sortData(inventoryByTools, columnId, newDirection);
-        break;
-      case 2:
-        sortedData = sortData(inventoryByMount, columnId, newDirection);
-        break;
-      case 3:
-        sortedData = sortData(inventoryByTrinkets, columnId, newDirection);
-        break;
-      case 4:
-        sortedData = sortData(inventoryByEquipment, columnId, newDirection);
-        break;
-      // Add cases for other tabs
-
-      default:
-        break;
-    }
+    const selectedTabItems = items[selectedTab];
+    sortedData = sortData(selectedTabItems || [], columnId, newDirection);
 
     setRows(sortedData);
   };
@@ -430,14 +396,15 @@ const Inventory = ({ mode, theme, colorMode }) => {
                         const value = row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.id === "name" ? (
-                              <Link to={`/inventory/${row.name}`}>{value}</Link>
-                            ) : column.format && typeof value === "number" ? (
-                              column.format(value)
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
+                          {column.id === "name" ? (
+                            // Using BlogPostCard for rendering the title as a hyperlink
+                            <BlogPostCard key={row._id} post={row} />
+                          ) : column.format && typeof value === "number" ? (
+                            column.format(value)
+                          ) : (
+                            value
+                          )}
+                        </TableCell>
                         );
                       })}
                     </TableRow>

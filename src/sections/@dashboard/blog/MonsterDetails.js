@@ -29,7 +29,7 @@ export default function BlogMonsterDetail({ mode, theme, colorMode }) {
 
     const mainFeaturedPost = {
         title: monsterDetails.name,
-        description: "Size: " + monsterDetails.size + " | Speed: " + monsterDetails.speed + " | Ability: " + monsterDetails.ability,
+        description: "Size: " + monsterDetails.size + " | Type: " + monsterDetails.type + " | Alignment: " + monsterDetails.alignment,
         image: monsterDetails.image,
         imageText: 'main image description',
     };
@@ -53,11 +53,109 @@ export default function BlogMonsterDetail({ mode, theme, colorMode }) {
                         Public: {monsterDetails.public ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
-                        Spell Ability: {monsterDetails.spellAbility || "No spell ability for this monster"}
+                        AC: {monsterDetails.ac || "none"}
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>
-                        Proficiency: {monsterDetails.proficiency || "No proficiencies for this monster"}
+                        HP: {monsterDetails.hp || "none"}
                     </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Speed: {monsterDetails.type || "speed"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Strength: {monsterDetails.str || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Dexterity: {monsterDetails.dex || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Constitution: {monsterDetails.con || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Intelligence: {monsterDetails.int || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Wisdom: {monsterDetails.wis || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Charisma: {monsterDetails.cha || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Save: {monsterDetails.save || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Skill: {monsterDetails.skill || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Resist: {monsterDetails.resist || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Vulnerable: {monsterDetails.vulnerable || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Immune: {monsterDetails.immune || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Condition Immune: {monsterDetails.conditionImmune || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Senses: {monsterDetails.senses || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Passive: {monsterDetails.passive || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Languages: {monsterDetails.languages || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        CR: {monsterDetails.cr || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Trait: {monsterDetails.trait || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Action: {monsterDetails.action || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Spells: {monsterDetails.spells || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Slots: {monsterDetails.slots || "none"}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Environment: {monsterDetails.environment || "none"}
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>Legendary Actions</Typography>
+                    <List>
+                        {monsterDetails.legendary.map((legendaryAction, index) => (
+                            <ListItem key={index}>
+                                <ListItemText
+                                    primary={legendaryAction.name}
+                                    secondary={
+                                        <div>
+                                            <Typography variant="body2" color="textSecondary">{legendaryAction.text.join(' ')}</Typography>
+                                            {legendaryAction.attack && <Typography variant="body2" color="textSecondary">Attack: {legendaryAction.attack}</Typography>}
+                                        </div>
+                                    }
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+
+                    <Typography variant="h6" gutterBottom>Reactions</Typography>
+                    <List>
+                        <ListItem>
+                            <ListItemText
+                                primary={monsterDetails.reaction.name}
+                                secondary={
+                                    <div>
+                                        <Typography variant="body2" color="textSecondary">{monsterDetails.reaction.text.join(' ')}</Typography>
+                                        {monsterDetails.reaction.attack && <Typography variant="body2" color="textSecondary">Attack: {monsterDetails.reaction.attack}</Typography>}
+                                    </div>
+                                }
+                            />
+                        </ListItem>
+                    </List>
+
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
