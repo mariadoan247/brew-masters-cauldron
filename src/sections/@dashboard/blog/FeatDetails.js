@@ -32,10 +32,20 @@ export default function BlogFeatDetail({ mode, theme, colorMode }) {
         imageText: 'main image description',
     };
 
-    // Helper function to render traits
+    const renderText = (text) => {
+        if (Array.isArray(text)) {
+            return text.filter(t => t).join(' ');
+        } else if (typeof text === 'string') {
+            return text;
+        } else if (typeof text === 'object' && text !== null) {
+            return JSON.stringify(text);
+        }
+        return '';
+    };
+
     const renderTrait = (trait) => (
         <ListItem key={trait.name}>
-            <ListItemText primary={trait.name} secondary={trait.text.join(' ')} />
+            <ListItemText primary={trait.name} secondary={renderText(trait.text)} />
         </ListItem>
     );
 
@@ -59,10 +69,14 @@ export default function BlogFeatDetail({ mode, theme, colorMode }) {
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Typography variant="h6" gutterBottom>
-                        Details
-                        </Typography>
-                        <List>{featDetails.trait.map(renderTrait)}</List>
+                        <Typography variant="h6" gutterBottom>Details</Typography>
+                        <List>
+                            {featDetails.text.map((item, index) => (
+                                <ListItem key={index}>
+                                    <ListItemText primary={renderText(item)} />
+                                </ListItem>
+                            ))}
+                        </List>
                     </Grid>
                 </Grid>
             </Container>
