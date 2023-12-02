@@ -4,6 +4,7 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
 import notesReducer from "./notesReducer";
+import characterReducer from "./characterReducer";
 import raceReducer from "./raceReducer";
 import classReducer from "./classReducer";
 import backgroundReducer from "./backgroundReducer";
@@ -16,6 +17,7 @@ export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
   notes: notesReducer,
+  characters: characterReducer,
   races: raceReducer,
   classes: classReducer,
   backgrounds: backgroundReducer,

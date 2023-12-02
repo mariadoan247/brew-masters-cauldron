@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
 import {
     FormControl,
     InputLabel,
@@ -16,6 +17,7 @@ import {
     Box,
 } from "@mui/material";
 import NavBar from "../navbar";
+import { updateCharacters } from "../../actions/userActions";
 
 export default function Characters({ mode, theme, colorMode }) {
     const [characterName, setCharacterName] = useState("");
@@ -30,9 +32,10 @@ export default function Characters({ mode, theme, colorMode }) {
     const availableBackgroundNames = useSelector((state) => state.backgrounds.backgrounds).map(c => c.name);
     const availableSpellNames = useSelector((state) => state.spells.spells).map(c => c.name);
     const availableItemNames = useSelector((state) => state.items.items).map(c => c.name);
+    const user = useSelector((state) => state.auth.user);
+    const characters = useSelector((state) => state.characters.characters) || [];
 
-    //  const user = useSelector((state) => state.auth.user);
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
@@ -48,9 +51,13 @@ export default function Characters({ mode, theme, colorMode }) {
             inventory: characterInventory,
         };
 
-        console.log("Character created:", character);
+        console.log("characters:", characters);
+        console.log("createCharacter:", character);
 
-        // Pass the created character to the route
+        const updatedCharacters = [character, ...characters];
+
+        // Only navigate after successful submission
+        dispatch(updateCharacters(user.email, updatedCharacters));
         navigate("/userAccount", { state: { createdCharacter: character } });
     };
 
@@ -208,7 +215,7 @@ export default function Characters({ mode, theme, colorMode }) {
                                 </Grid>
                             </Grid>
 
-                            <Button variant="contained" color="primary" type="submit" sx={{ mt: 3 }} onClick={() => navigate("/userAccount")}>
+                            <Button variant="contained" color="primary" type="submit" sx={{ mt: 3 }}>
                                 Create Character
                             </Button>
                         </form>

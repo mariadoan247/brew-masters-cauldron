@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { GET_ERRORS, SET_USER_NOTES } from "./types";
+import { GET_ERRORS, SET_USER_NOTES, SET_USER_CHARACTERS } from "./types";
 import { setCurrentUser } from "./authActions";
 
 const api = axios.create();
@@ -111,10 +111,84 @@ export const fetchUserNotes = (userEmail) => dispatch => {
         });
 };
 
+export const updateCharacters = (userEmail, updatedCharacters) => dispatch => {
+    userData.filter = {
+        email: userEmail
+    };
+    userData.update = {
+        $set: { characters: updatedCharacters }  // Update the character array for this user in the database
+    };
+    console.log(userData);
+
+    api
+        .post("/action/updateCharacters", userData)
+        .then(res => {
+            console.log(res.data);
+            dispatch(setUserCharacters(updatedCharacters));
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            // More robust error handling
+            let errorData = {};
+            if (err.response) {
+                errorData = err.response.data;
+            } else if (err.request) {
+                errorData = { message: "No response received from server." };
+            } else {
+                errorData = { message: err.message };
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errorData
+            })
+        });
+};
+
+export const fetchUserCharacters = (userEmail) => dispatch => {
+    userData.filter = {
+        email: userEmail
+    };
+    
+    api
+        .post("/action/fetchUserCharacters", userData)
+        .then(res => {
+            const fetchedCharacters = res.data.characters;
+            console.log(res);
+            dispatch({
+                type: SET_USER_CHARACTERS,
+                payload: fetchedCharacters
+            });
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            // More robust error handling
+            let errorData = {};
+            if (err.response) {
+                errorData = err.response.data;
+            } else if (err.request) {
+                errorData = { message: "No response received from server." };
+            } else {
+                errorData = { message: err.message };
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errorData
+            })
+        });
+};
+
 // Set user notes
 export const setUserNotes = notes => {
     return {
         type: SET_USER_NOTES,
         payload: notes
+    };
+};
+
+// Set user characters
+export const setUserCharacters = characters => {
+    return {
+        type: SET_USER_CHARACTERS,
+        payload: characters
     };
 };

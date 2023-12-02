@@ -28,7 +28,9 @@ import { fetchSpells } from "./actions/spellActions"
 import { fetchItems } from "./actions/itemActions"
 import { fetchFeats } from "./actions/featActions"
 import { fetchMonsters } from "./actions/monsterActions"
+import { fetchUserCharacters } from './actions/userActions';
 import { useDispatch } from "react-redux";
+import { useSelector } from 'react-redux';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,10 +39,10 @@ function App() {
     if (localStorage.jwtToken) {
       // Set token to Auth header
       setAuthToken(localStorage.jwtToken);
-      
+
       // Decode token and get user info
       const decoded = jwt_decode(localStorage.jwtToken);
-      
+
       // Set user and isAuthenticated
       store.dispatch(setCurrentUser(decoded));
 
@@ -53,6 +55,7 @@ function App() {
       }
     }
   }, []);
+  const user = useSelector((state) => state.auth.user);
   useEffect(() => {
     // Function to fetch user notes
     const getRaces = () => {
@@ -83,6 +86,12 @@ function App() {
       dispatch(fetchMonsters());
     };
 
+    const getUserCharacters = () => {
+      if (user.email) {
+        dispatch(fetchUserCharacters(user.email));
+      }
+    };
+
     getRaces();
     getClasses();
     getBackgrounds();
@@ -90,8 +99,9 @@ function App() {
     getItems();
     getFeats();
     getMonsters();
-    
-  }, [dispatch]);
+    getUserCharacters();
+
+  }, [dispatch, user.email]);
   const [mode, setMode] = React.useState("dark");
   const colorMode = React.useMemo(
     () => ({
