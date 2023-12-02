@@ -28,19 +28,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 export const OverviewLatestCharacters = (props) => {
-  const { pages = [], sx } = props;
+  const { characters, updateCharacters, sx } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clickedCharacter, setClickedCharacter] = useState(null);
-  const [characters, setCharacters] = useState(pages);
   const [viewAllMode, setViewAllMode] = useState(false);
   const [deleteConfirmationDialog, setDeleteConfirmationDialog] = useState(false);
-
-
-  // Get the location object
-  //const location = useLocation();
-
-  // Extract the created character from the location state
-  //const createdCharacter = location.state ? location.state.createdCharacter : null;
 
   const handleCharacterClick = (character) => {
     setClickedCharacter(character);
@@ -63,9 +55,9 @@ export const OverviewLatestCharacters = (props) => {
     if (clickedCharacter) {
       // Filter out the character with a matching name from the list
       const updatedCharacters = characters.filter((c) => c.name !== clickedCharacter.name);
-      
+
       // Update the state with the new characters list
-      setCharacters(updatedCharacters);
+      updateCharacters(updatedCharacters);
       // Close the modal after deletion
       setIsModalOpen(false);
       // Clear the clicked character
@@ -74,44 +66,15 @@ export const OverviewLatestCharacters = (props) => {
       setDeleteConfirmationDialog(false);
     }
   };
-  
-
-
-  const simulatedCharacters = [
-    {
-      name: "Aria Shadowheart",
-      race: "Elf",
-      class: "Rogue",
-      alignment: "Chaotic Neutral",
-      background: "Urban Bounty Hunter",
-      spell: ["Invisibility", "Mage Hand"],
-      inventory: ["Dagger", "Thieves' Tools", "Potion of Healing"],
-    },
-    {
-      name: "Grommash Ironfist",
-      race: "Orc",
-      class: "Barbarian",
-      alignment: "Chaotic Good",
-      background: "Outlander",
-      spell: [], // Barbarians typically don't cast spells
-      inventory: ["Great Axe", "Javelin", "Fur Armor"],
-    },
-  ];
 
   return (
     <>
       <Card sx={sx} style={{ position: 'relative' }}>
         <CardHeader title="Your Characters" />
         <Divider />
-
-
-
-
         {/* replace simulatedCharacters.map to characters.map once connected to backend!! */}
         <List>
-        
-          {simulatedCharacters.map((character, index) => (
-
+          {characters?.map((character, index) => (
             <React.Fragment key={index}>
               <ListItem
                 onClick={() => handleCharacterClick(character)}
@@ -207,8 +170,8 @@ export const OverviewLatestCharacters = (props) => {
         </DialogActions>
       </Dialog>
 
-     {/* View all characters modal */}
-     <Modal open={viewAllMode} onClose={() => setViewAllMode(false)}>
+      {/* View all characters modal */}
+      <Modal open={viewAllMode} onClose={() => setViewAllMode(false)}>
         <Box
           sx={{
             position: 'absolute',
@@ -226,15 +189,13 @@ export const OverviewLatestCharacters = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Date Created</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {characters.map((character, index) => (
+              {characters?.map((character, index) => (
                 <TableRow key={index}>
                   <TableCell>{character.name}</TableCell>
-                  <TableCell>{character.dateCreated}</TableCell>
                   <TableCell>
                     <Button color="error" onClick={() => handleDeleteClick(character)}>
                       <DeleteIcon />
