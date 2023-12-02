@@ -61,6 +61,16 @@ export default function Characters({ mode, theme, colorMode }) {
         navigate("/userAccount", { state: { createdCharacter: character } });
     };
 
+    const handleChangeSpell = (event) => {
+        const selectedSpells = event.target.value;
+        setCharacterSpell(selectedSpells);
+    };
+
+    // For characterInventory
+    const handleChangeInventory = (event) => {
+        const selectedItems = event.target.value;
+        setCharacterInventory(selectedItems);
+    };
 
     return (
         <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -127,6 +137,7 @@ export default function Characters({ mode, theme, colorMode }) {
                                         >
                                             {availableClassNames.map((name, index) => (
                                                 <MenuItem key={index} value={name}>
+                                                    <Checkbox checked={characterSpell.includes(name)} color="primary" />
                                                     {name}
                                                 </MenuItem>
                                             ))}
@@ -180,16 +191,15 @@ export default function Characters({ mode, theme, colorMode }) {
                                             id="characterSpell"
                                             multiple
                                             value={characterSpell}
-                                            onChange={(event) => setCharacterSpell(event.target.value)}
+                                            onChange={handleChangeSpell}
                                             renderValue={(selected) => selected.join(", ")}
                                         >
                                             {availableSpellNames.map((name, index) => (
                                                 <MenuItem key={index} value={name}>
-                                                    <Checkbox checked={characterSpell.includes(index)} color="primary" />
+                                                    <Checkbox checked={characterSpell.includes(name)} color="primary" />
                                                     {name}
                                                 </MenuItem>
                                             ))}
-
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -201,12 +211,12 @@ export default function Characters({ mode, theme, colorMode }) {
                                             id="characterInventory"
                                             multiple
                                             value={characterInventory}
-                                            onChange={(event) => setCharacterInventory(event.target.value)}
+                                            onChange={handleChangeInventory}
                                             renderValue={(selected) => selected.join(", ")}
                                         >
                                             {availableItemNames.map((name, index) => (
                                                 <MenuItem key={index} value={name}>
-                                                    <Checkbox checked={characterSpell.includes(index)} color="primary" />
+                                                    <Checkbox checked={characterInventory.includes(name)} color="primary" />
                                                     {name}
                                                 </MenuItem>
                                             ))}

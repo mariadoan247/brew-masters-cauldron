@@ -177,8 +177,6 @@ const Monsters = ({ mode, theme, colorMode }) => {
             count={monsters.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
       </Container>
