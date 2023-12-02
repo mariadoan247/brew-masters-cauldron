@@ -56,26 +56,33 @@ export default function BlogPostCard({ post }) {
   const collection = category === 'inventory' ? 'items' : category;
 
   const showImage = ['races', 'classes'].includes(category)
-
-  return (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
-      <RouterLink to={category === 'inventory' ? `/inventory/blog/${post._id}` : `/${category}/blog/${post._id}`} style={{ textDecoration: 'none' }}>
-        <Card sx={{ position: 'relative' }}>
-          <StyledCardMedia sx={{ pt: 'calc(100% * 4 / 3)' }}>
-          <StyledCover alt={name} src={image} />
-          </StyledCardMedia>
-
-          <StyledCardContent>
-            <StyledTitle
-              color="inherit"
-              variant="subtitle2"
-              to={collection ? `/${category}/blog/${post._id}` : `/blog/${post._id}`}
-            >
-              {name}
-            </StyledTitle>
-          </StyledCardContent>
-        </Card>
+  if (showImage) {
+    return (
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <RouterLink to={category === 'inventory' ? `/inventory/blog/${post._id}` : `/${category}/blog/${post._id}`} style={{ textDecoration: 'none' }}>
+          <Card sx={{ position: 'relative' }}>
+            <StyledCardMedia sx={{ pt: 'calc(100% * 4 / 3)' }}>
+            <StyledCover alt={name} src={image} />
+            </StyledCardMedia>
+  
+            <StyledCardContent>
+              <StyledTitle
+                color="inherit"
+                variant="subtitle2"
+                to={collection ? `/${category}/blog/${post._id}` : `/blog/${post._id}`}
+              >
+                {name}
+              </StyledTitle>
+            </StyledCardContent>
+          </Card>
+        </RouterLink>
+      </Grid>
+    );
+  } else {
+    return (
+      <RouterLink to={collection ? `/${category}/blog/${post._id}` : `/blog/${post._id}`} style = {{ textDecoration: 'none' }}>
+        {name}
       </RouterLink>
-    </Grid>
-  );
+    );
+  }
 }
