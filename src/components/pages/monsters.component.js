@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
@@ -80,9 +80,6 @@ const Monsters = ({ mode, theme, colorMode }) => {
           width: "95%",
         }}
       >
-        <Grid container spacing={10} alignItems="center">
-          <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
-        </Grid>
         <AppBar
           component="div"
           color="primary"
@@ -90,15 +87,16 @@ const Monsters = ({ mode, theme, colorMode }) => {
           elevation={0}
           sx={{ zIndex: 0 }}
         >
-          <Toolbar>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item xs>
-                <Typography color="inherit" variant="h5" component="h1">
-                  Monsters
-                </Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={2} // Reduced the marginBottom to create space between title and description
+          >
+            <Typography variant="h4" gutterBottom>
+              Backgrounds
+            </Typography>
+          </Stack>
         </AppBar>
         <AppBar
           component="div"
@@ -114,7 +112,7 @@ const Monsters = ({ mode, theme, colorMode }) => {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            MONSTER DESCRIPTION HERE{" "}
+            The monsters encountered on your character's journey are more than mere adversaries; they are living, breathing challenges that shape the narrative of your adventures. Choosing monsters to populate your world is akin to writing a bestiary of your character's exploits. Each creature faced, whether a menacing dragon or a cunning goblin, leaves an indelible mark on your character's story. These encounters define your character's courage, cunning, and survival instincts, creating a tapestry of tales woven with the threads of monstrous adversaries confronted and conquered.{" "}
           </Typography>
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -177,8 +175,6 @@ const Monsters = ({ mode, theme, colorMode }) => {
             count={monsters.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
       </Container>
