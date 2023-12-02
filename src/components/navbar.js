@@ -28,13 +28,14 @@ import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { isUserAuthenticated } from "../actions/authActions";
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import Button from "@mui/material/Button";
-import { useDispatch, useSelector } from 'react-redux';
-import { updateNotes } from '../actions/userActions';
-import { format } from 'date-fns';
+import { useDispatch, useSelector } from "react-redux";
+import { updateNotes } from "../actions/userActions";
+import { format } from "date-fns";
 import { fetchUserNotes } from "../actions/userActions";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const drawerWidth = 240;
 
@@ -60,7 +61,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
-
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -132,13 +132,86 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar({ mode, theme, colorMode, children }) {
   const [open, setOpen] = React.useState(false);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
   const [showNotes, setShowNotes] = useState(false);
-  const [userNotes, setUserNotes] = useState('');
+  const [userNotes, setUserNotes] = useState("");
   const dispatch = useDispatch();
   const isAuthenticated = isUserAuthenticated();
   const userEmail = useSelector((state) => state.auth.user.email);
   const notes = useSelector((state) => state.notes.notes);
+  const navigate = useNavigate();
+
+  const availableRaceNames = useSelector((state) => state.races.races);
+  const availableClassNames = useSelector((state) => state.classes.classes);
+  const availableBackgroundNames = useSelector(
+    (state) => state.backgrounds.backgrounds
+  );
+  const availableSpellNames = useSelector((state) => state.spells.spells);
+  const availableItemNames = useSelector((state) => state.items.items);
+  const availableMonsterslNames = useSelector((state) => state.spells.monsters);
+  const availableFeatsNames = useSelector((state) => state.items.feats);
+
+  const races = Array.isArray(availableRaceNames) ? availableRaceNames : [];
+
+  const handleInputChange = (event, value) => {
+    setSearchInput(value);
+  };
+  // Define an array of pages where you want to search
+  const searchableItems = [
+    { page: "classes", content: availableClassNames },
+    { page: "races", content: races },
+    { page: "backgrounds", content: availableBackgroundNames },
+    { page: "spells", content: availableSpellNames },
+    { page: "inventory", content: availableItemNames },
+    { page: "monsters", content: availableMonsterslNames },
+    { page: "feats", content: availableFeatsNames },
+  ];
+
+  const handleSearch = () => {
+    const trimmedInput = searchInput.trim().toLowerCase();
+
+    // Check if the searched term exists in the content of any page
+    for (const { page, content } of searchableItems) {
+      const foundItem = content.find(
+        (item) => item.name && item.name.toLowerCase().includes(trimmedInput)
+      );
+
+      if (foundItem) {
+        // Construct the appropriate route based on the category (page)
+        switch (page) {
+          case "classes":
+            navigate(`/classes/blog/${foundItem._id}`);
+            break;
+          case "races":
+            navigate(`/races/blog/${foundItem._id}`);
+            break;
+          case "backgrounds":
+            navigate(`/backgrounds/blog/${foundItem._id}`);
+            break;
+          case "spells":
+            navigate(`/spells/blog/${foundItem._id}`);
+            break;
+          case "inventory":
+            navigate(`/inventory/blog/${foundItem._id}`);
+            break;
+          // Add cases for other pages as needed
+          case "monsters":
+            navigate(`/monsters/blog/${foundItem._id}`);
+            break;
+          case "feats":
+            navigate(`/feats/blog/${foundItem._id}`);
+            break;
+          default:
+            navigate(`/blog/${foundItem._id}`);
+            break;
+        }
+        return;
+      }
+    }
+
+    // Navigate to a default search results page or handle as needed
+    navigate(`/search?q=${encodeURIComponent(trimmedInput)}`);
+  };
 
   useEffect(() => {
     // Function to fetch user notes
@@ -155,11 +228,11 @@ export default function NavBar({ mode, theme, colorMode, children }) {
     if (userNotes.trim()) {
       const noteObject = {
         details: userNotes,
-        dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+        dateUpdated: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
       };
       const updatedNotes = [noteObject, ...notes];
       dispatch(updateNotes(userEmail, updatedNotes));
-      setUserNotes(''); // Clear the textarea after saving
+      setUserNotes(""); // Clear the textarea after saving
       setShowNotes(false); // Hide the notes section after saving
     }
   };
@@ -180,8 +253,6 @@ export default function NavBar({ mode, theme, colorMode, children }) {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
 
-  const navigate = useNavigate();
-
   return (
     <Box>
       <ThemeProvider theme={theme}>
@@ -197,18 +268,41 @@ export default function NavBar({ mode, theme, colorMode, children }) {
               width="40"
               height="40"
             ></img>
+
             <SearchBoxContainer>
-              <form noValidate autoComplete="off">
-                <FormControl variant="standard">
-                  <BootstrapInput
-                    placeholder="Search Yourself a Champion"
-                    id="bootstrap-input"
-                    onMouseEnter={handleTextFieldMouseEnter}
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                  />
-                </FormControl>
-              </form>
+              {/* <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={top100Films}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Movie" />
+                )}
+              /> */}
+              <Autocomplete
+                disablePortal
+                options={searchableItems.map((item) => ({
+                  label: item.page,
+                  value: item.content,
+                }))}
+                onInputChange={handleInputChange}
+                renderInput={(params) => (
+                  <FormControl variant="standard">
+                    <BootstrapInput
+                      {...params}
+                      placeholder="Search Yourself a Champion"
+                      id="bootstrap-input"
+                      onMouseEnter={handleTextFieldMouseEnter}
+                      onKeyDown={(e) => {
+                        // Handle Enter key press for immediate search
+                        if (e.key === "Enter") {
+                          handleSearch();
+                        }
+                      }}
+                    />
+                  </FormControl>
+                )}
+              />
             </SearchBoxContainer>
             {isAuthenticated && (
               <IconButton
@@ -253,9 +347,9 @@ export default function NavBar({ mode, theme, colorMode, children }) {
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
                 if (isAuthenticated) {
-                  navigate("/userAccount", { mode, theme })
+                  navigate("/userAccount", { mode, theme });
                 } else {
-                  navigate("/signin", { mode, theme })
+                  navigate("/signin", { mode, theme });
                 }
               }}
             >
@@ -339,14 +433,11 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                 </ListItem>
               ))}
             </List>
-            <div style={{ flexGrow: 1 }} />{" "}
-            <Divider />
-
+            <div style={{ flexGrow: 1 }} /> <Divider />
             {/*TODO: add an icon that navigates to a new page where the user can build new dungeons and dragon characters */}
             <List>
               <ListItem key="Characters" disablePadding>
                 <ListItemButton
-               
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
@@ -367,7 +458,7 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                     <AssignmentIcon />
                   </ListItemIcon>
                   <ListItemText
-                  color="inherit"
+                    color="inherit"
                     primary="Create A Character"
                     sx={{ opacity: open ? 1 : 0 }}
                   />

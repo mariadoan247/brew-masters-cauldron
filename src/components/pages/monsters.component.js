@@ -41,7 +41,7 @@ const columns = [
   { id: "name", label: "Name", minWidth: 170 }
 ];
 
-export default function Monsters({ mode, theme, colorMode }) {
+const Monsters = ({ mode, theme, colorMode }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortedColumn, setSortedColumn] = React.useState(null);
@@ -67,15 +67,6 @@ export default function Monsters({ mode, theme, colorMode }) {
     setSortedColumn(columnId);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
       <Container
@@ -92,7 +83,6 @@ export default function Monsters({ mode, theme, colorMode }) {
         <Grid container spacing={10} alignItems="center">
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
-
         <AppBar
           component="div"
           color="primary"
@@ -127,7 +117,6 @@ export default function Monsters({ mode, theme, colorMode }) {
             MONSTER DESCRIPTION HERE{" "}
           </Typography>
         </AppBar>
-
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
@@ -136,7 +125,7 @@ export default function Monsters({ mode, theme, colorMode }) {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      align={column.align}
+                      align="left"
                       style={{ minWidth: column.minWidth, cursor: "pointer" }}
                       onClick={() => handleSort(column.id)}
                     >
@@ -195,4 +184,6 @@ export default function Monsters({ mode, theme, colorMode }) {
       </Container>
     </NavBar>
   );
-}
+};
+
+export default Monsters;

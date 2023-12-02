@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 export default function Races({ mode, theme, colorMode }) {
   const races = useSelector((state) => state.races.races);
+  
 
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>

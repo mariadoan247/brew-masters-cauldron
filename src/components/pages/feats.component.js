@@ -127,7 +127,6 @@ export default function Feats({ mode, theme, colorMode }) {
             FEAT DESCRIPTION HERE{" "}
           </Typography>
         </AppBar>
-
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
@@ -136,7 +135,7 @@ export default function Feats({ mode, theme, colorMode }) {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      align={column.align}
+                      align="left"
                       style={{ minWidth: column.minWidth, cursor: "pointer" }}
                       onClick={() => handleSort(column.id)}
                     >

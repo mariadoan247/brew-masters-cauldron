@@ -1,5 +1,4 @@
-import { TextField } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -27,13 +26,17 @@ import FaceRetouchingOffIcon from "@mui/icons-material/FaceRetouchingOff";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { isUserAuthenticated } from "../../actions/authActions";
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import Button from "@mui/material/Button";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { updateNotes } from "../../actions/userActions";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import { fetchUserNotes } from "../../actions/userActions";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import Autocomplete from "@mui/material/Autocomplete";
+import FormControl from "@mui/material/FormControl";
+import InputBase from "@mui/material/InputBase";
+import { alpha } from "@mui/material/styles";
 
 const drawerWidth = 240;
 
@@ -103,14 +106,58 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+const SearchBoxContainer = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  flexGrow: 1,
+  justifyContent: "center",
+});
+
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  "label + &": {
+    marginTop: theme.spacing(3),
+  },
+  "& .MuiInputBase-input": {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
+    border: "1px solid",
+    borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
+    fontSize: 16,
+    width: "500px",
+    padding: "10px 12px",
+    transition: theme.transitions.create([
+      "border-color",
+      "background-color",
+      "box-shadow",
+    ]),
+    "&:focus": {
+      boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}));
+
 export default function MyApp({ mode, theme, colorMode }) {
   const [open, setOpen] = React.useState(false);
   const [showNotes, setShowNotes] = React.useState(false);
-  const [userNotes, setUserNotes] = React.useState('');
+  const [userNotes, setUserNotes] = React.useState("");
+  const [searchInput, setSearchInput] = useState("");
   const dispatch = useDispatch();
   const isAuthenticated = isUserAuthenticated();
   const userEmail = useSelector((state) => state.auth.user.email);
   const notes = useSelector((state) => state.notes.notes);
+  const availableRaceNames = useSelector((state) => state.races.races);
+  const availableClassNames = useSelector((state) => state.classes.classes);
+  const availableBackgroundNames = useSelector(
+    (state) => state.backgrounds.backgrounds
+  );
+  const availableSpellNames = useSelector((state) => state.spells.spells);
+  const availableItemNames = useSelector((state) => state.items.items);
+  const availableMonsterslNames = useSelector((state) => state.spells.monsters);
+  const availableFeatsNames = useSelector((state) => state.items.feats);
+
+  const races = Array.isArray(availableRaceNames) ? availableRaceNames : [];
 
   useEffect(() => {
     // Function to fetch user notes
@@ -123,15 +170,75 @@ export default function MyApp({ mode, theme, colorMode }) {
     getUserNotes();
   }, [userEmail, dispatch]);
 
+  const searchableItems = [
+    { page: "classes", content: availableClassNames },
+    { page: "races", content: races },
+    { page: "backgrounds", content: availableBackgroundNames },
+    { page: "spells", content: availableSpellNames },
+    { page: "inventory", content: availableItemNames },
+    { page: "monsters", content: availableMonsterslNames },
+    { page: "feats", content: availableFeatsNames },
+  ];
+
+  const handleSearch = () => {
+    const trimmedInput = searchInput.trim().toLowerCase();
+
+    // Check if the searched term exists in the content of any page
+    for (const { page, content } of searchableItems) {
+      const foundItem = content.find(
+        (item) => item.name && item.name.toLowerCase().includes(trimmedInput)
+      );
+
+      if (foundItem) {
+        // Construct the appropriate route based on the category (page)
+        switch (page) {
+          case "classes":
+            navigate(`/classes/blog/${foundItem._id}`);
+            break;
+          case "races":
+            navigate(`/races/blog/${foundItem._id}`);
+            break;
+          case "backgrounds":
+            navigate(`/backgrounds/blog/${foundItem._id}`);
+            break;
+          case "spells":
+            navigate(`/spells/blog/${foundItem._id}`);
+            break;
+          case "inventory":
+            navigate(`/inventory/blog/${foundItem._id}`);
+            break;
+          // Add cases for other pages as needed
+          case "monsters":
+            navigate(`/monsters/blog/${foundItem._id}`);
+            break;
+          case "feats":
+            navigate(`/feats/blog/${foundItem._id}`);
+            break;
+          default:
+            navigate(`/blog/${foundItem._id}`);
+            break;
+        }
+        return;
+      }
+    }
+
+    // Navigate to a default search results page or handle as needed
+    navigate(`/search?q=${encodeURIComponent(trimmedInput)}`);
+  };
+
+  const handleInputChange = (event, value) => {
+    setSearchInput(value);
+  };
+
   const handleSaveNote = () => {
     if (userNotes.trim()) {
       const noteObject = {
         details: userNotes,
-        dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+        dateUpdated: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
       };
       const updatedNotes = [noteObject, ...notes];
       dispatch(updateNotes(userEmail, updatedNotes));
-      setUserNotes(''); // Clear the textarea after saving
+      setUserNotes(""); // Clear the textarea after saving
       setShowNotes(false); // Hide the notes section after saving
     }
   };
@@ -169,53 +276,53 @@ export default function MyApp({ mode, theme, colorMode }) {
               width="40"
               height="40"
             ></img>
-            <div style={{ flex: 1 }} /> 
+            <div style={{ flex: 1 }} />
             {isAuthenticated && (
-          <IconButton
-            sx={{ alignSelf: "center" }}
-            onClick={() => {
-              setShowNotes(!showNotes); // Toggle the notes section
-            }}
-          >
-            <EditNoteIcon /> {/* Notes Icon */}
-          </IconButton>
-        )}
-        {showNotes && isAuthenticated && (
-          <div
-          style={{
-            position: "absolute",
-            top: "65px", // Adjust the top position as needed
-            right: "20px", // Adjust the right position as needed
-            backgroundColor: theme.palette.background.paper,
-            padding: "10px",
-          }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <textarea
-                rows="5"
-                cols="30"
-                placeholder="Write your notes here..."
-                value={userNotes}
-                onChange={(e) => setUserNotes(e.target.value)}
-              ></textarea>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ marginTop: "10px" }}
-                onClick={handleSaveNote}
+              <IconButton
+                sx={{ alignSelf: "center" }}
+                onClick={() => {
+                  setShowNotes(!showNotes); // Toggle the notes section
+                }}
               >
-                Save
-              </Button>
-            </div>
-          </div>
-        )}
+                <EditNoteIcon /> {/* Notes Icon */}
+              </IconButton>
+            )}
+            {showNotes && isAuthenticated && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "65px", // Adjust the top position as needed
+                  right: "20px", // Adjust the right position as needed
+                  backgroundColor: theme.palette.background.paper,
+                  padding: "10px",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <textarea
+                    rows="5"
+                    cols="30"
+                    placeholder="Write your notes here..."
+                    value={userNotes}
+                    onChange={(e) => setUserNotes(e.target.value)}
+                  ></textarea>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ marginTop: "10px" }}
+                    onClick={handleSaveNote}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            )}
             <IconButton
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
                 if (isAuthenticated) {
-                  navigate("/userAccount", { mode, theme })
+                  navigate("/userAccount", { mode, theme });
                 } else {
-                  navigate("/signin", { mode, theme })
+                  navigate("/signin", { mode, theme });
                 }
               }}
             >
@@ -305,7 +412,6 @@ export default function MyApp({ mode, theme, colorMode }) {
             <List>
               <ListItem key="CreateCharacter" disablePadding>
                 <ListItemButton
-               
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
@@ -326,7 +432,7 @@ export default function MyApp({ mode, theme, colorMode }) {
                     <AssignmentIcon />
                   </ListItemIcon>
                   <ListItemText
-                  color="inherit"
+                    color="inherit"
                     primary="Create A Character"
                     sx={{ opacity: open ? 1 : 0 }}
                   />
@@ -345,7 +451,7 @@ export default function MyApp({ mode, theme, colorMode }) {
             </IconButton>
           </Drawer>
         </div>
-        
+
         <Box component="main" sx={{ flexGrow: 1, p: 3, textAlign: "center" }}>
           <DrawerHeader />
           <div>
@@ -355,13 +461,41 @@ export default function MyApp({ mode, theme, colorMode }) {
             >
               BREWMASTER'S CAULDRON
             </Typography>
-            <TextField
-              fullWidth
-              label="Search Yourself a Champion"
-              id="fullWidth"
-              sx={{ width: "70%", mx: "auto" }}
-              onMouseEnter={handleTextFieldMouseEnter}
-            />
+            <SearchBoxContainer>
+              {/* <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={top100Films}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Movie" />
+                )}
+              /> */}
+              <Autocomplete
+                disablePortal
+                options={searchableItems.map((item) => ({
+                  label: item.page,
+                  value: item.content,
+                }))}
+                onInputChange={handleInputChange}
+                renderInput={(params) => (
+                  <FormControl variant="standard">
+                    <BootstrapInput
+                      {...params}
+                      placeholder="Search Yourself a Champion"
+                      id="bootstrap-input"
+                      onMouseEnter={handleTextFieldMouseEnter}
+                      onKeyDown={(e) => {
+                        // Handle Enter key press for immediate search
+                        if (e.key === "Enter") {
+                          handleSearch();
+                        }
+                      }}
+                    />
+                  </FormControl>
+                )}
+              />
+            </SearchBoxContainer>
           </div>
         </Box>
       </ThemeProvider>
