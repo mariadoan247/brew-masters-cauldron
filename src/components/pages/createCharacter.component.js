@@ -137,7 +137,6 @@ export default function Characters({ mode, theme, colorMode }) {
                                         >
                                             {availableClassNames.map((name, index) => (
                                                 <MenuItem key={index} value={name}>
-                                                    <Checkbox checked={characterSpell.includes(name)} color="primary" />
                                                     {name}
                                                 </MenuItem>
                                             ))}
