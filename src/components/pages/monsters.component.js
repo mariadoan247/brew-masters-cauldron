@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 

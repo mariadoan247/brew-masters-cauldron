@@ -28,15 +28,14 @@ import FormControl from "@mui/material/FormControl";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { isUserAuthenticated } from "../actions/authActions";
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import Button from "@mui/material/Button";
-import { useDispatch, useSelector } from 'react-redux';
-import { updateNotes } from '../actions/userActions';
-import { format } from 'date-fns';
+import { useDispatch, useSelector } from "react-redux";
+import { updateNotes } from "../actions/userActions";
+import { format } from "date-fns";
 import { fetchUserNotes } from "../actions/userActions";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Autocomplete from "@mui/material/Autocomplete";
-
 
 const drawerWidth = 240;
 
@@ -62,7 +61,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
-
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -132,13 +130,11 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
-
 export default function NavBar({ mode, theme, colorMode, children }) {
   const [open, setOpen] = React.useState(false);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
   const [showNotes, setShowNotes] = useState(false);
-  const [userNotes, setUserNotes] = useState('');
+  const [userNotes, setUserNotes] = useState("");
   const dispatch = useDispatch();
   const isAuthenticated = isUserAuthenticated();
   const userEmail = useSelector((state) => state.auth.user.email);
@@ -147,7 +143,9 @@ export default function NavBar({ mode, theme, colorMode, children }) {
 
   const availableRaceNames = useSelector((state) => state.races.races);
   const availableClassNames = useSelector((state) => state.classes.classes);
-  const availableBackgroundNames = useSelector((state) => state.backgrounds.backgrounds);
+  const availableBackgroundNames = useSelector(
+    (state) => state.backgrounds.backgrounds
+  );
   const availableSpellNames = useSelector((state) => state.spells.spells);
   const availableItemNames = useSelector((state) => state.items.items);
   const availableMonsterslNames = useSelector((state) => state.spells.monsters);
@@ -174,8 +172,8 @@ export default function NavBar({ mode, theme, colorMode, children }) {
 
     // Check if the searched term exists in the content of any page
     for (const { page, content } of searchableItems) {
-      const foundItem = content.find((item) =>
-        item.name && item.name.toLowerCase().includes(trimmedInput)
+      const foundItem = content.find(
+        (item) => item.name && item.name.toLowerCase().includes(trimmedInput)
       );
 
       if (foundItem) {
@@ -215,7 +213,6 @@ export default function NavBar({ mode, theme, colorMode, children }) {
     navigate(`/search?q=${encodeURIComponent(trimmedInput)}`);
   };
 
-
   useEffect(() => {
     // Function to fetch user notes
     const getUserNotes = () => {
@@ -227,16 +224,15 @@ export default function NavBar({ mode, theme, colorMode, children }) {
     getUserNotes();
   }, [userEmail, dispatch]);
 
-
   const handleSaveNote = () => {
     if (userNotes.trim()) {
       const noteObject = {
         details: userNotes,
-        dateUpdated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+        dateUpdated: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
       };
       const updatedNotes = [noteObject, ...notes];
       dispatch(updateNotes(userEmail, updatedNotes));
-      setUserNotes(''); // Clear the textarea after saving
+      setUserNotes(""); // Clear the textarea after saving
       setShowNotes(false); // Hide the notes section after saving
     }
   };
@@ -257,8 +253,6 @@ export default function NavBar({ mode, theme, colorMode, children }) {
     e.stopPropagation(); // Stop event propagation to prevent the navbar from opening
   };
 
-
-
   return (
     <Box>
       <ThemeProvider theme={theme}>
@@ -274,12 +268,23 @@ export default function NavBar({ mode, theme, colorMode, children }) {
               width="40"
               height="40"
             ></img>
-            
+
             <SearchBoxContainer>
-              
+              {/* <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={top100Films}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Movie" />
+                )}
+              /> */}
               <Autocomplete
-                freeSolo
-                options={searchableItems.map((item) => ({ label: item.page, value: item.content }))}
+                disablePortal
+                options={searchableItems.map((item) => ({
+                  label: item.page,
+                  value: item.content,
+                }))}
                 onInputChange={handleInputChange}
                 renderInput={(params) => (
                   <FormControl variant="standard">
@@ -298,8 +303,6 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                   </FormControl>
                 )}
               />
-
-
             </SearchBoxContainer>
             {isAuthenticated && (
               <IconButton
@@ -344,9 +347,9 @@ export default function NavBar({ mode, theme, colorMode, children }) {
               sx={{ alignSelf: "center", marginLeft: "auto" }} // Center the button vertically
               onClick={() => {
                 if (isAuthenticated) {
-                  navigate("/userAccount", { mode, theme })
+                  navigate("/userAccount", { mode, theme });
                 } else {
-                  navigate("/signin", { mode, theme })
+                  navigate("/signin", { mode, theme });
                 }
               }}
             >
@@ -430,14 +433,11 @@ export default function NavBar({ mode, theme, colorMode, children }) {
                 </ListItem>
               ))}
             </List>
-            <div style={{ flexGrow: 1 }} />{" "}
-            <Divider />
-
+            <div style={{ flexGrow: 1 }} /> <Divider />
             {/*TODO: add an icon that navigates to a new page where the user can build new dungeons and dragon characters */}
             <List>
               <ListItem key="Characters" disablePadding>
                 <ListItemButton
-
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
