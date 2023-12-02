@@ -36,6 +36,7 @@ import { format } from "date-fns";
 import { fetchUserNotes } from "../actions/userActions";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 const drawerWidth = 240;
 
@@ -167,6 +168,18 @@ export default function NavBar({ mode, theme, colorMode, children }) {
     { page: "feats", content: availableFeatsNames },
   ];
 
+  const allSearchableItems = searchableItems.reduce((allItems, currentItem) => {
+    if (Array.isArray(currentItem.content)) {
+      return allItems.concat(
+        currentItem.content.map((item) => ({
+          label: item.name, // Assuming 'name' is the property you want to display
+          value: item, // You can adjust this based on your requirements
+        }))
+      );
+    }
+    return allItems;
+  }, []);
+
   const handleSearch = () => {
     const trimmedInput = searchInput.trim().toLowerCase();
 
@@ -281,26 +294,27 @@ export default function NavBar({ mode, theme, colorMode, children }) {
               /> */}
               <Autocomplete
                 disablePortal
-                options={searchableItems.map((item) => ({
-                  label: item.page,
-                  value: item.content,
-                }))}
+                options={allSearchableItems}
                 onInputChange={handleInputChange}
+                onChange={(event, value) => {
+                  // Trigger the search when an item is selected
+                  if (value) {
+                    handleSearch();
+                  }
+                }}
+                style={{ width: 500 }}
                 renderInput={(params) => (
-                  <FormControl variant="standard">
-                    <BootstrapInput
-                      {...params}
-                      placeholder="Search Yourself a Champion"
-                      id="bootstrap-input"
-                      onMouseEnter={handleTextFieldMouseEnter}
-                      onKeyDown={(e) => {
-                        // Handle Enter key press for immediate search
-                        if (e.key === "Enter") {
-                          handleSearch();
-                        }
-                      }}
-                    />
-                  </FormControl>
+                  <TextField
+                    {...params}
+                    label="Search Yourself a Champion"
+                    variant="standard"
+                    onKeyDown={(e) => {
+                      // Handle Enter key press for immediate search
+                      if (e.key === "Enter") {
+                        handleSearch();
+                      }
+                    }}
+                  />
                 )}
               />
             </SearchBoxContainer>

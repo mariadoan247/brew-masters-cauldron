@@ -37,6 +37,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import InputBase from "@mui/material/InputBase";
 import { alpha } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 
 const drawerWidth = 240;
 
@@ -180,6 +181,18 @@ export default function MyApp({ mode, theme, colorMode }) {
     { page: "feats", content: availableFeatsNames },
   ];
 
+  const allSearchableItems = searchableItems.reduce((allItems, currentItem) => {
+    if (Array.isArray(currentItem.content)) {
+      return allItems.concat(
+        currentItem.content.map((item) => ({
+          label: item.name, // Assuming 'name' is the property you want to display
+          value: item, // You can adjust this based on your requirements
+        }))
+      );
+    }
+    return allItems;
+  }, []);
+
   const handleSearch = () => {
     const trimmedInput = searchInput.trim().toLowerCase();
 
@@ -275,7 +288,7 @@ export default function MyApp({ mode, theme, colorMode }) {
               alt="logo.png"
               width="40"
               height="40"
-            ></img>
+            />
             <div style={{ flex: 1 }} />
             {isAuthenticated && (
               <IconButton
@@ -462,37 +475,29 @@ export default function MyApp({ mode, theme, colorMode }) {
               BREWMASTER'S CAULDRON
             </Typography>
             <SearchBoxContainer>
-              {/* <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={top100Films}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Movie" />
-                )}
-              /> */}
               <Autocomplete
                 disablePortal
-                options={searchableItems.map((item) => ({
-                  label: item.page,
-                  value: item.content,
-                }))}
+                options={allSearchableItems}
                 onInputChange={handleInputChange}
+                onChange={(event, value) => {
+                  // Trigger the search when an item is selected
+                  if (value) {
+                    handleSearch();
+                  }
+                }}
+                style={{ width: 500 }}
                 renderInput={(params) => (
-                  <FormControl variant="standard">
-                    <BootstrapInput
-                      {...params}
-                      placeholder="Search Yourself a Champion"
-                      id="bootstrap-input"
-                      onMouseEnter={handleTextFieldMouseEnter}
-                      onKeyDown={(e) => {
-                        // Handle Enter key press for immediate search
-                        if (e.key === "Enter") {
-                          handleSearch();
-                        }
-                      }}
-                    />
-                  </FormControl>
+                  <TextField
+                    {...params}
+                    label="Search Yourself a Champion"
+                    variant="standard"
+                    onKeyDown={(e) => {
+                      // Handle Enter key press for immediate search
+                      if (e.key === "Enter") {
+                        handleSearch();
+                      }
+                    }}
+                  />
                 )}
               />
             </SearchBoxContainer>
