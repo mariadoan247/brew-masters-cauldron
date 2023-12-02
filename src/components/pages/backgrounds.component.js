@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
@@ -89,10 +89,6 @@ export default function Backgrounds({ mode, theme, colorMode }) {
           width: "95%",
         }}
       >
-        <Grid container spacing={10} alignItems="center">
-          <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
-        </Grid>
-
         <AppBar
           component="div"
           color="primary"
@@ -100,15 +96,16 @@ export default function Backgrounds({ mode, theme, colorMode }) {
           elevation={0}
           sx={{ zIndex: 0 }}
         >
-          <Toolbar>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item xs>
-                <Typography color="inherit" variant="h5" component="h1">
-                  Backgrounds
-                </Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={2} // Reduced the marginBottom to create space between title and description
+          >
+            <Typography variant="h4" gutterBottom>
+              Backgrounds
+            </Typography>
+          </Stack>
         </AppBar>
         <AppBar
           component="div"
@@ -124,10 +121,7 @@ export default function Backgrounds({ mode, theme, colorMode }) {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            Your character's background reveals where you came from, how you
-            became an adventurer, and your place in the world. Choosing a
-            background provides you with important story cues about your
-            character's identity.{" "}
+            Your character's background unveils the intricate tapestry of their origins, narrating the journey that led them to the adventurous life they now embrace. Selecting a background is more than a mechanical choice; it's a storytelling device that fleshes out your character's identity. Whether you hail from the noble courts, grew up as a street urchin, or emerged from the cloistered halls of a sage's enclave, your background shapes not only your skills and proficiencies but also the rich narrative threads woven into the fabric of your character's past. Embrace the storytelling potential embedded in your character's background, for it is the foundation upon which the epic tale of their adventuring life is built.{" "}
           </Typography>
         </AppBar>
 

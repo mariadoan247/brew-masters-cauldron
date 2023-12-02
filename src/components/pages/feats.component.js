@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
@@ -89,10 +89,6 @@ export default function Feats({ mode, theme, colorMode }) {
           width: "95%",
         }}
       >
-        <Grid container spacing={10} alignItems="center">
-          <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
-        </Grid>
-
         <AppBar
           component="div"
           color="primary"
@@ -100,15 +96,16 @@ export default function Feats({ mode, theme, colorMode }) {
           elevation={0}
           sx={{ zIndex: 0 }}
         >
-          <Toolbar>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item xs>
-                <Typography color="inherit" variant="h5" component="h1">
-                  Feats
-                </Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={2} // Reduced the marginBottom to create space between title and description
+          >
+            <Typography variant="h4" gutterBottom>
+              Feats
+            </Typography>
+          </Stack>
         </AppBar>
         <AppBar
           component="div"
@@ -123,8 +120,7 @@ export default function Feats({ mode, theme, colorMode }) {
             marginLeft={5}
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
-            {" "}
-            FEAT DESCRIPTION HERE{" "}
+            {" "}In the crucible of adventure, characters acquire unique talents and abilities that set them apart. Feats represent those exceptional skills, showcasing the diverse paths characters can tread. Choosing feats isn't just a mechanical decision; it's a narrative one. Your character's feats tell the story of their growth, resilience, and specialization. Each feat is a chapter in the evolving saga of your character's development, revealing the choices made and the strengths honed along the perilous road of adventuring.{" "}
           </Typography>
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>

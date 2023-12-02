@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
@@ -89,10 +89,6 @@ export default function Spells({ mode, theme, colorMode }) {
           width: "95%",
         }}
       >
-        <Grid container spacing={10} alignItems="center">
-          <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
-        </Grid>
-
         <AppBar
           component="div"
           color="primary"
@@ -100,15 +96,16 @@ export default function Spells({ mode, theme, colorMode }) {
           elevation={0}
           sx={{ zIndex: 0 }}
         >
-          <Toolbar>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item xs>
-                <Typography color="inherit" variant="h5" component="h1">
-                  Spells
-                </Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={2} // Reduced the marginBottom to create space between title and description
+          >
+            <Typography variant="h4" gutterBottom>
+              Spells
+            </Typography>
+          </Stack>
         </AppBar>
         <AppBar
           component="div"
@@ -124,7 +121,7 @@ export default function Spells({ mode, theme, colorMode }) {
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
             {" "}
-            SPELL DESCRIPTION HERE{" "}
+            Your character's magical prowess is defined by the spells they wield. Delve into the arcane or divine arts to uncover the secrets of the mystical forces that shape the world. Choosing spells not only empowers your character with magical abilities but also unveils the unique path they tread in the realm of spellcasting. Each incantation weaves a tale of your character's connection to the arcane or divine, shaping their destiny as they traverse the fantastical landscapes.{" "}
           </Typography>
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>

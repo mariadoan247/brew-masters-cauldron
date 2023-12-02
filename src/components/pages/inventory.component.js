@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container,Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
@@ -89,10 +89,6 @@ export default function Items({ mode, theme, colorMode }) {
           width: "95%",
         }}
       >
-        <Grid container spacing={10} alignItems="center">
-          <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
-        </Grid>
-
         <AppBar
           component="div"
           color="primary"
@@ -100,15 +96,16 @@ export default function Items({ mode, theme, colorMode }) {
           elevation={0}
           sx={{ zIndex: 0 }}
         >
-          <Toolbar>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item xs>
-                <Typography color="inherit" variant="h5" component="h1">
-                  Inventory
-                </Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={2} // Reduced the marginBottom to create space between title and description
+          >
+            <Typography variant="h4" gutterBottom>
+              Inventory
+            </Typography>
+          </Stack>
         </AppBar>
         <AppBar
           component="div"
@@ -123,8 +120,7 @@ export default function Items({ mode, theme, colorMode }) {
             marginLeft={5}
             sx={{ marginTop: -0.5, marginBottom: 2 }}
           >
-            {" "}
-            INVENTORY DESCRIPTION HERE{" "}
+            {" "}The inventory your character carries is more than a collection of objects; it is a reflection of their journey and the challenges they've overcome. Choosing items is a strategic decision that goes beyond utility – it's a narrative choice. Each piece of equipment tells a story, whether it's a treasured heirloom, a hard-earned reward, or a tool forged in the crucible of adventure. These items become an integral part of your character's identity, offering both practical advantages and a rich tapestry of tales waiting to be unraveled.{" "}
           </Typography>
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -139,6 +135,7 @@ export default function Items({ mode, theme, colorMode }) {
                       style={{ minWidth: column.minWidth, cursor: "pointer" }}
                       onClick={() => handleSort(column.id)}
                     >
+
                       <Grid container alignItems="center" spacing={1}>
                         <Grid item>{column.label}</Grid>
                         <Grid item>
@@ -150,34 +147,29 @@ export default function Items({ mode, theme, colorMode }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                  {items
+                {items
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={item._id}
-                      >
-                        {columns.map((column) => {
-                          const value = item[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.id === "name" ? (
-                                // Using BlogPostCard for rendering the title as a hyperlink
-                                <BlogPostCard key={item._id} post={item} />
-                              ) : column.format && typeof value === "number" ? (
-                                column.format(value)
-                              ) : (
-                                value
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
+                  .map((item) => (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={item._id}
+                    >
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.id === "name" ? (
+                            // Using BlogPostCard for rendering the title as a hyperlink
+                            <BlogPostCard key={item._id} post={item} category="inventory" />
+                          ) : column.format && typeof item[column.id] === "number" ? (
+                            column.format(item[column.id])
+                          ) : (
+                            item[column.id]
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
