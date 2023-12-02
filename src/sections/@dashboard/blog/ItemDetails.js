@@ -1,5 +1,3 @@
-// DOES NOT MATCH ITEM SCHEMA RN IT DOES NOT WORK!!!
-
 import * as React from "react";
 import {
     Box,
