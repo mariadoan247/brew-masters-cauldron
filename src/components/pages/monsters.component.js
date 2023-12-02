@@ -37,98 +37,35 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const columns = [
-  {
-    id: "name",
-    label: "Name",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "str",
-    label: "STR",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "dex",
-    label: "DEX",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "con",
-    label: "CON",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "int",
-    label: "INT",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "wis",
-    label: "WIS",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "cha",
-    label: "CHA",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
+  { id: "name", label: "Name", minWidth: 170 },
+  // Additional columns as needed
 ];
 
-function createData(name, str, dex, con, int, wis, cha) {
-  return { name, str, dex, con, int, wis, cha };
+function createData(name) {
+  return { name };
 }
 
-const initialRows = [
-  createData(
-    "Baphomet",
-    "30 (+10)",
-    "14 (+2)",
-    "26 (+8)",
-    "18 (+4)",
-    "24 (+7)",
-    "16 (+3)"
-  ),
-  createData(
-    "Black Dragon Wyrmling",
-    "33 (+10)",
-    "14 (+2)",
-    "26 (+4)",
-    "18 (+4)",
-    "54 (+7)",
-    "26 (+3)"
-  ),
-  createData(
-    "Cranium Rat",
-    "33 (+1)",
-    "22 (+2)",
-    "16 (+8)",
-    "18 (+4)",
-    "24 (+7)",
-    "16 (+14)"
-  ),
+const monsters = [
+  createData("name1"),
+  createData("name2"),
+  // Add more data for monsters
 ];
 
-export default function Monsters({ mode, theme, colorMode }) {
+const Monsters = ({ mode, theme, colorMode }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState(initialRows);
-  const monsters = useSelector((state) => state.monsters.monsters);
+  const [rows, setRows] = React.useState(monsters);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   const sortData = (data, sortBy, direction) => {
     const sortedData = [...data].sort((a, b) => {
@@ -150,15 +87,6 @@ export default function Monsters({ mode, theme, colorMode }) {
     setRows(sortData(rows, columnId, newDirection));
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
       <Container
@@ -175,7 +103,6 @@ export default function Monsters({ mode, theme, colorMode }) {
         <Grid container spacing={10} alignItems="center">
           <Grid sx={{ display: { sm: "none", xs: "block" } }} item></Grid>
         </Grid>
-
         <AppBar
           component="div"
           color="primary"
@@ -214,7 +141,6 @@ export default function Monsters({ mode, theme, colorMode }) {
             such as ghosts, and mundane or fantastic animals.{" "}
           </Typography>
         </AppBar>
-
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
@@ -223,7 +149,7 @@ export default function Monsters({ mode, theme, colorMode }) {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      align={column.align}
+                      align="left"
                       style={{ minWidth: column.minWidth, cursor: "pointer" }}
                       onClick={() => handleSort(column.id)}
                     >
@@ -240,33 +166,24 @@ export default function Monsters({ mode, theme, colorMode }) {
               <TableBody>
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.code}
-                      >
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.id === "name" ? (
-                                <Link to={`/monsters/${row.name}`}>
-                                  {value}
-                                </Link>
-                              ) : column.format && typeof value === "number" ? (
-                                column.format(value)
-                              ) : (
-                                value
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
+                  .map((row) => (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.name}
+                    >
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align="left">
+                          {column.id === "name" ? (
+                            <Link to={`/monsters/${row.name}`}>{row.name}</Link>
+                          ) : (
+                            row[column.id]
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -283,4 +200,6 @@ export default function Monsters({ mode, theme, colorMode }) {
       </Container>
     </NavBar>
   );
-}
+};
+
+export default Monsters;

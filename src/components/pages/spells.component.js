@@ -116,7 +116,7 @@ const Spells = ({ mode, theme, colorMode }) => {
                 <Typography color="inherit" variant="h5" component="h1">
                   Spells
                 </Typography>
-                </Grid>
+              </Grid>
             </Grid>
           </Toolbar>
         </AppBar>
@@ -126,7 +126,7 @@ const Spells = ({ mode, theme, colorMode }) => {
           elevation={0}
           sx={{ zIndex: 0 }}
         >
-                <Typography
+          <Typography
             color="inherit"
             variant="body1"
             component="p"
@@ -139,8 +139,6 @@ const Spells = ({ mode, theme, colorMode }) => {
             limited expression. The more powerful a spell, the higher the level
             of spell slot it must be cast with.{" "}
           </Typography>
-
-            
         </AppBar>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>
@@ -168,7 +166,12 @@ const Spells = ({ mode, theme, colorMode }) => {
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.name}
+                    >
                       {columns.map((column) => (
                         <TableCell key={column.id} align="left">
                           {column.id === "name" ? (

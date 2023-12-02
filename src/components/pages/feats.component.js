@@ -14,8 +14,6 @@ import { Link } from "react-router-dom";
 import NavBar from "../navbar";
 import Toolbar from "@mui/material/Toolbar";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
@@ -39,94 +37,29 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const columns = [
-  {
-    id: "feat",
-    label: "Feat",
-    minWidth: 170,
-    align: "left",
-    format: (value) => value.toLocaleString("en-US"),
-  },
+  { id: "name", label: "Name", minWidth: 170 },
+  // Additional columns as needed
 ];
 
-function createData(feat) {
-  return { feat };
+function createData(name) {
+  return { name };
 }
 
-const featsData = {
-  0: [
-    createData("Player's Handbook Feat 1"),
-    createData("Player's Handbook Feat 2"),
-    // Add more data as needed
-  ],
-  1: [
-    createData("Xanather's Guide Feat 1"),
-    createData("Xanather's Guide Feat 2"),
-    // Add more data as needed
-  ],
-  2: [
-    createData("Mordenkainen's Tome Feat 1"),
-    createData("Mordenkainen's Tome Feat 2"),
-    // Add more data as needed
-  ],
-  3: [
-    createData("Tasha's Caludron Feat 1"),
-    createData("Tasha's Caludron Feat 2"),
-    // Add more data as needed
-  ],
-  4: [
-    createData("Fizban's Treasury Feat 1"),
-    createData("Fizban's Treasury Feat 2"),
-    // Add more data as needed
-  ],
-  5: [
-    createData("Strixhaven Feat 1"),
-    createData("Strixhaven Feat 2"),
-    // Add more data as needed
-  ],
-  6: [
-    createData("Eberron Feat 1"),
-    createData("Eberron Feat 2"),
-    // Add more data as needed
-  ],
-  7: [
-    createData("Wayfinder's Guide Feat 1"),
-    createData("Wayfinder's Guide Feat 2"),
-    // Add more data as needed
-  ],
-  8: [
-    createData("Plane Shift Feat 1"),
-    createData("Plane Shift Feat 2"),
-    // Add more data as needed
-  ],
-};
-
-const spellsByClass = [
-  createData("name class1", "class1", "damage1", "level1", "school1", "other1"),
-  createData("name class2", "class2", "damage2", "level2", "school2", "other2"),
-  // Add more data for spells by class
+const feats = [
+  createData("name1"),
+  createData("name2"),
+  // Add more data for monsters
 ];
 
 const Feats = ({ mode, theme, colorMode }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [selectedTab, setSelectedTab] = React.useState(0);
   const [sortedColumn, setSortedColumn] = React.useState(null);
   const [sortDirection, setSortDirection] = React.useState("asc");
-  const [rows, setRows] = React.useState([]);
-  const feats = useSelector((state) => state.feats.feats);
-
-  React.useEffect(() => {
-    setRows(featsData[selectedTab]);
-  }, [selectedTab]);
+  const [rows, setRows] = React.useState(feats);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-  };
-
-  const handleChangeTab = (event, newValue) => {
-    setSelectedTab(newValue);
-    setPage(0); // Reset page when changing tabs
-    setSortedColumn(null); // Reset sorting when changing tabs
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -151,19 +84,8 @@ const Feats = ({ mode, theme, colorMode }) => {
     const newDirection = isAsc ? "desc" : "asc";
     setSortDirection(newDirection);
     setSortedColumn(columnId);
-
-    const sortedData = sortData(featsData[selectedTab], columnId, newDirection);
-    setRows(sortedData);
+    setRows(sortData(rows, columnId, newDirection));
   };
-
-  // Display data based on the selected tab
-  const displayedRows = (() => {
-    const sortedData = sortData(rows, sortedColumn, sortDirection);
-    return sortedData.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
-  })();
 
   return (
     <NavBar mode={mode} theme={theme} colorMode={colorMode}>
@@ -218,29 +140,6 @@ const Feats = ({ mode, theme, colorMode }) => {
             class gives you the Ability Score Improvement feature.{" "}
           </Typography>
         </AppBar>
-        <AppBar
-          component="div"
-          position="static"
-          elevation={0}
-          sx={{ zIndex: 0 }}
-        >
-          <Tabs
-            value={selectedTab}
-            textColor="inherit"
-            onChange={handleChangeTab}
-          >
-            <Tab label="Player's Handbook" />
-            <Tab label="Xanather's Guide" />
-            <Tab label="Mordenkainen's Tome" />
-            <Tab label="Tasha's Caludron" />
-            <Tab label="Fizban's Treasury" />
-            <Tab label="Strixhaven" />
-            <Tab label="Eberron" />
-            <Tab label="Wayfinder's Guide" />
-            <Tab label="Plane Shift" />
-          </Tabs>
-        </AppBar>
-
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
@@ -249,7 +148,7 @@ const Feats = ({ mode, theme, colorMode }) => {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      align={column.align}
+                      align="left"
                       style={{ minWidth: column.minWidth, cursor: "pointer" }}
                       onClick={() => handleSort(column.id)}
                     >
@@ -264,40 +163,33 @@ const Feats = ({ mode, theme, colorMode }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedRows
+                {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.code}
-                      >
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.id === "name" ? (
-                                <Link to={`/feats/${row.name}`}>{value}</Link>
-                              ) : column.format && typeof value === "number" ? (
-                                column.format(value)
-                              ) : (
-                                value
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
+                  .map((row) => (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.name}
+                    >
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align="left">
+                          {column.id === "name" ? (
+                            <Link to={`/feats/${row.name}`}>{row.name}</Link>
+                          ) : (
+                            row[column.id]
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={displayedRows.length}
+            count={rows.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
