@@ -147,34 +147,29 @@ export default function Items({ mode, theme, colorMode }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                  {items
+                {items
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={item._id}
-                      >
-                        {columns.map((column) => {
-                          const value = item[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.id === "name" ? (
-                                // Using BlogPostCard for rendering the title as a hyperlink
-                                <BlogPostCard key={item._id} post={item} />
-                              ) : column.format && typeof value === "number" ? (
-                                column.format(value)
-                              ) : (
-                                value
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
+                  .map((item) => (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={item._id}
+                    >
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.id === "name" ? (
+                            // Using BlogPostCard for rendering the title as a hyperlink
+                            <BlogPostCard key={item._id} post={item} category="inventory" />
+                          ) : column.format && typeof item[column.id] === "number" ? (
+                            column.format(item[column.id])
+                          ) : (
+                            item[column.id]
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
